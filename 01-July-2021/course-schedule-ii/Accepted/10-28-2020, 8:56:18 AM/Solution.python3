@@ -1,0 +1,31 @@
+// https://leetcode.com/problems/course-schedule-ii
+
+from collections import defaultdict
+
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        # O(n) time | O(1) time minus recursive call stack 
+        self.idx = 0
+        self.topologicalSorting = {}
+        self.adj = defaultdict(list)
+        self.seen = set()
+        for a, b in prerequisites:
+            self.adj[a].append(b)
+        for i in range(numCourses):
+            self.dfs(i)
+        for a, b in prerequisites:
+            if self.topologicalSorting[b] > self.topologicalSorting[a]:
+                return []
+
+        invert = {b: a for a, b in self.topologicalSorting.items()}
+        res = [invert[i] for i in range(numCourses)]
+        return res
+    
+    def dfs(self, node):
+        if node in self.seen:
+            return
+        self.seen.add(node)
+        for child in self.adj[node]:
+            self.dfs(child)
+        self.topologicalSorting[node] = self.idx
+        self.idx += 1

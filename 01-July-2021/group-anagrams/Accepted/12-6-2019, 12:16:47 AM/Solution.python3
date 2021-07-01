@@ -1,0 +1,10 @@
+// https://leetcode.com/problems/group-anagrams
+
+from collections import Counter, defaultdict
+class Solution:
+    def groupAnagrams(self, strs):
+        result = defaultdict(list)
+        for item in strs:
+            key_str = str(sorted(Counter(item).items(), key=lambda x: x[0]))
+            result[key_str].append(item)
+        return result.values()

@@ -1,0 +1,19 @@
+// https://leetcode.com/problems/unique-paths-ii
+
+class Solution:
+    def uniquePathsWithObstacles(self, grid: List[List[int]]) -> int:
+        rlen, clen = len(grid), len(grid[0])
+        prev = [0] * clen
+        prev[0] = 1
+        for r in range(rlen):
+            dp = [0] * clen
+            for c in range(clen):
+                if grid[r][c] == 1:
+                    continue
+                ans = prev[c]
+                if c > 0:
+                    ans += dp[c-1]
+                dp[c] = ans
+
+            prev = dp
+        return prev[-1]

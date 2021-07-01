@@ -1,0 +1,40 @@
+// https://leetcode.com/problems/number-of-restricted-paths-from-first-to-last-node
+
+from collections import deque, defaultdict
+from heapq import heappush, heappop
+from functools import lru_cache
+
+class Solution:
+    def countRestrictedPaths(self, n: int, edges: List[List[int]]) -> int:
+        adj = {i: defaultdict(int) for i in range(1, n + 1)}
+        for a, b, w in edges:
+            adj[a][b] = w
+            adj[b][a] = w
+        
+        hp = []
+        tmp = {n: 0}
+        hp.append((0, n))
+        seen = {}
+        while hp:
+            dist, node = heappop(hp)
+            if node in seen:
+                continue
+            seen[node] = dist
+            for child in adj[node]:
+                d = dist + adj[node][child]
+                if child not in tmp or tmp[child] > d:
+                    heappush(hp, (d, child))
+        mod = 10**9 + 7
+        @lru_cache(None)
+        def solve(node):
+            if node == n:
+                return 1
+            ans = 0
+            for child in adj[node]:
+                if seen[node] > seen[child]:
+                    ans = (solve(child) + ans) % mod
+            return ans
+        for i in range(n, 1, -1):
+            solve(i)
+        return solve(1)
+            

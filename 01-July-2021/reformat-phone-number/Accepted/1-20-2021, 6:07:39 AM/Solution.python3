@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/reformat-phone-number
+
+class Solution:
+    def reformatNumber(self, number: str) -> str:
+        nums = [cha for cha in number if cha.isdigit()]
+        n = len(nums)
+        if n <= 3:
+            return ''.join(nums)
+        mod = len(nums) % 3
+        ans = []
+        end = n
+        if mod == 1:
+            for i in range(2):
+                ans.append("".join(nums[end-2:end]))
+                end -= 2
+        elif mod == 2:
+            ans.append("".join(nums[end-2: end]))
+            end -= 2
+        # print(mod, ans, end)
+        while end > 0:
+            ans.append("".join(nums[end-3:end]))
+            # print(mod, ans, end)
+            end -= 3
+        return "-".join(ans[::-1])
+        

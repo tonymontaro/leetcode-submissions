@@ -1,0 +1,30 @@
+// https://leetcode.com/problems/delete-nodes-and-return-forest
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def delNodes(self, root: TreeNode, to_delete: List[int]) -> List[TreeNode]:
+        self.result = []
+        self.toDelete = set(to_delete)
+        self.deleteNodes(root, False)
+        return self.result
+    
+    def deleteNodes(self, node, isParent):
+        if node is None: return node
+        if node.val not in self.toDelete:
+            if not isParent:
+                self.result.append(node)
+            node.left = self.deleteNodes(node.left, True)
+            node.right = self.deleteNodes(node.right, True)
+            return node
+        else:
+            self.deleteNodes(node.left, False)
+            self.deleteNodes(node.right, False)
+            node.right = None
+            node.left = None
+            return None
+        

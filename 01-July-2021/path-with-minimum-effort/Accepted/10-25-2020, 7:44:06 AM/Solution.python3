@@ -1,0 +1,35 @@
+// https://leetcode.com/problems/path-with-minimum-effort
+
+from sortedcontainers import SortedSet
+from math import inf
+
+class Solution:
+    def minimumEffortPath(self, grid: List[List[int]]) -> int:
+        # O(nlogn) time | O(n) space
+        rowlen, colen = len(grid), len(grid[0])
+        end = (rowlen - 1, colen - 1)
+        seen = {}
+        path = SortedSet()
+        first = (0, 0, 0)
+        seen[(0, 0)] = 0
+
+        path.add(first)
+        neighbors = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+
+        while path:
+            # print(path)
+            h, r, c = path.pop(0)
+            val = grid[r][c]
+            if (r, c) == end:
+                return h
+            for rAdd, cAdd in neighbors:
+                row = r + rAdd
+                col = c + cAdd
+                isValid = 0 <= row < rowlen and 0 <= col < colen
+                if isValid:
+                    prevH = inf if (row, col) not in seen else seen[(row, col)]
+                    maxH = max(h, abs(val - grid[row][col]))
+                    if (maxH < prevH):
+                        seen[(row, col)] = maxH
+                        path.add((maxH, row, col))
+        

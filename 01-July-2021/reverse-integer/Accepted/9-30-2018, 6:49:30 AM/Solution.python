@@ -1,0 +1,16 @@
+// https://leetcode.com/problems/reverse-integer
+
+class Solution(object):
+    def reverse(self, x):
+        """
+        :type x: int
+        :rtype: int
+        """
+        x = str(x)
+        if x[0] == '-':
+            num = -int(x[1:][::-1])
+        else:
+            num = int(x[::-1])
+        if abs(num) > 2147483647:
+            return 0
+        return num

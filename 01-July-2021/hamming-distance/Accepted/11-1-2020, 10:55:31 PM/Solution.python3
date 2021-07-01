@@ -1,0 +1,10 @@
+// https://leetcode.com/problems/hamming-distance
+
+class Solution:
+    def hammingDistance(self, x: int, y: int) -> int:
+        diff = x ^ y
+        setBits = 0
+        while diff != 0:
+            setBits += (diff & 1)
+            diff >>= 1
+        return setBits

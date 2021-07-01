@@ -1,0 +1,32 @@
+// https://leetcode.com/problems/number-of-ways-to-form-a-target-string-given-a-dictionary
+
+from string import ascii_lowercase
+
+class Solution:
+    def numWays(self, words: List[str], target: str) -> int:
+        m = len(target)
+        n = len(words[0])
+        mod = 10**9 + 7
+        alphas = {cha: [0] * (n + 1) for cha in ascii_lowercase}
+        
+        for word in words:
+            for i in range(n):
+                alphas[word[i]][i + 1] += 1
+        
+        dp = {}
+        def solve(wIdx, tIdx):
+            if wIdx > n:
+                return 0
+            if (wIdx, tIdx) not in dp:
+                ans = 0
+                cha = target[tIdx - 1]
+                if tIdx == m:
+                    for i in range(wIdx, n + 1):
+                        ans += alphas[cha][i]
+                else:
+                    for i in range(wIdx, n + 1):
+                        ans = (ans + (alphas[cha][i] * solve(i + 1, tIdx + 1)) % mod) % mod
+                dp[(wIdx, tIdx)] = ans
+            return dp[(wIdx, tIdx)]
+        
+        return solve(1, 1)

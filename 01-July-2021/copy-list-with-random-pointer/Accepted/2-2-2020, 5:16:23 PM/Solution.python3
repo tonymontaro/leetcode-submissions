@@ -1,0 +1,30 @@
+// https://leetcode.com/problems/copy-list-with-random-pointer
+
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, x: int, next: 'Node' = None, random: 'Node' = None):
+        self.val = int(x)
+        self.next = next
+        self.random = random
+"""
+class Solution:
+    def copyRandomList(self, head: 'Node') -> 'Node':
+        """O(n) time and space"""
+        if not head: return head
+        idx = 0
+        node = head
+        nodes = []
+        prev_nodes = []
+        while node:
+            node.idx = idx
+            nodes.append(Node(node.val))
+            prev_nodes.append(node)
+            node = node.next
+            idx += 1
+        for i in range(len(nodes)):
+            if i < len(nodes)-1:
+                nodes[i].next = nodes[i+1]
+            if prev_nodes[i].random:
+                nodes[i].random = nodes[prev_nodes[i].random.idx]
+        return nodes[0]

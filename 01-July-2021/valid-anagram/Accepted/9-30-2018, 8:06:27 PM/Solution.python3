@@ -1,0 +1,14 @@
+// https://leetcode.com/problems/valid-anagram
+
+from collections import Counter
+class Solution:
+    def isAnagram(self, word1, word2):
+        if len(word1) != len(word2):
+            return False
+        word1 = Counter(word1)
+        for char in word2:
+            if char not in word1 or word1[char] < 1:
+                return False
+            else:
+                word1[char] -= 1
+        return True

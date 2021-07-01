@@ -1,0 +1,17 @@
+// https://leetcode.com/problems/merge-intervals
+
+class Solution:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        # O(nlogn) time | O(n) space
+        intervals.sort()
+        idx = 0
+        n = len(intervals)
+        result = []
+        while idx < n:
+            start, end = intervals[idx]
+            idx += 1
+            while idx < n and intervals[idx][0] <= end:
+                end = max(end, intervals[idx][1])
+                idx += 1
+            result.append([start, end])
+        return result

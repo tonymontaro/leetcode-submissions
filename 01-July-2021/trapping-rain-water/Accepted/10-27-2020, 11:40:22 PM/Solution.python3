@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/trapping-rain-water
+
+class Solution:
+    def trap(self, arr: List[int]) -> int:
+        # O(n) time and space | two pass
+        maxH = 0
+        n = len(arr)
+        dp = [0] * n
+        for i, h in enumerate(arr):
+            maxH = max(maxH, h)
+            dp[i] = maxH - h
+        maxH = 0
+        ans = 0
+        for i in range(n-1, -1, -1):
+            h = arr[i]
+            maxH = max(maxH, h)
+            ans += min(dp[i], maxH - h)
+        return ans

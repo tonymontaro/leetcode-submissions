@@ -1,0 +1,63 @@
+// https://leetcode.com/problems/design-front-middle-back-queue
+
+from collections import deque
+
+class FrontMiddleBackQueue:
+
+    def __init__(self):
+        self.a = deque()
+        self.b = deque()
+    
+    def balance(self):
+        while self.a and len(self.b) <= len(self.a):
+            self.b.appendleft(self.a.pop())
+        while len(self.b) - len(self.a) > 1:
+            self.a.append(self.b.popleft())
+        # print(self.a, self.b)
+
+    def pushFront(self, val: int) -> None:
+        self.a.appendleft(val)
+        self.balance()
+
+    def pushMiddle(self, val: int) -> None:
+        self.a.append(val)
+        self.balance()
+
+    def pushBack(self, val: int) -> None:
+        self.b.append(val)
+        self.balance()
+
+    def popFront(self) -> int:
+        ans = -1
+        if self.a:
+            ans = self.a.popleft()
+        elif self.b:
+            ans = self.b.popleft()
+        self.balance()
+        return ans
+
+    def popMiddle(self) -> int:
+        ans = -1
+        if self.b and len(self.b) == len(self.a):
+            ans = self.a.pop()
+        elif self.b:
+            ans = self.b.popleft()
+        self.balance()
+        return ans
+
+    def popBack(self) -> int:
+        ans = -1
+        if self.b:
+            ans = self.b.pop()
+            self.balance()
+        return ans
+
+
+# Your FrontMiddleBackQueue object will be instantiated and called as such:
+# obj = FrontMiddleBackQueue()
+# obj.pushFront(val)
+# obj.pushMiddle(val)
+# obj.pushBack(val)
+# param_4 = obj.popFront()
+# param_5 = obj.popMiddle()
+# param_6 = obj.popBack()

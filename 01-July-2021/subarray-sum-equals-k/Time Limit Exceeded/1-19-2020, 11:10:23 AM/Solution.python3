@@ -1,0 +1,13 @@
+// https://leetcode.com/problems/subarray-sum-equals-k
+
+class Solution:
+    def subarraySum(self, nums, k: int) -> int:
+        """O(n^2) time | O(n) space"""
+        total = 0
+        cumm = [0] * (len(nums) + 1)
+        for i, num in enumerate(nums):
+            cumm[i+1] = cumm[i] + num
+            for j in range(i+1):
+                if cumm[i+1] - cumm[j] == k:
+                    total += 1
+        return total

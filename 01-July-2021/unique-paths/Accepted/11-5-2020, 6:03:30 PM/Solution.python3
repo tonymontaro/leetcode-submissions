@@ -1,0 +1,12 @@
+// https://leetcode.com/problems/unique-paths
+
+class Solution:
+    def uniquePaths(self, rowlen: int, colen: int) -> int:
+        prev = [1] * colen
+        for row in range(1, rowlen):
+            dp = list(prev)
+            for i in range(1, colen):
+                dp[i] += dp[i - 1]
+            prev = dp
+        return prev[-1]
+        

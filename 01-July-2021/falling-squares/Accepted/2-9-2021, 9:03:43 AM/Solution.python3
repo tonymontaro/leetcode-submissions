@@ -1,0 +1,31 @@
+// https://leetcode.com/problems/falling-squares
+
+import bisect
+#Input: [[1, 2], [2, 3], [6, 1]]
+# Output: [2, 5, 5]
+class Solution:
+    def fallingSquares(self, arr: List[List[int]]) -> List[int]:
+        unique = set()
+        for a, b in arr:
+            unique.add(a)
+            unique.add(a + b - 1)
+        mp = {x: i for i, x in enumerate(sorted(unique))}
+
+        maxs = [0] * len(mp)
+        
+        def setmax(l, r, h):
+            for i in range(l, r + 1):
+                maxs[i] = h
+        
+        ans = []
+        mx = 0
+        for x, side in arr:
+            l, r = mp[x], mp[x + side - 1]
+            h = max(maxs[l:r+1]) + side
+            mx = max(mx, h)
+            ans.append(mx)
+            setmax(l, r, h)
+        return ans
+        
+
+        

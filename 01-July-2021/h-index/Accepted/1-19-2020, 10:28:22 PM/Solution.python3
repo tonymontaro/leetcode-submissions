@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/h-index
+
+class Solution:
+    def hIndex(self, citations) -> int:
+        """O(nlogn) time | O(1) space"""
+        if not citations: return 0
+        citations.sort()
+        h_index = 0
+        j = len(citations)-1
+        for i in range(len(citations), -1, -1):
+            while (j >= 0 and citations[j] > i) or (j > 0 and citations[j-1] == i):
+                j -= 1
+            ln = len(citations) - j if citations[j] == i else len(citations) - j - 1
+
+            if ln >= i:
+                h_index = i
+                break
+        return h_index

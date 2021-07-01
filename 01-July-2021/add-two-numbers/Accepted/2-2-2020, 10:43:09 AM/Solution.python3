@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/add-two-numbers
+
+class Solution:
+    def addTwoNumbers(self, l1: ListNode, l2: ListNode, carry=0) -> ListNode:
+        """O(max(l1, l2) time and space)"""
+        if l1 is None and l2 is None:
+            return None if carry == 0 else ListNode(carry)
+        left = right = 0
+        if l1:
+            left = l1.val
+            l1 = l1.next
+        if l2:
+            right = l2.val
+            l2 = l2.next
+        node = ListNode((left + right + carry)%10)
+        carry = (left + right + carry) // 10
+        node.next = self.addTwoNumbers(l1, l2, carry)
+        return node

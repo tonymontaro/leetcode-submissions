@@ -1,0 +1,21 @@
+// https://leetcode.com/problems/majority-element
+
+from collections import Counter
+
+class Solution:
+    def majorityElement(self, nums: List[int]) -> int:
+        # O(n) time | O(1) space
+        current = None
+        size = 0
+        for num in nums:
+            if current is None:
+                current = num
+            
+            if num == current:
+                size += 1
+            else:
+                size -= 1
+            
+            if size == 0:
+                current = None
+        return current

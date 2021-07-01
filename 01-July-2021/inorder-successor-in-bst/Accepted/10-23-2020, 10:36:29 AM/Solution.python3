@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/inorder-successor-in-bst
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def inorderSuccessor(self, root: 'TreeNode', p: 'TreeNode') -> 'TreeNode':
+        if not root: return root
+        self.valid = None
+        self.search(root, p.val)
+        return self.valid
+    
+    def search(self, node, val):
+        if not node: return
+        if node.val > val:
+            self.valid = node
+            self.search(node.left, val)
+        else:
+            self.search(node.right, val)

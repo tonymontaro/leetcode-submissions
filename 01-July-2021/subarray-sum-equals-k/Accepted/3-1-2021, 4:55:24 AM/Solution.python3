@@ -1,0 +1,17 @@
+// https://leetcode.com/problems/subarray-sum-equals-k
+
+from collections import defaultdict
+
+class Solution:
+    def subarraySum(self, nums: List[int], k: int) -> int:
+        
+        ans = 0
+        seen = defaultdict(int)
+        seen[0] += 1
+        sm = 0
+        for i, num in enumerate(nums):
+            sm += num
+            ans += seen[sm - k]
+            seen[sm] += 1
+        return ans
+            

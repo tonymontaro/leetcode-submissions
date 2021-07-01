@@ -1,0 +1,6 @@
+// https://leetcode.com/problems/valid-palindrome
+
+class Solution:
+    def isPalindrome(self, s):
+        alnums = [char.lower() for char in s if char.isalnum()]
+        return alnums == alnums[::-1]

@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/my-calendar-ii
+
+class MyCalendarTwo:
+    
+    def __init__(self):
+        self.arr = []    
+
+    def book(self, start: int, end: int) -> bool:
+        # O(n^2) time | O(n) space
+        cnt = 0
+        for s, e in self.arr:
+            if start >= e or end <= s: continue
+            # if start == 25:
+            #     print(s, e)
+            cnt += 1
+        # print(start, end, cnt, self.arr)
+        if cnt >= 2:
+            return False
+        self.arr.append((start, end))
+        return True
+
+
+# Your MyCalendarTwo object will be instantiated and called as such:
+# obj = MyCalendarTwo()
+# param_1 = obj.book(start,end)

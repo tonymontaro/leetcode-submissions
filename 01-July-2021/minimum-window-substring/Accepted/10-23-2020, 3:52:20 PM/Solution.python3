@@ -1,0 +1,32 @@
+// https://leetcode.com/problems/minimum-window-substring
+
+from collections import defaultdict, Counter
+from math import inf
+
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        # O(n) time and O(1) space
+        if not t or not s: return ""
+
+        seen = defaultdict(int)
+        unique = Counter(t)
+        rem = len(unique)
+        ans = (0, 0, inf)
+        left = 0
+        
+        for i, c in enumerate(s):
+            if c in unique and seen[c] == unique[c] - 1:
+                rem -= 1
+            seen[c] += 1
+            
+            if rem == 0:
+                c = s[left]
+                while left < i and (c not in unique or seen[c] > unique[c]):
+                    seen[c] -= 1
+                    left += 1
+                    c = s[left]
+                size = i + 1 - left
+                if size < ans[2]:
+                    ans = (left, i + 1, size)
+
+        return s[ans[0]: ans[1]]

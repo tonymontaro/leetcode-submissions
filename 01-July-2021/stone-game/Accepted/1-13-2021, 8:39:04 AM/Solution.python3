@@ -1,0 +1,24 @@
+// https://leetcode.com/problems/stone-game
+
+class Solution:
+    def stoneGame(self, piles: List[int]) -> bool:
+        return True
+        cache = {}
+        
+        def solve(i, j):
+            if i == j:
+                return [piles[i], 0]
+            if (i, j) in cache:
+                return cache[(i, j)]
+    
+            first = solve(i + 1, j)
+            second = solve(i, j - 1)
+            if piles[i] + first[1] > piles[j] + second[1]:
+                cache[(i, j)] = [piles[i] + first[1], first[0]]
+            else:
+                cache[(i, j)] =  [piles[j] + second[1], second[0]]
+            return cache[(i, j)]
+        
+        ans = solve(0, len(piles)-1)
+        return ans[0] > ans[1]
+        

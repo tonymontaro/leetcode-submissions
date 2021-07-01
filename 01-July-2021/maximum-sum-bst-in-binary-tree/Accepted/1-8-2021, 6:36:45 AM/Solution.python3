@@ -1,0 +1,28 @@
+// https://leetcode.com/problems/maximum-sum-bst-in-binary-tree
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def maxSumBST(self, root: TreeNode) -> int:
+        self.ans = 0
+        
+        def dfs(node):
+            if not node:
+                return [None, None, True, 0]
+            left = dfs(node.left)
+            right = dfs(node.right)
+            val = node.val
+            if (not left[2]) or (left[1] is not None and val <= left[1]) or (not right[2]) or (right[0] is not None and val >= right[0]):
+                return [0, 0, False, 0]
+            mn = left[0] if left[0] is not None else val
+            mx = right[1] if right[1] is not None else val
+            sm = left[3] + right[3] + val
+            self.ans = max(self.ans, sm)
+            return [mn, mx, True, sm]
+        
+        dfs(root)
+        return self.ans

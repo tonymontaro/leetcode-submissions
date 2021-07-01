@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/minimum-path-sum
+
+class Solution:
+    def minPathSum(self, grid):
+        self.result = float('inf')
+        self.seen = {}
+        def helper(r, c, grid, summation):
+            if r == 0 and c == 0:
+                self.result = min(summation + grid[r][c], self.result)
+                return
+            if ((r, c) in self.seen and self.seen[(r, c)] <= summation + grid[r][c])  or r < 0  or c < 0:
+                return
+            self.seen[(r, c)] = summation + grid[r][c]
+
+            new_sum = summation + grid[r][c]
+            if r-1 >= 0 and c-1 >= 0 and grid[r-1][c] < grid[r][c-1]:
+                helper(r-1, c, grid, new_sum)
+                helper(r, c-1, grid, new_sum)
+            else:
+                helper(r, c-1, grid, new_sum)
+                helper(r-1, c, grid, new_sum)
+        helper(len(grid)-1, len(grid[0])-1, grid, 0)
+        return self.result

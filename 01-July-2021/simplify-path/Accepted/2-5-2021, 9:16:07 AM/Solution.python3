@@ -1,0 +1,14 @@
+// https://leetcode.com/problems/simplify-path
+
+class Solution:
+    def simplifyPath(self, path: str) -> str:
+        # O(n) time and space
+        path = [x for x in path.split('/') if x not in ["", "."]]
+        res = []
+        for item in path:
+            if item == '..':
+                if res:
+                    res.pop()
+            else:
+                res.append(item)
+        return "/" + '/'.join(res)

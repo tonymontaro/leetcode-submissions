@@ -1,0 +1,17 @@
+// https://leetcode.com/problems/jump-game-vi
+
+from collections import deque
+
+class Solution:
+    def maxResult(self, nums: List[int], k: int) -> int:
+        deq = deque()
+        for i, num in enumerate(nums):
+            if deq and i - deq[0][0] > k:
+                deq.popleft()
+            res = num
+            if deq:
+                res += deq[0][1]
+            while deq and deq[-1][1] <= res:
+                deq.pop()
+            deq.append((i, res))
+        return deq[-1][1]

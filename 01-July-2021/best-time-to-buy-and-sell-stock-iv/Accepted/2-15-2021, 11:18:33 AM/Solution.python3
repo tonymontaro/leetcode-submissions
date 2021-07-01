@@ -1,0 +1,17 @@
+// https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv
+
+class Solution:
+    def maxProfit(self, K: int, prices: List[int]) -> int:
+        if not prices:
+            return 0
+        n = len(prices)
+        prev = [0] * n
+
+        for i in range(1, K + 1):
+            dp = [0] * n
+            deal = -prices[0]
+            for j in range(1, n):
+                dp[j] = max(dp[j-1], prices[j] + deal)
+                deal = max(deal, prev[j-1] - prices[j])
+            prev = dp
+        return prev[-1]

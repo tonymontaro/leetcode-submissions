@@ -1,0 +1,30 @@
+// https://leetcode.com/problems/random-pick-with-weight
+
+from itertools import accumulate
+import random
+
+class Solution:
+    def __init__(self, w: List[int]):
+        self.prefix = list(accumulate(w))
+        self.total = self.prefix[-1]
+
+    def pickIndex(self) -> int:
+        # O(logn) time
+        prefix = self.prefix
+        rand = random.randint(1, self.total)
+        lo = 0
+        hi = len(prefix) - 1
+        valid = hi
+        while lo <= hi:
+            mid = (lo + hi) // 2
+            if rand <= prefix[mid]:
+                valid = mid
+                hi = mid - 1
+            else:
+                lo = mid + 1
+        return valid
+
+
+# Your Solution object will be instantiated and called as such:
+# obj = Solution(w)
+# param_1 = obj.pickIndex()

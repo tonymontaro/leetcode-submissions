@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/max-area-of-island
+
+class Solution:
+    def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+        if not grid or not grid[0]:
+            return 0
+        ans = 0
+        rowlen = len(grid)
+        colen = len(grid)
+        
+        seen = {}
+        def search(r, c):
+            isValid = 0 <= r < rowlen and 0 <= c < colen and (r, c) not in seen and grid[r][c] == 1
+            if isValid:
+                seen[(r, c)] = True
+                return 1 + search(r + 1, c) + search(r - 1, c) + search(r, c + 1) + search(r, c - 1)
+            return 0
+            
+        
+        for r in range(rowlen):
+            for c in range(colen):
+                if (r, c) not in seen and grid[r][c] == 1:
+                    ans = max(search(r, c), ans)
+        return ans
+        

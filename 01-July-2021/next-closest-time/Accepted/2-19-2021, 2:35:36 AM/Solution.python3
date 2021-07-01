@@ -1,0 +1,28 @@
+// https://leetcode.com/problems/next-closest-time
+
+from math import inf
+
+class Solution:
+    def nextClosestTime(self, time: str) -> str:
+        nums = set()
+        hour, mins = [int(w[0]) * 10 + int(w[1]) for w in time.split(":")]
+        for w in [hour, mins]:
+            nums.add(w // 10)
+            nums.add(w % 10)
+        nextMins = getNextTime(nums, mins, 60)
+        if nextMins != inf:
+            return f"{hour:02d}:{nextMins:02d}"
+        nextHour = [getNextTime(nums, hour, 24), getNextTime(nums, -1, 60)]
+        if nextHour[0] != inf:
+            return f"{nextHour[0]:02d}:{nextHour[1]:02d}"
+        smallestHour = [getNextTime(nums, -1, 24), nextHour[1]]
+        return f"{smallestHour[0]:02d}:{smallestHour[1]:02d}"
+
+def getNextTime(nums, minute, maxTime):
+    ans = inf
+    for a in nums:
+        for b in nums:
+            m = a * 10 + b
+            if minute < m < maxTime:
+                ans = min(ans, m)
+    return ans

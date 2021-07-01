@@ -1,0 +1,19 @@
+// https://leetcode.com/problems/encode-string-with-shortest-length
+
+class Solution:
+    def encode(self, s: str) -> str:
+        self.dp = {}
+        return self.flatten(s)
+        
+    def flatten(self, seq):
+        if (seq not in self.dp):
+            n = len(seq)
+            repeatStart = (seq + seq).find(seq, 1)
+            repeatedSelf = f"{n // repeatStart}[{self.flatten(seq[:repeatStart])}]" if repeatStart < n else seq
+            # print(repeatStart, repeatedSelf)
+            allIndices = [self.flatten(seq[:i]) + self.flatten(seq[i:]) for i in range(1, n)]
+            best = min([seq, repeatedSelf] + allIndices, key=len)
+            self.dp[seq] = best
+        return self.dp[seq]
+        
+            

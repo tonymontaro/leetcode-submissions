@@ -1,0 +1,31 @@
+// https://leetcode.com/problems/ways-to-split-array-into-three-subarrays
+
+class Solution:
+    def waysToSplit(self, nums: List[int]) -> int:
+        MOD = 10**9 + 7
+        n = len(nums)
+        total = sum(nums)
+        mnSum = nums[0]
+        mxSum = nums[0]
+        mn = mx = 0
+        leftSum = 0
+        ans = 0
+        for i in range(n - 2):
+            leftSum += nums[i]
+            mnSum -= nums[i]
+            mxSum -= nums[i]
+            while mn < n - 1 and leftSum > mnSum:
+                mn += 1
+                mnSum += nums[mn]
+            mxSum = max(mxSum, mnSum)
+            mx = max(mn, mx)
+            rightSum = total - mxSum - leftSum
+            if mn == n - 1 or mnSum > rightSum:
+                break
+            while rightSum - nums[mx + 1] >= mxSum + nums[mx + 1]:
+                mx += 1
+                mxSum += nums[mx]
+                rightSum -= nums[mx]
+            # print(i, mn, mx)
+            ans = (ans + mx - mn + 1) % MOD
+        return ans

@@ -1,0 +1,19 @@
+// https://leetcode.com/problems/largest-rectangle-in-histogram
+
+class Solution:
+    def largestRectangleArea(self, arr):
+        """O(n) time and space"""
+        total = 0
+        stack = []
+        for i in range(len(arr)):
+            if not stack or arr[i] > arr[stack[-1]]:
+                stack.append(i)
+            else:
+                while stack and arr[i] < arr[stack[-1]]:
+                    idx = stack.pop()
+                    total = max(total, arr[idx] * (i - idx))
+        i = len(arr)
+        while stack:
+            idx = stack.pop()
+            total = max(total, arr[idx] * (i - idx))
+        return total

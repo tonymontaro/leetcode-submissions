@@ -1,0 +1,24 @@
+// https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee
+
+class Solution:
+    def maxProfit(self, prices: List[int], fee: int) -> int:
+        if not prices:
+            return 0
+        
+        cache = {}
+        # [1left, 0left]
+        def solve(idx):
+            if idx == 0:
+                return [-prices[0] - fee, 0]
+            
+            if idx in cache:
+                return cache[idx]
+            
+            prevOne, prevZero = solve(idx - 1)
+            zero = max(prices[idx] + prevOne, prevZero)
+            one = max(-prices[idx] - fee + prevZero, prevOne)
+
+            cache[idx] = [one, zero]
+            return [one, zero]
+        
+        return max(solve(len(prices) - 1))

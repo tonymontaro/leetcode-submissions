@@ -1,0 +1,17 @@
+// https://leetcode.com/problems/kth-largest-element-in-an-array
+
+import heapq
+
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        # O(nlogn)
+        heap = []
+        for num in nums:
+            if len(heap) < k:
+                heapq.heappush(heap, num)
+            elif num > heap[0]:
+                heapq.heappop(heap)
+                heapq.heappush(heap, num)
+        return heap[0]
+
+            

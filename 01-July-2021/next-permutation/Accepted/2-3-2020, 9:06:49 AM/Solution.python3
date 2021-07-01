@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/next-permutation
+
+class Solution:
+    def nextPermutation(self, nums) -> None:
+        """O(n) time | O(1) space"""
+        ln = len(nums)
+        mx = [float('-inf'), None]
+        for i in range(len(nums)-1, -1, -1):
+            num = nums[i]
+            if num < mx[0]:
+                for j in range(len(nums)-1, -1, -1):
+                    if nums[j] > num:
+                        nums[i], nums[j] = nums[j], nums[i]
+                        break
+                last = ln-1
+                for j in range(i+1, i+1+(ln - i)//2):
+                    nums[j], nums[last] = nums[last], nums[j]
+                    last -= 1
+                break
+            if num > mx[0]:
+                mx = [num, i]
+        else:
+            nums.reverse()

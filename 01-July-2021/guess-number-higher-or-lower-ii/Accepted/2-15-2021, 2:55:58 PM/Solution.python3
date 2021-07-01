@@ -1,0 +1,26 @@
+// https://leetcode.com/problems/guess-number-higher-or-lower-ii
+
+class Solution:
+    cache = {}
+    def getMoneyAmount(self, n: int) -> int:
+        
+        def solve(lo, hi):
+            if lo == hi:
+                return 0
+            if hi - lo == 1:
+                return lo
+            
+            if (lo, hi) in self.cache:
+                return self.cache[(lo, hi)]
+            
+            ans = math.inf
+            for i in range(lo + 1, hi):
+                rs = i + max(solve(lo, i-1), solve(i+1, hi))
+                ans = min(ans, rs)
+                
+            self.cache[(lo, hi)] = ans
+            return ans
+        
+        rs = solve(1, n)
+        # print(self.cache)
+        return rs

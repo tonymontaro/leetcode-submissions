@@ -1,0 +1,21 @@
+// https://leetcode.com/problems/letter-case-permutation
+
+class Solution:
+    def letterCasePermutation(self, s: str) -> List[str]:
+        result = []
+        def backtrack(idx, arr):
+            if idx >= len(s):
+                result.append(''.join(arr))
+                return
+            if s[idx].isdigit():
+                arr.append(s[idx])
+                backtrack(idx+1, arr)
+            else:
+                arr.append(s[idx].lower())
+                backtrack(idx+1, arr)
+                arr.pop()
+                arr.append(s[idx].upper())
+                backtrack(idx+1, arr)
+            arr.pop()
+        backtrack(0, [])
+        return result

@@ -1,0 +1,14 @@
+// https://leetcode.com/problems/maximum-swap
+
+class Solution(object):
+    def maximumSwap(self, value):
+        """
+        :type num: int
+        :rtype: int
+        """
+        num = list(str(value))
+        for i in range(len(num) - 1):
+            if int(num[i]) < int(num[i+1]):
+                num[i], num[i+1] = num[i+1], num[i]
+                return int(''.join(num))
+        return value

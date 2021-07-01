@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/perfect-squares
+
+from math import inf
+
+class Solution:
+    dp = [0]
+
+    def numSquares(self, n: int) -> int:
+        dp = self.dp
+        if len(dp) > n:
+            return dp[n]
+        
+        for i in range(len(dp), n + 1):
+            sq = 1
+            res = inf
+            while sq * sq <= i:
+                res = min(res, 1 + dp[i - sq*sq])
+                sq += 1
+            dp.append(res)
+        return dp[n]

@@ -1,0 +1,13 @@
+// https://leetcode.com/problems/find-nearest-point-that-has-the-same-x-or-y-coordinate
+
+class Solution:
+    def nearestValidPoint(self, x: int, y: int, points: List[List[int]]) -> int:
+        ans = math.inf
+        idx = -1
+        for i, (a, b) in enumerate(points):
+            if x == a or y == b:
+                res = abs(x - a) + abs(y - b)
+                if res < ans:
+                    ans = res
+                    idx = i
+        return idx

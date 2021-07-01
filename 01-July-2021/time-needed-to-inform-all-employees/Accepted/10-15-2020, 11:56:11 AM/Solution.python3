@@ -1,0 +1,21 @@
+// https://leetcode.com/problems/time-needed-to-inform-all-employees
+
+class Solution:
+    def numOfMinutes(self, n: int, headID: int, manager: List[int], informTime: List[int]) -> int:
+        "O(n) time and space"
+        n = len(manager)
+        adj = [[] for _ in range(n)]
+        for i, m in enumerate(manager):
+            if m < 0: continue
+            adj[m].append(i)
+        
+        stack = []
+        ans = 0
+        stack.append((headID, 0))
+        while stack:
+            node = stack.pop()
+            dist = node[1]
+            ans = max(dist, ans)
+            for child in adj[node[0]]:
+                stack.append((child, dist + informTime[node[0]]))
+        return ans

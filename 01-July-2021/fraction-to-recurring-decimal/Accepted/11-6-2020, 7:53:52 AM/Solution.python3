@@ -1,0 +1,30 @@
+// https://leetcode.com/problems/fraction-to-recurring-decimal
+
+class Solution:
+    def fractionToDecimal(self, numerator: int, denominator: int) -> str:
+        # O(n)
+        seen = {}
+        def decimal(num, div, arr):
+            if num in seen:
+                start = seen[num]
+                word = f"({''.join(arr[start:])})"
+                arr = arr[:start]
+                arr.append(word)
+                return arr
+            dividend, mod = divmod(num, div)
+            seen[num] = len(arr)
+            arr.append(str(dividend))
+            if mod == 0:
+                return arr
+            return decimal(mod * 10, div, arr)
+
+        arr = []
+        if numerator * denominator < 0:
+            arr.append("-")
+        numerator, denominator = abs(numerator), abs(denominator)
+        div, mod = divmod(numerator, denominator)
+        arr.append(str(div))
+        if mod != 0:
+            arr.append(".")
+            arr = decimal(mod * 10, denominator, arr)
+        return "".join(arr)

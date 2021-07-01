@@ -1,0 +1,22 @@
+// https://leetcode.com/problems/minimum-cost-for-tickets
+
+from math import inf
+
+class Solution:
+    def mincostTickets(self, days: List[int], costs: List[int]) -> int:
+        # O(n) time and space
+        passes = [1, 7, 30]
+        mx = days[-1]
+        dp = [inf] * (mx + 1)
+        dp[0] = 0
+        days = set(days)
+        for d in range(1, mx + 1):
+            if d not in days:
+                dp[d] = dp[d-1]
+                continue
+            
+            for i, daysCoverd in enumerate(passes):
+                prev = max(0, d - daysCoverd)
+                dp[d] = min(dp[d], dp[prev] + costs[i])
+
+        return dp[-1]

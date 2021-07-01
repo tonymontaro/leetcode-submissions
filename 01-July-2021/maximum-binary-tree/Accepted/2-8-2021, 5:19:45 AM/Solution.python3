@@ -1,0 +1,21 @@
+// https://leetcode.com/problems/maximum-binary-tree
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def constructMaximumBinaryTree(self, nums: List[int]) -> TreeNode:
+        
+        def solve(lo, hi):
+            if lo > hi:
+                return None
+            mx = lo
+            for i in range(lo, hi + 1):
+                if nums[i] > nums[mx]:
+                    mx = i
+            return TreeNode(nums[mx], solve(lo, mx-1), solve(mx+1, hi))
+
+        return solve(0, len(nums)-1)

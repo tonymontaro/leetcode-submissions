@@ -1,0 +1,7 @@
+// https://leetcode.com/problems/permutations
+
+from itertools import permutations
+
+class Solution:
+    def permute(self, nums):
+        return list(permutations(nums))

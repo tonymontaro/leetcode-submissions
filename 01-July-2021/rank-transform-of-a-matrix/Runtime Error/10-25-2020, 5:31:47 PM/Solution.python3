@@ -1,0 +1,86 @@
+// https://leetcode.com/problems/rank-transform-of-a-matrix
+
+class Solution:
+    def matrixRankTransform(self, grid: List[List[int]]) -> List[List[int]]:
+        rowlen = len(grid)
+        colen = len(grid[0])
+        disjoint = UnionFind(rowlen * colen)
+        rows = {i: {} for i in range(rowlen)}
+        cols = {i: {} for i in range(colen)}
+        idx = 0
+        for r in range(rowlen):
+            for c in range(colen):
+                val = grid[r][c]
+                if val in rows[r]:
+                    disjoint.unify(rows[r][val], idx)
+                if val in cols[c]:
+                    disjoint.unify(cols[c][val], idx)
+                rows[r][val] = idx
+                cols[c][val] = idx
+                idx += 1
+        parents = set(disjoint.parents)
+        mapping = {i: [] for i in parents}
+        idx = 0
+        for r in range(rowlen):
+            for c in range(colen):
+                p = disjoint.find(idx)
+                mapping[p].append((grid[r][c], r, c))
+                idx += 1
+        rows = {i: 1 for i in range(rowlen)}
+        cols = {i: 1 for i in range(colen)}
+        parents = sorted(parents, key=lambda x: mapping[x][0][0])
+        for p in parents:
+            rank = 0
+            for (val, row, col) in mapping[p]:
+                rank = max(rank, rows[row], cols[col])
+            for (val, row, col) in mapping[p]:
+                grid[row][col] = rank
+                rows[row] = rank + 1
+                cols[col] = rank + 1
+        return grid
+
+
+class UnionFind:
+    """
+    UnionFind or DisjoinSet data-structure. Zero indexed.
+    Initialize:
+        UnionFind(n)
+    Methods:
+        unify(p, q)        # unify p and q
+        connected(p, q)    # is p connected to q (return bool)
+        find(p)            # find the parent of q
+        getSize(p)         # return the group size of p
+    """
+    def __init__(self, n):
+        self.size = n
+        self.groups = n
+        self.sizes = [0] * n
+        self.parents = [0] * n
+        
+        for i in range(n):
+            self.parents[i] = i
+            self.sizes[i] = 1
+    def find(self, p):
+        root = p
+        while (root != self.parents[root]):
+            root = self.parents[root]
+        # path compression
+        while (p != root):
+            p, self.parents[p] = self.parents[p], root
+        return root
+    def getSize(self, p):
+        return self.sizes[self.find(p)]
+    def connected(self, p, q):
+        return self.find(p) == self.find(q)
+    def unify(self, p, q):
+        root1 = self.find(p)
+        root2 = self.find(q)
+        if root1 == root2:
+            return
+        if self.sizes[root1] < self.sizes[root2]:
+            self.parents[root1] = root2
+            self.sizes[root2] += self.sizes[root1]
+        else:
+            self.parents[root2] = root1
+            self.sizes[root1] += self.sizes[root2]
+        self.groups -= 1

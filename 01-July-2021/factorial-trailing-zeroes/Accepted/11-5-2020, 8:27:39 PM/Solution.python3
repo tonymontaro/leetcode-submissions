@@ -1,0 +1,10 @@
+// https://leetcode.com/problems/factorial-trailing-zeroes
+
+class Solution:
+    def trailingZeroes(self, n: int) -> int:
+        powerOfFive = 5
+        zeros = 0
+        while powerOfFive <= n:
+            zeros += n // powerOfFive
+            powerOfFive *= 5
+        return zeros

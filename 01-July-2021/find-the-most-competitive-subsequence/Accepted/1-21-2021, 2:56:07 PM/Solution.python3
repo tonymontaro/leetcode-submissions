@@ -1,0 +1,13 @@
+// https://leetcode.com/problems/find-the-most-competitive-subsequence
+
+class Solution:
+    def mostCompetitive(self, nums: List[int], k: int) -> List[int]:
+        res = []
+        n = len(nums)
+        for i, num in enumerate(nums):
+            minLeft = k - (n - i)
+            while res and len(res) > minLeft and res[-1] > num:
+                res.pop()
+            if len(res) < k:
+                res.append(num)
+        return res

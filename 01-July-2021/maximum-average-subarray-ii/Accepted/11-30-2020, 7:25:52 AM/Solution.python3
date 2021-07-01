@@ -1,0 +1,35 @@
+// https://leetcode.com/problems/maximum-average-subarray-ii
+
+class Solution:
+    def findMaxAverage(self, nums: List[int], k: int) -> float:
+        # O(nlogn) time | O(n) space
+        n = len(nums)
+        def isValid(mid):
+            total = 0
+            cm = [0]
+            for i in range(k):
+                total += (nums[i] - mid)
+                cm.append(total)
+            if total >= 0:
+                return True
+            mn = 0
+            for i in range(k, n):
+                total += nums[i] - mid
+                mn = min(mn, cm[i - k + 1])
+                cm.append(total)
+                if total - mn >= 0:
+                    return True
+            return False
+        
+        limit = 10**-5
+        lo = min(nums)
+        hi = max(nums)
+        ans = lo
+        while (hi - lo > limit):
+            mid = (lo + hi) / 2
+            if isValid(mid):
+                ans = mid
+                lo = mid
+            else:
+                hi = mid
+        return ans

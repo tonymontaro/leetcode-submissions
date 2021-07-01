@@ -1,0 +1,15 @@
+// https://leetcode.com/problems/sort-array-by-increasing-frequency
+
+from collections import Counter
+
+class Solution:
+    def frequencySort(self, nums: List[int]) -> List[int]:
+        count = Counter(nums)
+        arr = list(count.items())
+        arr.sort(key=lambda x: [x[1], -x[0]])
+        res = []
+        for k, v in arr:
+            for _ in range(v):
+                res.append(k)
+        return res
+        

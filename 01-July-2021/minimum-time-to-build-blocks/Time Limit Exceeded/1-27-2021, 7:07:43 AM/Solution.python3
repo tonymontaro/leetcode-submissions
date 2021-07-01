@@ -1,0 +1,30 @@
+// https://leetcode.com/problems/minimum-time-to-build-blocks
+
+from math import inf
+from collections import Counter
+
+class Solution:
+    def minBuildTime(self, blocks: List[int], splitTime: int) -> int:
+        self.ans = inf
+        blocks = sorted(blocks, reverse=True)
+        n = len(blocks)
+        cache = {}
+
+        def solve(idx, workers):
+            if workers >= (n - idx):
+                return blocks[idx]
+            if (idx, workers) in cache:
+                return cache[(idx, workers)]
+            
+            # set the biggest in motion
+            setBiggest = inf
+            if workers > 1:
+                setBiggest = max(blocks[idx], solve(idx + 1, workers-1))
+            
+            # double
+            double = splitTime + solve(idx, workers*2)
+            cache[(idx, workers)] = min(setBiggest, double)
+            return cache[(idx, workers)]
+        return solve(0, 1)
+
+            

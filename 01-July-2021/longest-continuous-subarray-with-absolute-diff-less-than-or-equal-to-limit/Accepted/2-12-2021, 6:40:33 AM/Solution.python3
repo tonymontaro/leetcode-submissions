@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit
+
+from collections import deque
+
+class Solution:
+    def longestSubarray(self, nums: List[int], limit: int) -> int:
+        lo = deque()
+        hi = deque()
+        left = 0
+        ans = 0
+        for i, num in enumerate(nums):
+            while lo and lo[-1][0] >= num:
+                lo.pop()
+            while hi and hi[-1][0] <= num:
+                hi.pop()
+            lo.append((num, i))
+            hi.append((num, i))
+            while hi[0][0] - lo[0][0] > limit:
+                if hi[0][1] == left:
+                    hi.popleft()
+                if lo[0][1] == left:
+                    lo.popleft()
+                left += 1
+            ans = max(ans, i - left + 1)
+        return ans

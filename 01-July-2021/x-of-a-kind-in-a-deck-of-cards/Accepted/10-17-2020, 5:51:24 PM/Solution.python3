@@ -1,0 +1,17 @@
+// https://leetcode.com/problems/x-of-a-kind-in-a-deck-of-cards
+
+from collections import Counter
+
+class Solution:
+    def hasGroupsSizeX(self, deck: List[int]) -> bool:
+        # O(n) time | O(1) space
+        counts = Counter(deck)
+        values = list(counts.values())
+        g = 0
+        for v in values:
+            g = gcd(v, g)
+        return g > 1
+
+def gcd(m, n):
+    if (n == 0): return m;
+    return gcd(n, m % n)

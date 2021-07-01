@@ -1,0 +1,68 @@
+// https://leetcode.com/problems/design-search-autocomplete-system
+
+from collections import defaultdict
+
+class Node:
+    def __init__(self, word, count):
+        self.word = word
+        self.count = count
+        
+    def __gt__(self, other):
+        if self.count == other.count:
+            return self.word < other.word
+        return self.count > other.count
+    def __eq__(self, other):
+        return self is other
+    def __repr__(self):
+        return self.word + " " + str(self.count)
+
+class AutocompleteSystem:
+
+    def __init__(self, sentences: List[str], times: List[int]):
+        self.trie = {}
+        self.nodes = {}
+        self.node = self.trie
+        self.seen = []
+        for word, cnt in zip(sentences, times):
+            self.nodes[word] = Node(word, 0)
+            self.add(word, cnt)
+
+    
+    def add(self, word, count):
+        node = self.trie
+        wordNode = self.nodes[word]
+        wordNode.count += count
+
+        for cha in word:
+            if cha not in node:
+                node[cha] = {"#": []}
+            arr = node[cha]["#"]
+            if len(arr) < 3 or wordNode in arr or wordNode > min(arr):
+                if wordNode not in arr:
+                    if len(arr) >= 3 and wordNode > min(arr):
+                        arr.pop()
+                    arr.append(wordNode)
+                arr.sort(reverse=True)
+            node = node[cha]
+
+    def input(self, c: str) -> List[str]:
+        if c == "#":
+            if self.seen:
+                word = "".join(self.seen)
+                if word not in self.nodes:
+                    self.nodes[word] = Node(word, 0)
+                self.add(word, 1)
+                self.seen = []
+                self.node = self.trie
+            return []
+        if c not in self.node:
+            self.node[c] = {"#": []}
+        self.seen.append(c)
+        result = [node.word for node in self.node[c]["#"]]
+        self.node = self.node[c]
+        return result
+
+
+# Your AutocompleteSystem object will be instantiated and called as such:
+# obj = AutocompleteSystem(sentences, times)
+# param_1 = obj.input(c)

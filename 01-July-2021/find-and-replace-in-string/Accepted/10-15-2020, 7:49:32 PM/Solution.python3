@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/find-and-replace-in-string
+
+class Solution:
+    def findReplaceString(self, seq: str, indexes: List[int], sources: List[str], targets: List[str]) -> str:
+        # O(slogs + n) time| O(n) space | s -> number of sources, n -> length of seq
+        replace = []
+        for (i, idx) in enumerate(indexes):
+            source = sources[i]
+            target = targets[i]
+            if seq.find(source, idx) == idx:
+                replace.append((idx, source, target))
+        replace.sort(key=lambda x: x[0])
+        chars = []
+        r = 0
+        i = 0
+        while i < len(seq):
+            if r >= len(replace) or i != replace[r][0]:
+                chars.append(seq[i])
+                i += 1
+            else:
+                idx, source, target = replace[r]
+                r += 1
+                chars.append(target)
+                i = i + len(source)
+        return "".join(chars)

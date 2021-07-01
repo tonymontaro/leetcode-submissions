@@ -1,0 +1,13 @@
+// https://leetcode.com/problems/validate-stack-sequences
+
+class Solution:
+    def validateStackSequences(self, pushed: List[int], popped: List[int]) -> bool:
+        stack = []
+        n = len(popped)
+        idx = 0
+        for num in pushed:
+            stack.append(num)
+            while stack and idx < n and stack[-1] == popped[idx]:
+                stack.pop()
+                idx += 1
+        return stack == [] and idx == n

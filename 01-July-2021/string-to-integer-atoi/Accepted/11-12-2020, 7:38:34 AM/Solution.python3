@@ -1,0 +1,32 @@
+// https://leetcode.com/problems/string-to-integer-atoi
+
+class Solution:
+    def myAtoi(self, s: str) -> int:
+        MIN = -2147483648
+        MAX = 2147483647
+        
+        n = len(s)
+        def getFirstIdx() -> "[idx, sign]":
+            i = 0
+            while i < n and s[i] == ' ':
+                i += 1
+            sign = 1
+            if i < n:
+                if s[i] == '-':
+                    sign = -1
+                    i += 1
+                elif s[i] == "+":
+                    i += 1
+            return (i, sign)
+        
+        idx, sign = getFirstIdx()
+        ans = 0
+        for i in range(idx, n):
+            if not s[i].isdigit():
+                break
+            ans = ans * 10 + int(s[i])
+        result = ans * sign
+        if sign < 0:
+            return result if result >= MIN else MIN
+        else:
+            return result if result <= MAX else MAX

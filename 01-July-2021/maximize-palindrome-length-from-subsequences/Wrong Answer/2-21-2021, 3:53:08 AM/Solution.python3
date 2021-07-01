@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/maximize-palindrome-length-from-subsequences
+
+from functools import lru_cache
+
+class Solution:
+    def longestPalindrome(self, w1: str, w2: str) -> int:
+        
+        @lru_cache
+        def solve(x, y):
+            if x >= len(w1) and y < 0:
+                return 0
+            elif x >= len(w1) or y < 0:
+                return 1
+
+            skip = solve(x + 1, y)
+            if w1[x] == w2[y]:
+                include = 2 + solve(x + 1, y - 1)
+            else:
+                include = solve(x, y - 1)
+            return max(skip, include)
+        
+        ans =  solve(0, len(w2)-1)
+        return ans if ans > 1 else 0

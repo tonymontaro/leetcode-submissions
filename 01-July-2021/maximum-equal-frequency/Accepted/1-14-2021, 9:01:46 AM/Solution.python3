@@ -1,0 +1,37 @@
+// https://leetcode.com/problems/maximum-equal-frequency
+
+from collections import defaultdict
+
+class Solution:
+    def maxEqualFreq(self, nums: List[int]) -> int:
+        numCount = defaultdict(int)
+        count = {}
+        
+        def isValid(c):
+            # print(c)
+            if len(c) > 2:
+                return 0
+            keys = list(c.keys())
+            a = keys[0]
+            v1 = c[a]
+            if len(c) == 1:
+                return v1 * a if (a == 1 or v1 == 1) else 0
+            b = keys[1]
+            v2 = c[b]
+            if (v1 == 1 and a-1 in [0, b]) or (v2 == 1 and b-1 in [0, a]):
+                return a*v1 + b*v2
+            return 0
+        
+        ans = 0
+        for num in nums:
+            prev = numCount[num] 
+            if prev in count:
+                count[prev] -= 1
+                if count[prev] == 0:
+                    count.pop(prev)
+            numCount[num] = prev + 1
+            if prev + 1 not in count:
+                count[prev + 1] = 0
+            count[prev + 1] += 1
+            ans = max(ans, isValid(count))
+        return ans

@@ -1,0 +1,19 @@
+// https://leetcode.com/problems/sort-the-matrix-diagonally
+
+from collections import defaultdict, deque
+
+class Solution:
+    def diagonalSort(self, mat: List[List[int]]) -> List[List[int]]:
+        diagonals = defaultdict(list)
+        rlen, clen = len(mat), len(mat[0])
+        
+        for r in range(rlen):
+            for c in range(clen):
+                diagonals[r - c].append(mat[r][c])
+        for k in diagonals.keys():
+            diagonals[k] = deque(sorted( diagonals[k]))
+
+        for r in range(rlen):
+            for c in range(clen):
+                mat[r][c] = diagonals[r-c].popleft()
+        return mat

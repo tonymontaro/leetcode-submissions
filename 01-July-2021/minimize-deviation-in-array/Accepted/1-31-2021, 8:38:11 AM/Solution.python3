@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/minimize-deviation-in-array
+
+from heapq import heappush, heappop, heapify
+
+class Solution:
+    def minimumDeviation(self, heap: List[int]) -> int:
+        for i, num in enumerate(heap):
+            heap[i] = -num if num % 2 == 0 else -(num*2)
+        heapify(heap)
+        mn = max(heap)
+        ans = mn - heap[0]
+        
+        while heap[0] % 2 == 0:
+            num = heappop(heap)
+            num //= 2
+            mn = max(mn, num)
+            heappush(heap, num)
+            ans = min(mn - heap[0], ans)
+
+        return ans

@@ -1,0 +1,19 @@
+// https://leetcode.com/problems/search-a-2d-matrix-ii
+
+class Solution:
+    def searchMatrix(self, matrix, target):
+        """O(r + c) time | O(1) space | r -> row, c -> column"""
+        if not matrix or not matrix[0]: return False
+        col = len(matrix[0])-1
+        row = 0
+        while row < len(matrix):
+            val = matrix[row][col]
+            if val == target:
+                return True
+            elif val > target:
+                col -= 1
+            else:
+                row += 1
+            if col < 0 or row > len(matrix):
+                return False
+        return False

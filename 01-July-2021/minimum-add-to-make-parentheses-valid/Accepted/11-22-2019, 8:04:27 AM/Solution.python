@@ -1,0 +1,12 @@
+// https://leetcode.com/problems/minimum-add-to-make-parentheses-valid
+
+class Solution(object):
+    def minAddToMakeValid(self, string):
+        """O(n) time and space"""
+        stack = []
+        for char in string:
+            if stack and char == ')' and stack[-1] == '(':
+                stack.pop()
+            else:
+                stack.append(char)
+        return len(stack)

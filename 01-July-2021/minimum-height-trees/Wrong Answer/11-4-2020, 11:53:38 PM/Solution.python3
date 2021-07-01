@@ -1,0 +1,46 @@
+// https://leetcode.com/problems/minimum-height-trees
+
+class Solution:
+    def findMinHeightTrees(self, n: int, edges: List[List[int]]) -> List[int]:
+        # O(n) time and space -> two dfs
+        adj = [[] for _ in range(n)]
+        for a, b in edges:
+            adj[a].append(b)
+            adj[b].append(a)
+
+        self.dist = (0, 0)
+
+        def dfs(node, dist, visited):
+            visited[node] = True
+            if dist > self.dist[0]:
+                self.dist = (dist, node)
+            for child in adj[node]:
+                if not visited[child]:
+                    dfs(child, dist + 1, visited)
+        
+        self.result = []
+        def solve(node, dist, visited, arr):
+            visited[node] = True
+            arr.append(node)
+            if self.result:
+                return
+            if dist == self.dist[0]:
+                # print(dist, node, arr)
+                n = len(arr)
+                self.result.append(arr[n // 2])
+                if n % 2 == 0:
+                    self.result.append(arr[n//2 - 1])
+                return
+            
+            for child in adj[node]:
+                if not visited[child]:
+                    solve(child, dist + 1, visited, arr)
+            arr.pop()
+            
+        
+        dfs(0, 1, [False] * n)
+        d1 = self.dist[1]
+
+        solve(d1, 1, [False] * n, [])
+
+        return self.result

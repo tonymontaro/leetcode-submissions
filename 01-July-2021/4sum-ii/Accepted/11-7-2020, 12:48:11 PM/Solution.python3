@@ -1,0 +1,17 @@
+// https://leetcode.com/problems/4sum-ii
+
+from collections import defaultdict
+
+class Solution:
+    def fourSumCount(self, A: List[int], B: List[int], C: List[int], D: List[int]) -> int:
+        # O(n^2) time and space
+        abCount = defaultdict(int)
+        for a in A:
+            for b in B:
+                abCount[a + b] += 1
+        
+        ans = 0
+        for c in C:
+            for d in D:
+                ans += abCount[-(c + d)]
+        return ans

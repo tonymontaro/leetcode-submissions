@@ -1,0 +1,38 @@
+// https://leetcode.com/problems/palindrome-partitioning
+
+class Solution:
+    def partition(self, s: str) -> List[List[str]]:
+        # O(n^3) time | O(n) space
+        self.seen = {}
+        return self.partitionHelper(s)
+    def partitionHelper(self, s):
+        if not s:
+            return [[]]
+        if s not in self.seen:
+            res = []
+            for i in range(len(s)):
+                sub = s[:i + 1]
+                if not isPalindrome(sub):
+                    continue
+                
+                other = self.partitionHelper(s[i + 1:])
+                # print(s, sub, other)
+                for ss in other:
+                    res.append([sub] + ss)
+            self.seen[s] = res
+                
+        return self.seen[s]
+cache = {}
+def isPalindrome(s):
+    if s in cache:
+        return cache[s]
+    l = 0
+    r = len(s) - 1
+    while l < r:
+        if s[l] != s[r]:
+            cache[s] = False
+            return False
+        l += 1
+        r -= 1
+    cache[s] = True
+    return True

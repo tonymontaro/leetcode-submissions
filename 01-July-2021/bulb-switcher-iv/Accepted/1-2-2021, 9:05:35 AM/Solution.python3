@@ -1,0 +1,11 @@
+// https://leetcode.com/problems/bulb-switcher-iv
+
+class Solution:
+    def minFlips(self, target: str) -> int:
+        prev = '0'
+        ans = 0
+        for cha in target:
+            if cha != prev:
+                prev = cha
+                ans += 1
+        return ans

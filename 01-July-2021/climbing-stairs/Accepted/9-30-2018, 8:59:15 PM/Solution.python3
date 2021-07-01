@@ -1,0 +1,13 @@
+// https://leetcode.com/problems/climbing-stairs
+
+class Solution:
+    def climbStairs(self, n, cache={}):
+        if n < 0:
+            return 0
+        if n == 0:
+            return 1
+        if n in cache:
+            return cache[n]
+        cache[n] = self.climbStairs(n-1, cache) + self.climbStairs(n-2, cache)
+        return cache[n]
+        

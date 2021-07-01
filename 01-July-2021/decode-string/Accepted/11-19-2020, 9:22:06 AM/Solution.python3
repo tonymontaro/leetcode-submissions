@@ -1,0 +1,24 @@
+// https://leetcode.com/problems/decode-string
+
+class Solution:
+    def decodeString(self, s: str) -> str:
+        # O(n) time and space
+        stack = [1, []]
+        i = 0
+        while i < len(s):
+            if s[i].isdigit():
+                start = i
+                while s[i].isdigit():
+                    i += 1
+                num = int(s[start: i])
+                stack.append(num)
+                stack.append([])
+                i += 1
+            elif s[i] == "]":
+                word = "".join(stack.pop()) * stack.pop()
+                stack[-1].append(word)
+                i += 1
+            else:
+                stack[-1].append(s[i])
+                i += 1
+        return "".join(stack.pop()) * stack.pop()

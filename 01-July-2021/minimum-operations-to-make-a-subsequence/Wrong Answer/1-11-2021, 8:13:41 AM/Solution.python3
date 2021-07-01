@@ -1,0 +1,19 @@
+// https://leetcode.com/problems/minimum-operations-to-make-a-subsequence
+
+class Solution:
+    def minOperations(self, target: List[int], arr: List[int]) -> int:
+        prevs = {}
+        n = len(target)
+        for i in range(n - 1, 0, -1):
+            prevs[target[i]] = target[i - 1]
+        prevs[target[0]] = -1
+        
+        seen = {}
+        ans = n
+        for num in arr:
+            if num not in prevs:
+                continue
+            prev = prevs[num]
+            seen[num] = seen.get(prev, 0) + 1
+            ans = min(ans, n - seen[num])
+        return ans

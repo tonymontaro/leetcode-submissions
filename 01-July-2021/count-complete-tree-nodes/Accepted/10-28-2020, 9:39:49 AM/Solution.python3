@@ -1,0 +1,49 @@
+// https://leetcode.com/problems/count-complete-tree-nodes
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def countNodes(self, root: TreeNode) -> int:
+        # O(d*long(2^d)) -> O(d^2) time and O(1) space (minus recursive stack)
+        if not root:
+            return 0
+
+        def getDepth(node):
+            depth = 0
+            while node.left:
+                depth += 1
+                node = node.left
+            return depth
+
+        def isValidNode(node, mid, total):
+            if total == 1:
+                return node is not None
+            half = total // 2
+            if mid <= half:
+                return isValidNode(node.left, mid, half)
+            return isValidNode(node.right, mid - half, half)
+
+        d = getDepth(root)
+        total = 2**d
+        lo = 1
+        hi = total
+        valid = 1
+        while lo <= hi:
+            mid = (lo + hi) // 2
+            if isValidNode(root, mid, total):
+                valid = mid
+                lo = mid + 1
+            else:
+                hi = mid - 1
+        result = 0
+        for i in range(d):
+            result += 2**i
+
+        return result + valid
+        
+        
+    

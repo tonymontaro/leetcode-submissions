@@ -1,0 +1,17 @@
+// https://leetcode.com/problems/combination-sum-iv
+
+class Solution:
+    def combinationSum4(self, nums: List[int], target: int) -> int:
+        nums.sort()
+        # dp[i] -> ways to make i
+        dp = [0] * (target + 1)
+        dp[0] = 1
+        for i in range(1, target + 1):
+            sm = 0
+            for c in nums:
+                if c > i:
+                    break
+                sm += dp[i - c]
+            dp[i] = sm
+
+        return dp[-1]

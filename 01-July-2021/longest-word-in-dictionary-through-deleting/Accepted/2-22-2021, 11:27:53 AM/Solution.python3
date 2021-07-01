@@ -1,0 +1,21 @@
+// https://leetcode.com/problems/longest-word-in-dictionary-through-deleting
+
+class Solution:
+    def findLongestWord(self, s: str, d: List[str]) -> str:
+        
+        def isSubsequence(word):
+            idx = 0
+            for c in s:
+                if idx >= len(word):
+                    return True
+                if word[idx] == c:
+                    idx += 1
+            return idx == len(word)
+        
+        ans = ""
+        for word in d:
+            if isSubsequence(word):
+                if len(word) > len(ans) or (len(word) == len(ans) and word < ans):
+                    ans = word
+        return ans
+            

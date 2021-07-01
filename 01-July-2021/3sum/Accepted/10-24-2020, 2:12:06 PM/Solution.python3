@@ -1,0 +1,19 @@
+// https://leetcode.com/problems/3sum
+
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        # O(n^2) time | O(n) space
+        nums.sort()
+        result = {}
+        n = len(nums)
+        processed = {}
+        for i in range(n):
+            if nums[i] in processed: continue
+            processed[nums[i]] = True
+            seen = {}
+            target = 0 - nums[i]
+            for j in range(i + 1, n):
+                if (target - nums[j]) in seen:
+                    result[(nums[i], target - nums[j], nums[j])] = True
+                seen[nums[j]] = True
+        return list(result.keys())

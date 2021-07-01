@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/perfect-squares
+
+class Solution:
+    def numSquares(self, n: int) -> int:
+        max_num = int(n**(1/2))
+        prev = list(range(n+1))
+        
+        for num in range(1, max_num+1):
+            sq = num**2
+            current = [None] * (n+1)
+            
+            for i in range(n+1):
+                if i < sq:
+                    current[i] = prev[i]
+                else:
+                    current[i] = min(prev[i], current[i-sq]+1)
+            prev = current
+        return prev[-1]

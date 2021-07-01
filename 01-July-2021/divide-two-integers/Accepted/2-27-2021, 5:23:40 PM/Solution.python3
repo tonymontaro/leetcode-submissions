@@ -1,0 +1,32 @@
+// https://leetcode.com/problems/divide-two-integers
+
+class Solution:
+    def divide(self, dividend: int, divisor: int) -> int:
+        MAX = 2**31 - 1
+        MIN = -2**31
+        
+        negetives = 0
+        if dividend < 0:
+            negetives += 1
+            dividend = -dividend
+        if divisor < 0:
+            negetives += 1
+            divisor = -divisor
+        
+        power = 1
+        highest = divisor
+        while highest < dividend:
+            highest <<= 1
+            power <<= 1
+        
+        quotient = 0
+        while power != 0:
+            if dividend >= highest:
+                quotient += power
+                dividend -= highest
+            power >>= 1
+            highest >>= 1
+        
+        result = -quotient if negetives == 1 else quotient
+        return result if MIN <= result <= MAX else MAX
+        

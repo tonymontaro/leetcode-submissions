@@ -1,0 +1,26 @@
+// https://leetcode.com/problems/capacity-to-ship-packages-within-d-days
+
+class Solution:
+    def shipWithinDays(self, weights: List[int], D: int) -> int:
+        # O(nlogn) time | O(1) space
+        lo = max(weights)
+        hi = 10**8
+        ans = hi
+        while lo <= hi:
+            mid = (lo + hi) // 2
+            days = 0
+            sm = 0
+            for w in weights:
+                if sm + w > mid:
+                    days += 1
+                    sm = 0
+                sm += w
+            days += 1
+
+            if days <= D:
+                ans = mid
+                hi = mid - 1
+            else:
+                lo = mid + 1
+        return ans
+        

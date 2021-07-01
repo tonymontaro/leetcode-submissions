@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/shortest-path-visiting-all-nodes
+
+from collections import deque
+
+class Solution:
+    def shortestPathLength(self, graph: List[List[int]]) -> int:
+        n = len(graph)
+        deq = deque()
+        for i in range(n):
+            deq.append(({i,}, 0, i))
+        
+        while deq:
+            st, dist, last = deq.popleft()
+            if len(st) == n:
+                return dist
+            for child in graph[last]:
+                if child not in st:
+                    ss = set(st)
+                    ss.add(child)
+                    deq.append((ss, dist + 1, child))
+                else:
+                    deq.append((st, dist + 1, child))
+            

@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/find-the-smallest-divisor-given-a-threshold
+
+class Solution:
+    def smallestDivisor(self, nums: List[int], threshold: int) -> int:
+        # O(logn) time | O(1) space | where n -> max(nums)
+        lo = 1
+        hi = max(nums)
+        valid = hi
+        while lo <= hi:
+            mid = (lo + hi) // 2
+            res = 0
+            for num in nums:
+                res += (num + mid - 1) // mid
+            
+            if res <= threshold:
+                valid = mid
+                hi = mid - 1
+            else:
+                lo = mid + 1
+        return valid

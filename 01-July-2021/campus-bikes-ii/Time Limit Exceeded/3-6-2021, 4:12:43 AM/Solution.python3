@@ -1,0 +1,24 @@
+// https://leetcode.com/problems/campus-bikes-ii
+
+from math import inf
+
+class Solution:
+    def assignBikes(self, workers: List[List[int]], bikes: List[List[int]]) -> int:
+        n, m = len(workers), len(bikes)
+        self.ans = inf
+        
+        def solve(idx, seen, total):
+            if idx >= n:
+                self.ans = min(self.ans, total)
+                return
+            for i in range(m):
+                if i in seen:
+                    continue
+                seen.add(i)
+                x1, y1 = workers[idx]
+                x2, y2 = bikes[i]
+                dist = abs(x1 - x2) + abs(y1 - y2)
+                solve(idx + 1, seen, total + dist)
+                seen.remove(i)
+        solve(0, set(), 0)
+        return self.ans

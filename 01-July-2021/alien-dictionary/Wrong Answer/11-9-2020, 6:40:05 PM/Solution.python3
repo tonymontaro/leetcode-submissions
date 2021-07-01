@@ -1,0 +1,45 @@
+// https://leetcode.com/problems/alien-dictionary
+
+class Solution:
+    def alienOrder(self, words: List[str]) -> str:
+        # O(n * w) time
+        ordering = {}
+        for i in range(len(words)):
+            for cha in words[i]:
+                if cha not in ordering:
+                    ordering[cha] = {}
+            if i == len(words) - 1:
+                continue
+            
+            idx = 0
+            mx = min(len(words[i]), len(words[i + 1]))
+            while idx < mx:
+                a, b = words[i][idx], words[i + 1][idx]
+                if a != b:
+                    ordering[a][b] = True
+                    break
+                idx += 1
+            
+        self.idx = 0
+        seen = {}
+        def dfs(cha):
+            seen[cha] = ""
+            for child in ordering[cha]:
+                if child not in seen:
+                    dfs(child)
+            seen[cha] = self.idx
+            self.idx += 1
+        
+        for cha in ordering:
+            if cha not in seen:
+                dfs(cha)
+
+        result = [""] * self.idx
+        for cha in ordering:
+            for child in ordering[cha]:
+                if seen[cha] < seen[child]:
+                    return ""
+            result[seen[cha]] = cha
+        return "".join(result[::-1])
+            
+        

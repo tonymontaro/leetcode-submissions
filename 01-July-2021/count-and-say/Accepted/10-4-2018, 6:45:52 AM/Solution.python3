@@ -1,0 +1,22 @@
+// https://leetcode.com/problems/count-and-say
+
+class Solution:
+    def countAndSay(self, n):
+        result = '1'
+        say = ''
+        for _ in range(n - 1):
+            n = 0
+            head = result[0]
+            for i in range(len(result)):
+                if head == result[i]:
+                    n += 1
+                else:
+                    say += '{}{}'.format(n, head)
+                    head = result[i]
+                    n = 1
+                if i == len(result) - 1:
+                    say += '{}{}'.format(n, head)
+            result = say
+            say = ''
+        return result
+        

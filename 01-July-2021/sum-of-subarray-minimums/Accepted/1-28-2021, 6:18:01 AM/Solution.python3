@@ -1,0 +1,52 @@
+// https://leetcode.com/problems/sum-of-subarray-minimums
+
+from math import inf
+
+class Solution:
+    def sumSubarrayMins(self, arr: List[int]) -> int:
+        mod = 10**9 + 7
+        n = len(arr)
+        sg = SegmentTree(0, n-1, arr)
+        self.ans = 0
+        def solve(l, r):
+            if l > r:
+                return
+            num, idx = sg.rangeSum(l, r)
+            ln = r - l + 1
+            total = 1
+            left = idx - l
+            right = r - idx
+            total += (left + right)
+            total += left * right
+            self.ans = (self.ans + total * num) % mod
+            # print(l, r, num, total)
+            solve(l, idx - 1)
+            solve(idx + 1, r)
+        solve(0, n-1)
+        return self.ans
+
+        
+class SegmentTree:
+    def __init__(self, left, right, arr):
+        self.left = left
+        self.right = right
+        self.sum = (inf, -1)
+
+        if left == right:
+            self.sum = (arr[left], left)
+        else:
+            mid = (left + right) // 2
+            self.leftChild = SegmentTree(left, mid, arr)
+            self.rightChild = SegmentTree(mid + 1, right, arr)
+            self.reCalculate()
+
+    def reCalculate(self):
+        if self.left != self.right:
+            self.sum = min(self.leftChild.sum, self.rightChild.sum)
+    
+    def rangeSum(self, left, right):
+        if left > self.right or right < self.left:
+            return (inf, -1)
+        if self.left >= left and self.right <= right:
+            return self.sum
+        return min(self.leftChild.rangeSum(left, right), self.rightChild.rangeSum(left, right))

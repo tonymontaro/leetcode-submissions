@@ -1,0 +1,26 @@
+// https://leetcode.com/problems/map-of-highest-peak
+
+from collections import deque
+
+class Solution:
+    def highestPeak(self, grid: List[List[int]]) -> List[List[int]]:
+        rlen, clen = len(grid), len(grid[0])
+        dq = deque()
+        seen = {}
+        for r in range(rlen):
+            for c in range(clen):
+                if grid[r][c] == 1:
+                    seen[(r, c)] = 1
+                    dq.append((r, c, 0))
+        dirs = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        while dq:
+            row, col, h = dq.popleft()
+            grid[row][col] = h
+            for rAdd, cAdd in dirs:
+                r, c = row + rAdd, col + cAdd
+                if 0 <= r < rlen and 0 <= c < clen and (r, c) not in seen:
+                    seen[(r, c)] = 1
+                    dq.append((r, c, h + 1))
+        return grid
+            
+        

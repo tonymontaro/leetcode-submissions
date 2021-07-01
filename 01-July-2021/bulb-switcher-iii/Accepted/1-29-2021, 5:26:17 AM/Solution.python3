@@ -1,0 +1,14 @@
+// https://leetcode.com/problems/bulb-switcher-iii
+
+class Solution:
+    def numTimesAllBlue(self, light: List[int]) -> int:
+        n  = len(light)
+        ans = 0
+        cnt = 0
+        mx = -1
+        for num in light:
+            mx = max(num, mx)
+            cnt += 1
+            if cnt == mx:
+                ans += 1
+        return ans

@@ -1,0 +1,12 @@
+// https://leetcode.com/problems/string-to-integer-atoi
+
+class Solution:
+    def myAtoi(self, word):
+        match = re.match(r'(-|\+)?\d+', word.strip())
+        max_int = 2**31
+        get_max = lambda x: -max_int if x < 0 else max_int - 1
+        if match:
+            num = int(match.group())
+            return num if abs(num) < max_int else get_max(num)
+        return 0
+        

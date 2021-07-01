@@ -1,0 +1,12 @@
+// https://leetcode.com/problems/xor-queries-of-a-subarray
+
+class Solution:
+    def xorQueries(self, arr: List[int], queries: List[List[int]]) -> List[int]:
+        # O(n) time and space using prefix xors
+        prefix = [0]
+        for num in arr:
+            prefix.append(prefix[-1] ^ num)
+        res = []
+        for a, b in queries:
+            res.append(prefix[a] ^ prefix[b + 1])
+        return res

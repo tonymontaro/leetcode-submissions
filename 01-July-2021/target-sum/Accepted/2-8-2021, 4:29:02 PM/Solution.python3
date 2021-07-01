@@ -1,0 +1,17 @@
+// https://leetcode.com/problems/target-sum
+
+class Solution:
+    def findTargetSumWays(self, nums: List[int], S: int) -> int:
+        n = len(nums)
+        self.ans = 0
+        cache = {}
+        def simulate(idx, sm):
+            if idx >= n:
+                return 1 if sm == S else 0
+            if (idx, sm) in cache:
+                return cache[(idx, sm)]
+            a = simulate(idx + 1, sm-nums[idx])
+            b = simulate(idx + 1, sm+nums[idx])
+            cache[(idx, sm)] = a + b
+            return a + b
+        return simulate(0, 0)

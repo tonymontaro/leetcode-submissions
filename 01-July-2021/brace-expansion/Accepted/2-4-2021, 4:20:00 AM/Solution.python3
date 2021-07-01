@@ -1,0 +1,33 @@
+// https://leetcode.com/problems/brace-expansion
+
+class Solution:
+    def expand(self, s: str) -> List[str]:
+        ans = []
+        
+        def solve(idx, arr):
+            if idx >= len(s):
+                ans.append("".join(arr))
+                return
+            
+            if s[idx] != '{':
+                arr.append(s[idx])
+                solve(idx + 1, arr)
+                arr.pop()
+                return
+            
+            hold = []
+            idx += 1
+            while s[idx] != '}':
+                if s[idx] == ',':
+                    idx += 1
+                    continue
+                hold.append(s[idx])
+                idx += 1
+            for cha in hold:
+                arr.append(cha)
+                solve(idx + 1, arr)
+                arr.pop()
+        
+        solve(0, [])
+        return sorted(ans)
+        

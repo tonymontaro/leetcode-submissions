@@ -1,0 +1,43 @@
+// https://leetcode.com/problems/max-points-on-a-line
+
+from collections import defaultdict, Counter
+
+class Solution:
+    def maxPoints(self, points: List[List[int]]) -> int:
+        # O(n^2) time and space
+        if not points:
+            return 0
+        
+        def getGcd(a, b):
+            if b == 0:
+                return a
+            return getGcd(b, a % b )
+        
+        points = [(a, b) for a, b in points]
+        pointCount = Counter(points)
+        # print(pointCount)
+        points = list(set(points))
+        n = len(points)
+        counts = defaultdict(set)
+        for i in range(n):
+            p1 = points[i]
+            for j in range(i + 1, n):
+                p2 = points[j]
+                a = p2[1] - p1[1]
+                b = p2[0] - p1[0]
+                # print(a, b)
+                sign = 1 if a * b >= 0 else -1
+                a, b = abs(a), abs(b)
+                if a != 0 and b != 0:
+                    gcd = getGcd(a, b)
+                    gradient = (sign * (a//gcd), b//gcd)
+                else:
+                    gradient = (a, b)
+                counts[gradient].add(i)
+                counts[gradient].add(j)
+        # print(counts)
+        if not counts:
+            return list(pointCount.values())[0]
+        values = [sum(pointCount[points[p]] for p in res) for res in counts.values()]
+        return max(values)
+        

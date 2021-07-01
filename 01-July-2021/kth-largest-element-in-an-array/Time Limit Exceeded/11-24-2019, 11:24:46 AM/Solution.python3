@@ -1,0 +1,21 @@
+// https://leetcode.com/problems/kth-largest-element-in-an-array
+
+class Solution:
+    def findKthLargest(self, nums, k):
+        k = len(nums) - k
+        def solve(start, stop):
+            idx = start+1
+            el = nums[start]
+            for i in range(start+1, stop):
+                if nums[i] <= el:
+                    nums[i], nums[idx] = nums[idx], nums[i]
+                    idx += 1
+            idx -= 1
+            nums[start], nums[idx] = nums[idx], nums[start]
+            if idx == k:
+                return el
+            elif idx > k:
+                return solve(0, idx)
+            else:
+                return solve(idx+1, len(nums))
+        return solve(0, len(nums))

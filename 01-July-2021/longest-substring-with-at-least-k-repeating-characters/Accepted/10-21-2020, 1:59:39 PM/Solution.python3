@@ -1,0 +1,21 @@
+// https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters
+
+from collections import defaultdict
+
+class Solution:
+    def longestSubstring(self, s: str, k: int) -> int:
+        self.seen = {}
+        return self.helper(s, k)
+    def helper(self, s, k):
+        if s not in self.seen:
+            unique = set(s)
+            for c in unique:
+                if s.count(c) < k:
+                    ans = max([self.helper(ss, k) for ss in s.split(c)])
+                    break
+            else:
+                ans = len(s)
+            self.seen[s] = ans
+        return self.seen[s]
+                
+        

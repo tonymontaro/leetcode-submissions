@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/kill-process
+
+from collections import defaultdict
+
+class Solution:
+    def killProcess(self, pid: List[int], ppid: List[int], kill: int) -> List[int]:
+        adj = defaultdict(list)
+        for i, child in enumerate(pid):
+            parent = ppid[i]
+            adj[parent].append(child)
+        
+        ans = []
+        def solve(node):
+            ans.append(node)
+            for child in adj[node]:
+                solve(child)
+        solve(kill)
+        return ans

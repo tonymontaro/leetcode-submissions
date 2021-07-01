@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/minimum-cost-to-hire-k-workers
+
+import heapq
+from math import inf
+
+class Solution:
+    def mincostToHireWorkers(self, quality: List[int], wage: List[int], k: int) -> float:
+        # O(nlogn) time | O(n) space
+        workers = sorted((p/q, p, q) for p,q in zip(wage, quality))
+        inWindow = []
+        totalQ = 0
+        ans = inf
+        for ratio, p, q in workers:
+            totalQ += q
+            heapq.heappush(inWindow, -q)
+            if len(inWindow) > k:
+                totalQ += heapq.heappop(inWindow)
+            if len(inWindow) == k:
+                ans = min(ans, totalQ * ratio)
+        return ans

@@ -1,0 +1,22 @@
+// https://leetcode.com/problems/diagonal-traverse
+
+from collections import defaultdict
+
+class Solution:
+    def findDiagonalOrder(self, matrix: List[List[int]]) -> List[int]:
+        # O(n) time and space
+        if not matrix or not matrix[0]:
+            return []
+        diagonals = defaultdict(list)
+        rlen, clen = len(matrix), len(matrix[0])
+        for r in range(rlen):
+            for c in range(clen):
+                diagonals[r + c].append(matrix[r][c])
+        
+        res = []
+        for i in range(rlen + clen - 1):
+            if i % 2 == 1:
+                res.extend(diagonals[i])
+            else:
+                res.extend(diagonals[i][::-1])
+        return res

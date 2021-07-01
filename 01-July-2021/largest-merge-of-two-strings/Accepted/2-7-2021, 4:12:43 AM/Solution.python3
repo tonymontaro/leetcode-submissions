@@ -1,0 +1,21 @@
+// https://leetcode.com/problems/largest-merge-of-two-strings
+
+class Solution:
+    def largestMerge(self, w1: str, w2: str) -> str:
+        a = b = 0
+        res = []
+        while a < len(w1) or b < len(w2):
+            if a < len(w1) and b < len(w2) and w1[a] == w2[b]:
+                if w1[a:] >= w2[b:]:
+                    res.append(w1[a])
+                    a += 1
+                else:
+                    res.append(w2[b])
+                    b += 1
+            elif b >= len(w2) or (a < len(w1) and w1[a] >= w2[b]):
+                res.append(w1[a])
+                a += 1
+            else:
+                res.append(w2[b])
+                b += 1
+        return ''.join(res)

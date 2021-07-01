@@ -1,0 +1,26 @@
+// https://leetcode.com/problems/combination-sum
+
+from collections import defaultdict
+from copy import deepcopy
+
+class Solution(object):
+    def combinationSum(self, coins, t):
+        result = defaultdict(list)
+        prev = [0] * (t+1)
+        for r in range(len(coins)):
+            coin = coins[r]
+            current = [0] * (t+1)
+            for i in range(1, t+1):
+                if coin == i:
+                    current[i] += 1
+                    result[(r, i)].append([coin])
+                elif i > coin:
+                    if current[i-coin] > 0:
+                        current[i] += current[i-coin]
+                        result[(r, i)] += [arr_item + [coin] for arr_item in result[(r, i-coin)]]
+                current[i] += prev[i]
+                if result[(r-1, i)]:
+                    result[(r, i)] += deepcopy(result[(r-1, i)])
+            prev = current
+
+        return result[(len(coins)-1, t)]

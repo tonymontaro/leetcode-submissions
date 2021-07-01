@@ -1,0 +1,11 @@
+// https://leetcode.com/problems/letter-case-permutation
+
+class Solution:
+    def letterCasePermutation(self, word: str):
+        result = ['']
+        for ch in word:
+            if ch.isalpha():
+                result = [word + c for word in result for c in [ch.lower(), ch.upper()]]
+            else:
+                result = [word + ch for word in result]
+        return result

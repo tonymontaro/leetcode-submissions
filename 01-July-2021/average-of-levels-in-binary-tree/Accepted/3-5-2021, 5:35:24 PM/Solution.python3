@@ -1,0 +1,22 @@
+// https://leetcode.com/problems/average-of-levels-in-binary-tree
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def averageOfLevels(self, root: TreeNode) -> List[float]:
+        arr = []
+        def solve(node, h):
+            if not node:
+                return 
+            if h >= len(arr):
+                arr.append([0, 0])
+            arr[h][0] += node.val
+            arr[h][1] += 1
+            solve(node.left, h + 1)
+            solve(node.right, h + 1)
+        solve(root, 0)
+        return [a[0] / a[1] for a in arr]

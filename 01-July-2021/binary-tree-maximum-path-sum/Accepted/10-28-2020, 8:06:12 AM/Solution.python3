@@ -1,0 +1,28 @@
+// https://leetcode.com/problems/binary-tree-maximum-path-sum
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+from math import inf
+
+class Solution:
+    def maxPathSum(self, root: TreeNode) -> int:
+        if not root:
+            return -2147483648
+        self.best = root.val
+        self.dfs(root)
+        return self.best
+
+    def dfs(self, node):
+        if not node: return 0
+        left = self.dfs(node.left)
+        right = self.dfs(node.right)
+        result = node.val + left + right
+        print(node.val, right, left, result)
+        self.best = max(self.best, result)
+        better = max(left, right) + node.val
+        return max(0, better)
+    

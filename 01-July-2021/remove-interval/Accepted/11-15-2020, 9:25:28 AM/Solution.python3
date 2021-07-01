@@ -1,0 +1,16 @@
+// https://leetcode.com/problems/remove-interval
+
+class Solution:
+    def removeInterval(self, intervals: List[List[int]], toBeRemoved: List[int]) -> List[List[int]]:
+        # O(n) time and space
+        result = []
+        lo, hi = toBeRemoved
+        for a, b in intervals:
+            if b <= lo or a >= hi:
+                result.append([a, b])
+                continue
+            if a < lo:
+                result.append([a, lo])
+            if b > hi:
+                result.append([hi, b])
+        return result

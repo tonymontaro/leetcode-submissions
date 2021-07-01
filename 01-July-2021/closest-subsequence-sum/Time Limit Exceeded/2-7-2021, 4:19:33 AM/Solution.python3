@@ -1,0 +1,19 @@
+// https://leetcode.com/problems/closest-subsequence-sum
+
+class Solution:
+    def minAbsDifference(self, nums: List[int], goal: int) -> int:
+        cache = {}
+        n = len(nums)
+
+        def solve(idx, g):
+            if idx >= n:
+                return abs(g)
+            if (idx, g) in cache:
+                return cache[(idx, g)]
+            
+            skip = solve(idx + 1, g)
+            include = solve(idx + 1, g - nums[idx])
+            cache[(idx, g)] = min(skip, include)
+            return cache[(idx, g)]
+        
+        return solve(0, goal)

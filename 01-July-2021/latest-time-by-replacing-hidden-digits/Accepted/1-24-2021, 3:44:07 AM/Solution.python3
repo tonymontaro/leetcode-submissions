@@ -1,0 +1,43 @@
+// https://leetcode.com/problems/latest-time-by-replacing-hidden-digits
+
+class Solution:
+    def maximumTime(self, time: str) -> str:
+        self.hour = 0
+        self.min = 0
+        
+        def hour(idx, arr):
+            if idx >= 2:
+                num = arr[0]*10 + arr[1]
+                if num <= 23:
+                    self.hour = max(self.hour, num)
+                return
+            if time[idx] == '?':
+                for i in range(10):
+                    arr.append(i)
+                    hour(idx+1, arr)
+                    arr.pop()
+            else:
+                arr.append(int(time[idx]))
+                hour(idx+1, arr)
+                arr.pop()
+
+        def mins(idx, arr):
+            if len(arr) >= 2:
+                num = arr[0]*10 + arr[1]
+                if num <= 59:
+                    self.min = max(self.min, num)
+                return
+            if time[idx] == '?':
+                for i in range(10):
+                    arr.append(i)
+                    mins(idx+1, arr)
+                    arr.pop()
+            else:
+                arr.append(int(time[idx]))
+                mins(idx+1, arr)
+                arr.pop()
+        hour(0, [])
+        mins(3, [])
+        # print(self.hour)
+        # print(self.min)
+        return f"{self.hour:02d}:{self.min:02d}"

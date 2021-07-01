@@ -1,0 +1,12 @@
+// https://leetcode.com/problems/kth-missing-positive-number
+
+class Solution:
+    def findKthPositive(self, arr: List[int], k: int) -> int:
+        prev = 0
+        miss = 0
+        for num in arr:
+            if miss + (num - prev - 1) >= k:
+                return prev + k - miss
+            miss += num - prev - 1
+            prev = num
+        return prev + k - miss

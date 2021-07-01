@@ -1,0 +1,50 @@
+// https://leetcode.com/problems/longest-duplicate-substring
+
+from collections import defaultdict
+
+class Solution:
+    def longestDupSubstring(self, S: str) -> str:
+        # O(nlogn) time | O(n) space
+        arr = [ord(c) - ord('a') + 1 for c in S]
+        numUnique = 26
+        mod = 10**9 + 7
+
+        lo = 2
+        hi = len(arr) - 1
+        ans = (0, 0)
+        while (lo <= hi):
+            mid = (lo + hi) // 2
+            idx = getDuplicateLastIdx(arr, mid, numUnique, mod)
+            if (idx != -1):
+                ans = (idx, mid)
+                lo = mid + 1
+            else:
+                hi = mid - 1
+        idx, ln = ans
+        return S[idx - ln + 1:idx + 1]
+        
+    
+def getDuplicateLastIdx(arr, ln, numUnique, mod):
+    # O(n) time using rolling hash (Rabin-Karp)
+    hsh = 0
+    for i in range(ln):
+        hsh = (hsh * numUnique + arr[i]) % mod
+        # print(i, hsh)
+    seen = defaultdict(list)
+    seen[hsh].append(ln - 1)
+    startMult = pow(numUnique, ln - 1, mod)
+    n = len(arr)
+    for i in range(ln, n):
+        remove = arr[i - ln]
+        hsh = (hsh - (startMult*remove % mod) + mod) % mod
+        hsh = (hsh * numUnique + arr[i]) % mod
+        # print(i, hsh)
+        if hsh in seen:
+            for idx2 in seen[hsh]:
+                if compare(arr, ln, i, idx2):
+                    return i
+        seen[hsh].append(i)
+    return -1
+
+def compare(arr, ln, idx1, idx2):
+    return all(x == y for x, y in zip(arr[idx1 - ln + 1:idx1 + 1], arr[idx2 - ln + 1:idx2 + 1]))

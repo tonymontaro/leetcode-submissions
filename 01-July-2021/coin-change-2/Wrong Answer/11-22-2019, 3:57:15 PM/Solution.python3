@@ -1,0 +1,16 @@
+// https://leetcode.com/problems/coin-change-2
+
+class Solution:
+    def change(self, amount, coins):
+        prev = [0] * (amount + 1)
+        for coin in coins:
+            current = [0]
+            for i in range(1, amount + 1):
+                if i < coin:
+                    current.append(prev[i])
+                elif i == coin:
+                    current.append(1 + prev[i])
+                else:
+                    current.append(prev[i] + current[i-coin])
+            prev = current
+        return prev[-1] if coins else 1

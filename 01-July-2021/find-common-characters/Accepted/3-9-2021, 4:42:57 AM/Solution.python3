@@ -1,0 +1,19 @@
+// https://leetcode.com/problems/find-common-characters
+
+from collections import Counter
+
+class Solution:
+    def commonChars(self, A: List[str]) -> List[str]:
+        arr = [Counter(a) for a in A]
+        
+        ans = []
+        for c in A[0]:
+            valid = True
+            for cnt in arr:
+                if c not in cnt or cnt[c] == 0:
+                    valid = False
+                    break
+                cnt[c] -= 1
+            if valid:
+                ans.append(c)
+        return ans

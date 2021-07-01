@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/minimum-adjacent-swaps-for-k-consecutive-ones
+
+from math import inf
+
+class Solution:
+    def minMoves(self, nums: List[int], k: int) -> int:
+        if k == 1: return 0
+        half = k // 2
+        arr = [i for i, num in enumerate(nums) if num == 1]
+        n = len(arr)
+        presum = {-1: 0}
+        for i in range(n):
+            presum[i] = arr[i] + presum[i - 1]
+
+        best = inf
+        for lo in range(n - k + 1):
+            hi = lo + k - 1
+            mid = lo + half
+            left = presum[mid - 1] - presum[lo - 1]
+            right = presum[hi] - presum[mid] + (arr[mid] if k % 2 == 0 else 0)
+            rs = right - left
+            best = min(best, rs)
+        
+        hf = (k - 1) // 2
+        return best - ((hf * (hf + 1)) + (hf + 1 if k % 2 == 0 else 0))

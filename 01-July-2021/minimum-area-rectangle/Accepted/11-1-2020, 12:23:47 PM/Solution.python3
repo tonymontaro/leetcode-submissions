@@ -1,0 +1,32 @@
+// https://leetcode.com/problems/minimum-area-rectangle
+
+from collections import defaultdict
+from math import inf
+
+class Solution:
+    def minAreaRect(self, points: List[List[int]]) -> int:
+        # O(n^2) time | O(n) space
+        xs = defaultdict(list)
+        for x, y in points:
+            xs[x].append((x, y))
+        for key in xs:
+            xs[key].sort()
+            
+        keys = sorted(xs.keys())
+        yPairs = {}
+        area = inf
+        for x in keys:
+            arr = xs[x]
+            n = len(arr)
+            for i in range(n):
+                for j in range(i + 1, n):
+                    y1, y2 = arr[i][1], arr[j][1]
+                    yPair = (y1, y2)
+                    if yPair in yPairs:
+                        width = x - yPairs[yPair]
+                        height = y2 - y1
+                        area = min(area, width * height)
+                    yPairs[yPair] = x
+        return area if area != inf else 0
+                        
+            

@@ -1,0 +1,33 @@
+// https://leetcode.com/problems/maximum-frequency-stack
+
+from collections import defaultdict
+
+class FreqStack:
+
+    def __init__(self):
+        self.stack = []
+        self.keys = defaultdict(list)
+        self.count = defaultdict(int)
+
+    def push(self, x: int) -> None:
+        self.count[x] += 1
+        key = self.count[x]
+        if not self.keys[key]:
+            self.stack.append(key)
+        self.keys[key].append(x)
+
+    def pop(self) -> int:
+        key = self.stack[-1]
+        ans = self.keys[key].pop()
+
+        self.count[ans] -= 1
+        while self.stack and not self.keys[self.stack[-1]]:
+            self.stack.pop()
+        return ans
+        
+
+
+# Your FreqStack object will be instantiated and called as such:
+# obj = FreqStack()
+# obj.push(x)
+# param_2 = obj.pop()

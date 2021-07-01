@@ -1,0 +1,16 @@
+// https://leetcode.com/problems/132-pattern
+
+class Solution:
+    def find132pattern(self, nums: List[int]) -> bool:
+        dp = [nums[0]]
+        n = len(nums)
+        for i in range(1, n):
+            dp.append(min(dp[i - 1], nums[i]))
+        
+        prev = None
+        for i in range(n-1, 0, -1):
+            if prev is not None and (dp[i - 1] < prev < nums[i]):
+                return True
+            if nums[i] > dp[i - 1]:
+                prev = nums[i] if prev == None else min(prev, nums[i])
+        return False

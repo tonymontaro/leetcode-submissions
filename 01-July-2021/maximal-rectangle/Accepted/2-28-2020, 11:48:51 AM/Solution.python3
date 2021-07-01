@@ -1,0 +1,33 @@
+// https://leetcode.com/problems/maximal-rectangle
+
+def get_total(arr):
+    total = 0
+    max_total = 0
+    for num in arr:
+        if num > 0:
+            total += num
+            max_total = max(total, max_total)
+        else:
+            total = 0
+    return max_total
+
+class Solution:
+    def maximalRectangle(self, grid) -> int:
+        """O(col^2 * row) time | O(row) space"""
+        if not grid: return 0
+        grid = [[int(i) for i in row] for row in grid]
+        row_ln = len(grid)
+        col_ln = len(grid[0])
+        total = 0
+        for col in range(col_ln):
+            prev = [grid[row][col] for row in range(row_ln)]
+            total = max(total, get_total(prev))
+            
+            for c in range(col+1, col_ln):
+                current = [0] * row_ln
+                for r in range(row_ln):
+                    if grid[r][c] == 1 and prev[r] > 0:
+                        current[r] = prev[r] + 1
+                total = max(total, get_total(current))
+                prev = current
+        return total

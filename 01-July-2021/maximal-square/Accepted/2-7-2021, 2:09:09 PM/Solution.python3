@@ -1,0 +1,19 @@
+// https://leetcode.com/problems/maximal-square
+
+class Solution:
+    def maximalSquare(self, matrix: List[List[str]]) -> int:
+        # O(m * n) time | O(m*n) space
+        if not matrix or not matrix[0]:
+            return 0
+
+        rlen, clen = len(matrix), len(matrix[0])
+        dp = [[0 for _ in range(clen + 1)] for _ in range(rlen + 1)]
+        ans = 0
+        for r in range(1, rlen + 1):
+            row = matrix[r - 1]
+            for c, cha in enumerate(row):
+                if cha == '0':
+                    continue
+                dp[r][c] = 1 + min(dp[r-1][c], dp[r][c-1], dp[r-1][c-1])
+                ans = max(ans, dp[r][c])
+        return ans * ans

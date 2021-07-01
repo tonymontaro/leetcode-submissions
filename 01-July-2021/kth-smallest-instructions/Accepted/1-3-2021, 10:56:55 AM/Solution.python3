@@ -1,0 +1,28 @@
+// https://leetcode.com/problems/kth-smallest-instructions
+
+from math import perm
+
+class Solution:
+    def kthSmallestPath(self, destination: List[int], k: int) -> str:
+        # 
+        def calc(a, b):
+            return perm(a + b) // (perm(a) * perm(b))
+
+        b, a = destination
+        ans = []
+        while a + b > 0:
+            if a == 0 or b == 0:
+                ans.append('H' * a)
+                ans.append('V' * b)
+                break
+            
+            chooseA = calc(a-1, b)
+
+            if k <= chooseA:
+                a -= 1
+                ans.append('H')
+            else:
+                k -= chooseA
+                ans.append('V')
+                b -= 1
+        return ''.join(ans)

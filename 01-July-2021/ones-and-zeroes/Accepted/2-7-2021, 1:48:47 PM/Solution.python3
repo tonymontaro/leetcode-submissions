@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/ones-and-zeroes
+
+class Solution:
+    def findMaxForm(self, strs: List[str], m: int, n: int) -> int:
+        
+        # dp[m][n] best so far with m zeros and n ones
+        dp = [[0 for _ in range(m + 1)] for _ in range(n + 1)]
+        
+        for word in strs:
+            zeros = word.count('0')
+            ones = len(word) - zeros
+            if zeros > m or ones > n:
+                continue
+            
+            
+            for o in range(n, ones - 1, -1):
+                for z in range(m, zeros - 1, -1):
+                    dp[o][z] = max(dp[o][z], 1 + dp[o - ones][z - zeros])
+
+        return dp[n][m]

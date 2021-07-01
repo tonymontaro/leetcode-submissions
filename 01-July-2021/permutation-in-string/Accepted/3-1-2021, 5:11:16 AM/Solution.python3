@@ -1,0 +1,28 @@
+// https://leetcode.com/problems/permutation-in-string
+
+from collections import Counter, defaultdict
+
+class Solution:
+    def checkInclusion(self, s1: str, s2: str) -> bool:
+        count = Counter(s1)
+        n = len(s1)
+        counted = 0
+        seen = defaultdict(int)
+        left = 0
+        for i, ch in enumerate(s2):
+            # print(ch, seen, counted)
+            if ch not in count:
+                seen = defaultdict(int)
+                counted = 0
+                left = i + 1
+                continue
+            while seen[ch] == count[ch]:
+                seen[s2[left]] -= 1
+                left += 1
+                counted -= 1
+            counted += 1
+            if counted == n:
+                return True
+            seen[ch] += 1
+        return False
+            

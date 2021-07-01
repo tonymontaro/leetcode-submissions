@@ -1,0 +1,9 @@
+// https://leetcode.com/problems/minimum-elements-to-add-to-form-a-given-sum
+
+import math
+
+class Solution:
+    def minElements(self, nums: List[int], limit: int, goal: int) -> int:
+        sm = sum(nums)
+        diff = abs(sm - goal)
+        return math.ceil(diff / limit)

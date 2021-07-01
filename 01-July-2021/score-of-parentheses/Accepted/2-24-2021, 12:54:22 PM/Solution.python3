@@ -1,0 +1,12 @@
+// https://leetcode.com/problems/score-of-parentheses
+
+class Solution:
+    def scoreOfParentheses(self, S: str) -> int:
+        res = [0]
+        for cha in S:
+            if cha == "(":
+                res.append(0)
+            else:
+                v = res.pop()
+                res[-1] += max(1, v * 2)
+        return res.pop()

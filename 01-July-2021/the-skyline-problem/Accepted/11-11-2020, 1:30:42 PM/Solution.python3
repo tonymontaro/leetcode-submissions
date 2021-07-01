@@ -1,0 +1,57 @@
+// https://leetcode.com/problems/the-skyline-problem
+
+import heapq
+
+class Building:
+    def __init__(self, start, end, height):
+        self.h = height
+        self.s = start
+        self.e = end
+    
+    def __eq__(self, other):
+        return self.h == other.h and self.start == other.start and self.end == other.end
+    
+    def __gt__(self, other):
+        # invert to simulate maxHeap
+        if self.h == other.h:
+            return self.e < other.e
+        return self.h < other.h
+    def __str__(self):
+        return f"({self.h}, {self.s}, {self.e})"
+    
+
+class Solution:
+    def getSkyline(self, buildings: List[List[int]]) -> List[List[int]]:
+        # O(nlogn) time | O(n) space
+        if not buildings:
+            return []
+        
+        n = len(buildings)
+        result  = []
+        node = Building(*buildings[0])
+        heap = [node]
+        idx = 1
+        while heap or idx < n:
+            if not heap:
+                node = Building(*buildings[idx])
+                heapq.heappush(heap, node)
+                idx += 1
+            elif idx >= n or node.e < buildings[idx][0]:
+                result.append([node.s, node.h])
+                while heap and heap[0].e <= node.e:
+                    heapq.heappop(heap)
+                if not heap:
+                    result.append([node.e, 0])
+                else:
+                    heap[0].s = node.e
+                    node = heap[0]
+            else:
+                building = Building(*buildings[idx])
+                idx += 1
+                if building.s > node.s and building.h > node.h:
+                    result.append([node.s, node.h])
+                elif building.h == node.h:
+                    building.s = node.s
+                heapq.heappush(heap, building)
+                node = heap[0]
+        return result

@@ -1,0 +1,17 @@
+// https://leetcode.com/problems/find-the-winner-of-an-array-game
+
+class Solution:
+    def getWinner(self, arr: List[int], k: int) -> int:
+        win = max(arr[:2])
+        cnt = 1
+        for i in range(2, len(arr)):
+            if cnt == k:
+                return win
+            
+            if win > arr[i]:
+                cnt += 1
+            else:
+                win = arr[i]
+                cnt = 1
+        return win
+        

@@ -1,0 +1,8 @@
+// https://leetcode.com/problems/top-k-frequent-elements
+
+from collections import Counter
+
+class Solution:
+    def topKFrequent(self, nums, k):
+        counts = Counter(nums)
+        return [x for x, y in counts.most_common(k)]

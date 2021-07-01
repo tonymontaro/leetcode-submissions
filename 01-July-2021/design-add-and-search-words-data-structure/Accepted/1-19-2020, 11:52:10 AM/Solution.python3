@@ -1,0 +1,50 @@
+// https://leetcode.com/problems/design-add-and-search-words-data-structure
+
+class WordDictionary:
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.root = {}
+        self.endCharacter = '*'
+
+    def addWord(self, word):
+        """
+        Adds a word into the data structure.
+        """
+        node = self.root
+        for ch in word:
+            if ch not in node:
+                node[ch] = {}
+            node = node[ch]
+        node[self.endCharacter] = True
+
+
+    def search(self, word, start=0, node=None):
+        """
+        Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter.
+        """
+        if node is None:
+            node = self.root
+        if type(node) is bool:
+            return False
+        result = False
+        for i in range(start, len(word)):
+            if word[i] == '.':
+                for ch in node.keys():
+                    result = result or self.search(word, i+1, node[ch])
+                return result
+            elif word[i] not in node:
+                return False
+            node = node[word[i]]
+        if self.endCharacter in node:
+            return True
+        return False
+                
+
+
+# Your WordDictionary object will be instantiated and called as such:
+# obj = WordDictionary()
+# obj.addWord(word)
+# param_2 = obj.search(word)

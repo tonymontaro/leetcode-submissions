@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+from collections import defaultdict, deque
+
+class Solution:
+    def verticalTraversal(self, root: TreeNode) -> List[List[int]]:
+        verticals = defaultdict(list)
+        
+        deq = deque()
+        deq.append((root, 0))
+        while deq:
+            node, loc = deq.popleft()
+            if node:
+                verticals[loc].append(node.val)
+                deq.append((node.left, loc - 1))
+                deq.append((node.right, loc + 1))
+        
+        keys = sorted(verticals.keys())
+        return [verticals[k] for k in keys]

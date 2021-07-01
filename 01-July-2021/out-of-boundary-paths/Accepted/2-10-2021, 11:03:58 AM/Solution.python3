@@ -1,0 +1,24 @@
+// https://leetcode.com/problems/out-of-boundary-paths
+
+class Solution:
+    def findPaths(self, rlen: int, clen: int, N: int, i: int, j: int) -> int:
+        dirs = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        cache = {}
+        mod = 10**9 + 7
+        def solve(row, col, rem):
+            if rem < 0:
+                return 0
+            if row < 0 or col < 0 or row >= rlen or col >= clen:
+                return 1
+            if (row, col, rem) in cache:
+                return cache[(row, col, rem)]
+            
+            ans = 0
+            for rAdd, cAdd in dirs:
+                r, c = row + rAdd, col + cAdd
+                ans = (ans + solve(r, c, rem - 1)) % mod
+            
+            cache[(row, col, rem)] = ans
+            return ans
+        
+        return solve(i, j, N)

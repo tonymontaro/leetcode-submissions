@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/shortest-distance-to-a-character
+
+from collections import deque
+
+class Solution:
+    def shortestToChar(self, s: str, c: str) -> List[int]:
+        deq = deque()
+        seen = {}
+        for i, cha in enumerate(s):
+            if cha == c:
+                deq.append((i, 0))
+                seen[i] = 1
+
+        n = len(s)
+        res = [0] * n
+        while deq:
+            i, dist = deq.popleft()
+            res[i] = dist
+            for j in [i + 1, i - 1]:
+                if 0 <= j < n and j not in seen:
+                    deq.append((j, dist + 1))
+                    seen[j] = 1
+        return res

@@ -1,0 +1,32 @@
+// https://leetcode.com/problems/the-most-similar-path-in-a-graph
+
+from math import inf
+
+class Solution:
+    def mostSimilar(self, n: int, roads: List[List[int]], names: List[str], target: List[str]) -> List[int]:
+        # O(n^2 * k) time | O(k * n) space | k -> length target
+        adj = [[] for _ in range(n)]
+        for a, b in roads:
+            adj[a].append(b)
+            adj[b].append(a)
+
+        targetLen = len(target)
+        last = target[-1]
+        dp = [[(0, [idx]) if last == name else (1, [idx])] for (idx, name) in enumerate(names)]
+
+        for i in range(1, targetLen):
+            tIdx = targetLen - i - 1
+            for (idx, node) in enumerate(names):
+                cost = 0 if target[tIdx] == node else 1
+                best = inf
+                bestChild = 0
+                for child in adj[idx]:
+                    if dp[child][i - 1][0] < best:
+                        best = dp[child][i - 1][0]
+                        bestChild = child
+                childCost, path = dp[bestChild][i - 1]
+                dp[idx].append((cost + childCost, [idx] + path))
+        return min(dp, key=lambda x: x[-1][0])[-1][1]
+                
+        
+        

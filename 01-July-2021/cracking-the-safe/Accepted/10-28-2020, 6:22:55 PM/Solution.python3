@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/cracking-the-safe
+
+class Solution:
+    def crackSafe(self, n: int, k: int) -> str:
+        # O(k ^ n) time and space
+        seen = set()
+        total = k**n
+        arr = ["0" for _ in range(n)]
+        seen.add("0" * n)
+        def dfs():
+            if len(seen) == total: return True
+            ln = len(arr) + 1
+            for i in range(k):
+                arr.append(str(i))
+                st = "".join(arr[ln - n:])
+                if st not in seen:
+                    seen.add(st)
+                    if dfs(): return True
+                    seen.remove(st)
+                arr.pop()
+            return False
+        dfs()
+        return "".join(arr)

@@ -1,0 +1,22 @@
+// https://leetcode.com/problems/search-in-rotated-sorted-array
+
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        lo = 0
+        hi = len(nums) - 1
+        while lo <= hi:
+            mid = (lo + hi) // 2
+            
+            if nums[mid] == target:
+                return mid
+            elif nums[mid] < target:
+                if target <= nums[hi] or nums[mid] > nums[hi]:
+                    lo = mid + 1
+                else:
+                    hi = mid - 1
+            else:
+                if target >= nums[lo] or nums[lo] > nums[mid]:
+                    hi = mid - 1
+                else:
+                    lo = mid + 1
+        return -1

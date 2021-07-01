@@ -1,0 +1,16 @@
+// https://leetcode.com/problems/queue-reconstruction-by-height
+
+class Solution:
+    def reconstructQueue(self, people):
+        """O(n^2) time | O(n) space"""
+        [item.append(item[1]) for item in people]
+        result = []
+        while people:
+            zeros = [(people[i][0], i) for i in range(len(people)) if people[i][2] == 0]
+            idx = min(zeros, key=lambda x: x[0])[1]
+            result_item = people.pop(idx)
+            result.append([result_item[0], result_item[1]])
+            for item in people:
+                if item[0] <= result_item[0]:
+                    item[2] -= 1
+        return result

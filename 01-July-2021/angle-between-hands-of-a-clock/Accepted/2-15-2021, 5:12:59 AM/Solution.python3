@@ -1,0 +1,9 @@
+// https://leetcode.com/problems/angle-between-hands-of-a-clock
+
+class Solution:
+    def angleClock(self, hour: int, minutes: int) -> float:
+        hour = hour % 12
+        minAngle = (minutes * 360) / 60
+        hourAngle = (hour * 360) / 12 + (30 * minutes) / 60
+        diff = abs(hourAngle - minAngle)
+        return diff if diff <= 180 else 360 - diff

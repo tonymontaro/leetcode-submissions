@@ -1,0 +1,21 @@
+// https://leetcode.com/problems/closest-dessert-cost
+
+from math import inf
+
+class Solution:
+    def closestCost(self, base: List[int], topping: List[int], target: int) -> int:
+        self.ans = inf
+        n = len(topping)
+        
+        def solve(idx, cost):
+            if idx >= n:
+                a, b = abs(cost - target), abs(self.ans - target)
+                if a < b or (a == b and cost < self.ans):
+                    self.ans = cost
+                return 
+            solve(idx + 1, cost)
+            solve(idx + 1, topping[idx] + cost)
+            solve(idx + 1, topping[idx]*2 + cost)
+        for b in base:
+            solve(0, b)
+        return self.ans

@@ -1,0 +1,46 @@
+// https://leetcode.com/problems/regular-expression-matching
+
+"""
+.*
+    -> true
+c*
+    j += 2, i -> last not c
+s[i] == p[j] or .
+    j += 1, i += 1
+else 
+    -> false
+
+i == len(s) and (j == len(p) or p[j + 1] == "*")
+"""
+
+
+class Solution:
+    def isMatch(self, s: str, p: str) -> bool:
+        # O(sLen * pLen) time | O(pLen) space
+        sLen, pLen = len(s), len(p)
+        
+        prev = [False] * (pLen + 1)
+        prev[0] = True
+        for i in range(1, pLen + 1):
+            if p[i - 1] == "*":
+                prev[i] = prev[i - 2]
+        # print(prev)
+        for sIdx in range(1, sLen + 1):
+            sCha = s[sIdx - 1]
+            dp = [False] * (pLen + 1)
+            for pIdx in range(1, pLen + 1):
+                pCha = p[pIdx - 1]
+                if pCha == sCha or pCha == ".":
+                    dp[pIdx] = prev[pIdx - 1]
+                elif pCha == "*":
+                    dp[pIdx] = dp[pIdx - 2]
+                    if p[pIdx - 2] == sCha or p[pIdx - 2] == ".":
+                        dp[pIdx] = dp[pIdx] or prev[pIdx]
+            # print(dp)
+            prev = dp
+        return prev[-1]
+                
+                
+        
+        
+        

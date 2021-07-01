@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/binary-tree-level-order-traversal
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def levelOrder(self, root):
+        nodes = [root] if root else []
+        result = []
+        while nodes:
+            result.append([x.val for x in nodes])
+            nw = []
+            [[nw.append(x.left) if x.left else None, nw.append(x.right) if x.right else None] for x in nodes]
+            nodes = nw
+        return result
+        

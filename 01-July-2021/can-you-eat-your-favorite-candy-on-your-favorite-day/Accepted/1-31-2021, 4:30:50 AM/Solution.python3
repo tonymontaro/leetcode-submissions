@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/can-you-eat-your-favorite-candy-on-your-favorite-day
+
+class Solution:
+    def canEat(self, candiesCount: List[int], queries: List[List[int]]) -> List[bool]:
+        prefix = [0]
+        for c in candiesCount:
+            prefix.append(prefix[-1] + c)
+        # print(prefix)
+        ans = []
+        # [7,4,5,3,8]
+        # [0,2,2] ==> true
+        for idx, day, cap in queries:
+            res = True
+            prev = prefix[idx]
+            slots = day * cap + (cap - 1)
+            if prev > slots:
+                res = False
+            total = prefix[idx+1]
+            if total <= day:
+                res = False
+            ans.append(res)
+        return ans
+            

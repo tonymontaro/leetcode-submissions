@@ -1,0 +1,14 @@
+// https://leetcode.com/problems/combination-sum
+
+class Solution(object):
+    def combinationSum(self, candidates, target):
+        result = self.helper(candidates, target, [], set())
+        return [list(ans) for ans in result]
+    
+    def helper(self, arr, target, comb, result):
+        for num in arr:
+            if target - num == 0:
+                result.add(tuple(sorted(comb + [num])))
+            elif target - num > 0:
+                self.helper(arr, target-num, comb+[num], result)
+        return result

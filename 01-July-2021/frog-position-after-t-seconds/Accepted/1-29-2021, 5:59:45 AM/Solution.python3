@@ -1,0 +1,34 @@
+// https://leetcode.com/problems/frog-position-after-t-seconds
+
+class Solution:
+    def frogPosition(self, n: int, edges: List[List[int]], t: int, target: int) -> float:
+        tree = {i:[] for i in range(1, n+1)}
+        tt = {i:[] for i in range(1, n+1)}
+        for a, b in edges:
+            tt[a].append(b)
+            tt[b].append(a)
+        seen = {1: 1}
+        stack = [1]
+        while stack:
+            node = stack.pop()
+            for child in tt[node]:
+                if child not in seen:
+                    tree[node].append(child)
+                    seen[child] = 1
+                    stack.append(child)
+
+        self.ans = 0
+        def dfs(node, prob, depth):
+            if node == target:
+                if t == depth or (not tree[node] and depth < t):
+                    self.ans = prob
+                return
+    
+            if depth > t or not tree[node]:
+                return
+            prob = prob * (1 / len(tree[node]))
+            for child in tree[node]:
+                dfs(child, prob, depth + 1)
+        
+        dfs(1, 1, 0)
+        return self.ans

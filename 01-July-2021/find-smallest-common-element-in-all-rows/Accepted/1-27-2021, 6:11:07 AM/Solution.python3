@@ -1,0 +1,34 @@
+// https://leetcode.com/problems/find-smallest-common-element-in-all-rows
+
+from heapq import heappush, heappop
+from collections import defaultdict as dd
+
+class Solution:
+    def smallestCommonElement(self, mat: List[List[int]]) -> int:
+        heap = []
+        self.unique = 0
+        count = dd(int) 
+        
+        def add(num, i, matIdx):
+            if count[num] == 0:
+                self.unique += 1
+            heappush(heap, (num, i, matIdx))
+            count[num] += 1
+        
+        for i, row in enumerate(mat):
+            add(row[0], 0, i)
+        
+        while heap:
+            num, idx, matIdx = heappop(heap)
+            if self.unique == 1:
+                return num
+            count[num] -= 1
+            if count[num] == 0:
+                self.unique -= 1
+            idx += 1
+            row = mat[matIdx]
+            if idx >= len(row):
+                return -1
+            add(row[idx], idx, matIdx)
+
+        return -1

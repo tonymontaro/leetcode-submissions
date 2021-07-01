@@ -1,0 +1,43 @@
+// https://leetcode.com/problems/longest-duplicate-substring
+
+class Solution:
+    def longestDupSubstring(self, S: str) -> str:
+        # O(nlogn) time | O(n) space
+        arr = [ord(c) - ord('a') + 1 for c in S]
+        numUnique = 26
+        mod = 10**9 + 7
+        
+        lo = 2
+        hi = len(arr) - 1
+        ans = (0, 0)
+        while (lo <= hi):
+            mid = (lo + hi) // 2
+            idx = getDuplicateLastIdx(arr, mid, numUnique, mod)
+            if (idx != -1):
+                ans = (idx, mid)
+                lo = mid + 1
+            else:
+                hi = mid - 1
+        idx, ln = ans
+        return S[idx - ln + 1:idx + 1]
+        
+    
+def getDuplicateLastIdx(arr, ln, numUnique, mod):
+    # O(n) time using rolling hash (Rabin-Karp)
+    hsh = 0
+    for i in range(ln):
+        hsh = (hsh * numUnique + arr[i]) % mod
+        # print(i, hsh)
+    seen = set()
+    seen.add(hsh)
+    startMult = pow(numUnique, ln - 1, mod)
+    n = len(arr)
+    for i in range(ln, n):
+        remove = arr[i - ln]
+        hsh = (hsh - (startMult*remove % mod) + mod) % mod
+        hsh = (hsh * numUnique + arr[i]) % mod
+        # print(i, hsh)
+        if hsh in seen:
+            return i
+        seen.add(hsh)
+    return -1

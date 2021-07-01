@@ -1,0 +1,21 @@
+// https://leetcode.com/problems/binary-search-tree-to-greater-sum-tree
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def bstToGst(self, root: TreeNode) -> TreeNode:
+        self.solveNode(root, prev=0)
+        return root
+    
+    def solveNode(self, node, prev=0):
+        if node is None:
+            return 0
+        right = self.solveNode(node.right, prev) + node.val
+        node.val = (right + prev)
+        left = self.solveNode(node.left, node.val)
+        return (left + right)

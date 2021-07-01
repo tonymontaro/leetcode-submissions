@@ -1,0 +1,27 @@
+// https://leetcode.com/problems/number-of-islands
+
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        # O(n*m) time and space
+        neighbors = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        seen = {}
+        rowlen = len(grid)
+        colen = len(grid[0])
+        islands = 0
+        for r in range(rowlen):
+            for c in range(colen):
+                if (r, c) in seen or grid[r][c] == "0":
+                    continue
+                islands += 1
+                stack = [(r, c)]
+                seen[(r, c)] = True
+                while stack:
+                    node = stack.pop()
+                    for nRow, nCol in neighbors:
+                        row, col = node[0] + nRow, node[1] + nCol
+                        isValid = 0 <= row < rowlen and 0 <= col < colen and grid[row][col] == "1"
+                        isValid = isValid and (row, col) not in seen
+                        if isValid:
+                            seen[(row, col)] = True
+                            stack.append((row, col))
+        return islands

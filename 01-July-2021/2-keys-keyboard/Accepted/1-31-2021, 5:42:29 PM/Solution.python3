@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/2-keys-keyboard
+
+
+class Solution:
+    def minSteps(self, n: int) -> int:
+        dp = [i for i in range(n + 1)]
+        dp[1] = 0
+
+        for i in range(6, n + 1):
+            divs = getDivisors(i)
+            for div in divs:
+                dp[i] = min(dp[i], dp[div] + (i // div))
+        return dp[n]
+
+def getDivisors(num):
+    i = 2
+    divs = []
+    while i*i <= num:
+        if num % i == 0:
+            divs.append(i)
+            other = num // i
+            if other != i and other != num:
+                divs.append(other)
+        i += 1
+    return divs

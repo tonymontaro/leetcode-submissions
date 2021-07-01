@@ -1,0 +1,12 @@
+// https://leetcode.com/problems/index-pairs-of-a-string
+
+class Solution:
+    def indexPairs(self, text: str, words: List[str]) -> List[List[int]]:
+        ans = []
+        for word in words:
+            i = 0
+            found = text.find(word, i)
+            while found != -1:
+                ans.append([found, found + len(word) - 1])
+                found = text.find(word, found + 1)
+        return sorted(ans)

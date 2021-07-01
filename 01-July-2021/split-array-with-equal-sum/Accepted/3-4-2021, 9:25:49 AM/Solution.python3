@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/split-array-with-equal-sum
+
+class Solution:
+    def splitArray(self, nums: List[int]) -> bool:
+        n = len(nums)
+        if n <= 6:
+            return False
+        
+        presum = {-1: 0}
+        for i, num in enumerate(nums):
+            presum[i] = presum[i-1] + nums[i]
+        for mid in range(3, n - 3):
+            left = {}
+            for l in range(mid - 2, 0, -1):
+                if presum[l-1] == (presum[mid-1] - presum[l]):
+                    left[presum[l-1]] = 1
+
+            right = {}
+            for r in range(mid + 2, n - 1):
+                val = presum[n-1] - presum[r]
+                if val == (presum[r-1] - presum[mid]) and val in left:
+                    return True
+        return False

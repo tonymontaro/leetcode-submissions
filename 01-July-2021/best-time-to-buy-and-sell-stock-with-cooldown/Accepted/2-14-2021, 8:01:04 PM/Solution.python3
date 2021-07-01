@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown
+
+from math import inf
+
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        # O(n) time and space
+
+        cache = {}
+        # [one, zero]
+        def solve(idx):
+            if idx <= 0:
+                return [-prices[0], 0] if idx == 0 else [0, 0]
+            if idx in cache:
+                return cache[idx]
+            
+            prevOne, prevZero = solve(idx - 1)
+            one = max(-prices[idx] + solve(idx - 2)[1], prevOne)
+            zero = max(prevZero, prevOne + prices[idx])
+            cache[idx] = [one, zero]
+            return [one, zero]
+        
+        rs = solve(len(prices)-1)
+        return max(rs)
+            

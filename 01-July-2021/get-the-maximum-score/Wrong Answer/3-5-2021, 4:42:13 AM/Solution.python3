@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/get-the-maximum-score
+
+from collections import defaultdict
+
+class Solution:
+    def maxSum(self, nums1: List[int], nums2: List[int]) -> int:
+        prev1 = {num: nums1[i-1] for i, num in enumerate(nums1) if i > 0}
+        prev2 = {num: nums2[i-1] for i, num in enumerate(nums2) if i > 0}
+        arr = sorted(set(nums1 + nums2), reverse=True)
+        best = defaultdict(list)
+        
+        ans = 0
+        for num in arr:
+            val = max(best[num]) + num if best[num] else num
+            ans = max(ans, val)
+            if num in prev1:
+                best[prev1[num]].append(val)
+            if num in prev2:
+                best[prev2[num]].append(val)
+        return ans

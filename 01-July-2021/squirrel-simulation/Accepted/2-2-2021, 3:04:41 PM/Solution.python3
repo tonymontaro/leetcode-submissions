@@ -1,0 +1,37 @@
+// https://leetcode.com/problems/squirrel-simulation
+
+from collections import deque
+
+class Solution:
+    def minDistance(self, rlen: int, clen: int, tree: List[int], squirrel: List[int], nuts: List[List[int]]) -> int:
+        nuts = {(a, b): [] for a, b in nuts}
+        dirs = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        
+        def bfs(x, y):
+            uncounted = len(nuts)
+            deq = deque()
+            deq.append((x, y, 0))
+            seen = {}
+            while uncounted > 0:
+                r, c, dist = deq.popleft()
+                if (r, c) in nuts:
+                    uncounted -= 1
+                    nuts[(r, c)].append(dist)
+                for rAdd, cAdd in dirs:
+                    rr, cc = r + rAdd, c + cAdd
+                    if 0 <= rr < rlen and 0 <= cc < clen and (rr, cc) not in seen:
+                        seen[(rr, cc)] = 1
+                        deq.append((rr, cc, dist + 1))
+        
+        bfs(*tree)
+        bfs(*squirrel)
+
+        mn = min(nuts.keys(), key=lambda x: nuts[x][1]-nuts[x][0])
+        ans = 0
+        for (r, c), (a, b) in nuts.items():
+            if (r, c) == mn:
+                ans += a + b
+            else:
+                ans += a*2
+        
+        return ans

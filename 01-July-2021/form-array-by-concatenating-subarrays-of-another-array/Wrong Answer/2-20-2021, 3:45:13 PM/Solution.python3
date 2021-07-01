@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/form-array-by-concatenating-subarrays-of-another-array
+
+class Solution:
+    def canChoose(self, groups: List[List[int]], nums: List[int]) -> bool:
+        idx = 0
+        i = 0
+        while i < len(nums):
+            if groups[idx][0] != nums[i]:
+                i += 1
+                continue
+            j = 0
+            good = True
+            while i < len(nums) and j < len(groups[idx]):
+                if groups[idx][j] != nums[i]:
+                    good = False
+                    break
+                i += 1
+                j += 1
+            if good:
+                idx += 1
+            if idx >= len(groups):
+                return True
+        return False

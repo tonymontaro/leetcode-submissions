@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/time-needed-to-inform-all-employees
+
+class Solution:
+    def numOfMinutes(self, n: int, headID: int, manager: List[int], informTime: List[int]) -> int:
+        tree = {i: [] for i in range(n)}
+        for i, m in enumerate(manager):
+            if m == -1:
+                continue
+            tree[m].append(i)
+        
+        stack = [(headID, 0)]
+        ans = 0
+        while stack:
+            node, time = stack.pop()
+            ans = max(ans, time)
+            for child in tree[node]:
+                stack.append((child, informTime[node] + time))
+        return ans

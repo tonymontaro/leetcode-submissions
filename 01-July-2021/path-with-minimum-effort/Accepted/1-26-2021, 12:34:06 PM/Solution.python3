@@ -1,0 +1,22 @@
+// https://leetcode.com/problems/path-with-minimum-effort
+
+from heapq import heappush, heappop
+
+class Solution:
+    def minimumEffortPath(self, grid: List[List[int]]) -> int:
+        rlen, clen = len(grid), len(grid[0])
+        dirs = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        heap = [(0, 0, 0)]
+        seen = {}
+        while heap:
+            dist, row, col = heappop(heap)
+            if row == rlen-1 and col == clen-1:
+                return dist
+            for rAdd, cAdd in dirs:
+                r, c = row + rAdd, col + cAdd
+                if 0 <= r < rlen and 0 <= c < clen:
+                    d = max(dist, abs(grid[row][col] - grid[r][c]))
+                    if (r, c) not in seen or seen[(r, c)] > d:
+                        seen[(r, c)] = d
+                        heappush(heap, (d, r, c))
+        

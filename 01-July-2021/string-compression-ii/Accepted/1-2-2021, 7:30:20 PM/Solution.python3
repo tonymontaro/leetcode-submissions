@@ -1,0 +1,34 @@
+// https://leetcode.com/problems/string-compression-ii
+
+import copy
+from math import inf
+
+class Solution:
+    def getLengthOfOptimalCompression(self, s: str, k: int) -> int:
+        cache = {}
+        def solve(idx, rem, prev, prevCount):
+            if idx >= len(s):
+                return 0
+
+            rep = f'{idx}-{rem}-{prev}-{prevCount}'
+            if rep in cache:
+                return cache[rep]
+
+            # skip
+            ans = inf
+            if rem > 0:
+                ans = solve(idx+1, rem-1, prev, prevCount)
+
+            # include
+            if s[idx] == prev:
+                incr = 1 if (prevCount in [1, 9, 99]) else 0
+                ans = min(ans, incr + solve(idx+1, rem, prev, prevCount + 1))
+            else:
+                ans = min(ans, 1 + solve(idx+1, rem, s[idx], 1))
+            
+            cache[rep] = ans
+            return ans
+        
+        return solve(0, k, '', 0)
+                
+            

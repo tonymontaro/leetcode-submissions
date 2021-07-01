@@ -1,0 +1,26 @@
+// https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix
+
+class Solution:
+    def kthSmallest(self, grid: List[List[int]], k: int) -> int:
+        # O((n+m)log(n+m)) time | O(1) space
+        
+        rowlen, colen = len(grid), len(grid[0])
+        lo = grid[0][0]
+        hi = grid[-1][-1]
+        
+        valid = hi
+        while lo <= hi:
+            mid = (lo + hi) // 2
+            r, c = 0, colen - 1
+            total = 0
+            while r < rowlen and c >= 0:
+                while c >= 0 and grid[r][c] > mid:
+                    c -= 1
+                total += c + 1
+                r += 1
+            if total >= k:
+                valid = mid
+                hi = mid - 1
+            else:
+                lo = mid + 1
+        return valid

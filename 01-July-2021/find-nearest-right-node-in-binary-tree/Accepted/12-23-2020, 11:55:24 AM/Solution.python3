@@ -1,0 +1,24 @@
+// https://leetcode.com/problems/find-nearest-right-node-in-binary-tree
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def findNearestRightNode(self, root: TreeNode, target: TreeNode) -> TreeNode:
+        arr = [root]
+        while arr:
+            newArr = []
+            n = len(arr)
+            for i in range(n):
+                node = arr[i]
+                if node is target:
+                    return arr[i + 1] if i + 1 < n else None
+                if node.left:
+                    newArr.append(node.left)
+                if node.right:
+                    newArr.append(node.right)
+            arr = newArr
+        return None

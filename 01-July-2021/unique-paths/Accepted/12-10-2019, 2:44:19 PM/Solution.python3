@@ -1,0 +1,8 @@
+// https://leetcode.com/problems/unique-paths
+
+from math import factorial
+
+class Solution:
+    def uniquePaths(self, m, n):
+        """O(1) time and space"""
+        return factorial(m+n-2) // (factorial(m-1) * factorial(n-1))

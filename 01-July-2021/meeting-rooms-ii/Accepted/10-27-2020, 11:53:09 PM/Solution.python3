@@ -1,0 +1,17 @@
+// https://leetcode.com/problems/meeting-rooms-ii
+
+import heapq
+
+class Solution:
+    def minMeetingRooms(self, intervals: List[List[int]]) -> int:
+        # O(nlogn) time | O(n) space
+        arr = sorted(intervals)
+        heap = []
+        ans = 0
+        for interval in arr:
+            start, end = interval
+            while (heap and heap[0] <= start):
+                heapq.heappop(heap)
+            heapq.heappush(heap, end)
+            ans = max(ans, len(heap))
+        return ans

@@ -1,0 +1,45 @@
+// https://leetcode.com/problems/word-break-ii
+
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
+        if not s or not wordDict:
+            return []
+        trie = {}
+        def add(word):
+            node = trie
+            for cha in word:
+                if cha not in node:
+                    node[cha] = {}
+                node = node[cha]
+            node["*"] = 1
+        for word in wordDict:
+            add(word)
+        
+        n = len(s)
+        cache = {}
+        def search(idx, node):
+            if idx in cache:
+                return cache[idx]
+            if idx >= n:
+                return [[]]
+            
+            chars = []
+            res = []
+            for i in range(idx, n):
+                if s[i] not in node:
+                    break
+                chars.append(s[i])
+                node = node[s[i]]
+                if "*" in node:
+                    w = "".join(chars)
+                    other = search(i + 1, trie)
+                    for otherArr in other:
+                        res.append([w] + otherArr)
+                    # print(w, other)
+            cache[idx] = res
+            return res
+        
+        search(0, trie)
+        # print(cache)
+        return [" ".join(arr) for arr in cache[0]]
+                

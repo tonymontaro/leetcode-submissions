@@ -1,0 +1,22 @@
+// https://leetcode.com/problems/bulls-and-cows
+
+from collections import Counter, defaultdict
+
+class Solution:
+    def getHint(self, secret: str, guess: str) -> str:
+        # O(n) time and space
+        counts = Counter(secret)
+        seen = defaultdict(int)
+        correct = defaultdict(int)
+        for a, b in zip(secret, guess):
+            if a == b:
+                correct[a] += 1
+            if b in counts:
+                seen[b] = min(counts[b], seen[b] + 1)
+        
+        bulls = 0
+        cows = 0
+        for key in counts:
+            bulls += correct[key]
+            cows += seen[key] - correct[key]
+        return f"{bulls}A{cows}B"

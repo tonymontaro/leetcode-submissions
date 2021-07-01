@@ -1,0 +1,15 @@
+// https://leetcode.com/problems/backspace-string-compare
+
+class Solution:
+    def backspaceCompare(self, S: str, T: str) -> bool:
+        # O(n) time and space
+        return getStack(S) == getStack(T)       
+
+def getStack(seq):
+    stack = []
+    for cha in seq:
+        if cha != "#":
+            stack.append(cha)
+        elif stack:
+            stack.pop()
+    return stack

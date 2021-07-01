@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/backspace-string-compare
+
+class Solution:
+    def backspaceCompare(self, S: str, T: str) -> bool:
+        ss = []
+        for cha in S:
+            if cha == '#' and ss:
+                ss.pop()
+            elif cha != '#':
+                ss.append(cha)
+        tt = []
+        for cha in T:
+            if cha == '#' and tt:
+                tt.pop()
+            elif cha != '#':
+                tt.append(cha)
+        print(ss, tt)
+        return ''.join(ss) == ''.join(tt)

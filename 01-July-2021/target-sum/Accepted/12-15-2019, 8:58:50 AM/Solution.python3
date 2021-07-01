@@ -1,0 +1,24 @@
+// https://leetcode.com/problems/target-sum
+
+class Solution:
+    def findTargetSumWays(self, nums, target: int) -> int:
+        if not nums: return 0
+        self.cache = {}
+        return self.helper(0, 0, nums, target)
+    
+    def helper(self, idx, total, nums, target):
+        sub_total = 0
+        num = nums[idx]
+        if (idx, total) in self.cache:
+            return self.cache[(idx, total)]
+        elif idx == len(nums)-1:
+            if total + num == target:
+                sub_total += 1
+            if total - num == target:
+                sub_total += 1
+        else:
+            plus = self.helper(idx+1, total+num, nums, target)
+            minus = self.helper(idx+1, total-num, nums, target)
+            sub_total = plus + minus
+        self.cache[(idx, total)] = sub_total
+        return self.cache[(idx, total)]

@@ -1,0 +1,22 @@
+// https://leetcode.com/problems/next-greater-element-iii
+
+class Solution:
+    def nextGreaterElement(self, num: int) -> int:
+        MAX = 2**31 - 1
+        arr = [int(i) for i in str(num)]
+        n = len(arr)
+        ans = 2**31
+        
+        for i in range(n-1, 0, -1):
+            if arr[i - 1] >= arr[i]:
+                continue
+            j = i
+            while j < n and arr[j] > arr[i - 1]:
+                j += 1
+            j -= 1
+            arr[j], arr[i-1] = arr[i-1], arr[j]
+            res = arr[:i] + sorted(arr[i:])
+            ans = int("".join(map(str, res)))
+            break
+        
+        return -1 if ans > MAX else ans

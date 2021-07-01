@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/check-array-formation-through-concatenation
+
+class Solution:
+    def canFormArray(self, arr: List[int], pieces: List[List[int]]) -> bool:
+        # O(n) time and space
+        indices = {}
+        for i, p in enumerate(pieces):
+            indices[p[0]] = i
+        
+        idx = 0
+        while idx < len(arr):
+            if arr[idx] not in indices:
+                return False
+            p = pieces[indices[arr[idx]]]
+            for val in p:
+                if idx >= len(arr) or val != arr[idx]:
+                    return False
+                idx += 1
+        return True
+

@@ -1,0 +1,37 @@
+// https://leetcode.com/problems/word-search-ii
+
+class Solution:
+    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
+        if not board or not words or not board[0]:
+            return []
+        mod = 10**9 + 7
+        uniqueLen = 26
+
+        def calculateHash(word):
+            rs = 0
+            for cha in word:
+                rs = (rs * uniqueLen + (ord(cha) - ord('a') + 1)) % mod
+            return rs
+
+        wordHashes = {calculateHash(word): word for word in words}
+        result = []
+        rowlen = len(board)
+        colen = len(board[0])
+        
+        dirs = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        def search(row, col, rs, seen):
+            seen[board[row][col]] = True
+            rs = (rs * uniqueLen + (ord(board[row][col]) - ord("a") + 1)) % mod
+            if rs in wordHashes:
+                result.append(wordHashes[rs])
+            for nRow, nCol in dirs:
+                r, c = nRow + row, nCol + col
+                isValid = 0 <= r < rowlen and 0 <= c < colen and board[r][c] not in seen
+                if isValid:
+                    search(r, c, rs, seen)
+            seen.pop(board[row][col])
+
+        for r in range(rowlen):
+            for c in range(colen):
+                search(r, c, 0, {})
+        return result

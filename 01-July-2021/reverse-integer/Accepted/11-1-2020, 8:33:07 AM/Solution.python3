@@ -1,0 +1,17 @@
+// https://leetcode.com/problems/reverse-integer
+
+class Solution:
+    def reverse(self, x: int) -> int:
+        sign = 1 if x >= 0 else -1
+        ans = 0
+        x = abs(x)
+        maxBeforeOverflow = (2**31 - 1) // 10
+        mod = (2**31 - 1) % 10
+        while x > 0:
+            if ans > maxBeforeOverflow or (ans == maxBeforeOverflow and x % 10 > mod):
+                return 0
+            ans = ans * 10 + x % 10
+            x //= 10
+
+        return ans * sign
+        

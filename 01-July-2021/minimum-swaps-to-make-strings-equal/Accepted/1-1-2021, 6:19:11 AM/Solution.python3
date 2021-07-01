@@ -1,0 +1,26 @@
+// https://leetcode.com/problems/minimum-swaps-to-make-strings-equal
+
+class Solution:
+    def minimumSwap(self, s1: str, s2: str) -> int:
+        ys = s1.count('y') + s2.count('y')
+        xs = s1.count('x') + s2.count('x')
+        if ys % 2 == 1 or xs % 2 == 1:
+            return -1
+        
+        pairs1 = 0
+        pairs2 = 0
+        for i in range(len(s1)):
+            if s1[i] == s2[i]:
+                continue
+            if s1[i] == 'x':
+                pairs1 += 1
+            else:
+                pairs2 += 1
+        res = 0
+        if pairs1 % 2 == 1:
+            pairs1 -= 1
+            pairs2 += 1
+            res += 1
+        res += pairs1 // 2
+        res += pairs2 // 2
+        return res

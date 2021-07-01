@@ -1,0 +1,41 @@
+// https://leetcode.com/problems/sell-diminishing-valued-colored-balls
+
+from sortedcontainers import SortedList
+from collections import Counter
+
+class Solution:
+    def maxProfit(self, inventory: List[int], orders: int) -> int:
+        count = dict(Counter(inventory))
+        count[0] = 0
+        MOD = 10**9 + 7
+        
+        balls = SortedList([[k, v] for k, v in count.items()])
+        # print(balls)
+        
+        ans = 0
+        while orders > 0:
+            # print(orders, balls, ans)
+            if orders <= balls[-1][1]:
+                ans = (ans + orders * balls[-1][0]) % MOD
+                return ans
+            k, cnt = balls[-1]
+            pk, pcnt = balls[-2]
+            
+            rounds = orders // cnt
+            mxRound = k - pk
+            if mxRound <= rounds:
+                cost = (mxRound * (k + k - mxRound + 1)) // 2
+                cost *= cnt
+                ans = (ans + cost) % MOD
+                orders -= mxRound * cnt
+                balls.pop()
+                balls[-1][1] += cnt
+            else:
+                cost = (rounds * (k + k - rounds + 1)) // 2
+                cost *= cnt
+                ans = (ans + cost) % MOD
+                orders -= rounds * cnt
+                balls[-1][0] = k - rounds
+        return ans
+            
+            

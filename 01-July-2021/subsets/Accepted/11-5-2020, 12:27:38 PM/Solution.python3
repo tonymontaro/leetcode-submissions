@@ -1,0 +1,16 @@
+// https://leetcode.com/problems/subsets
+
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        # O(2^n) time and space using bit-masking
+        result = []
+        n = len(nums)
+        highest = 1 << n
+        for i in range(highest):
+            res = []
+            for j in range(n):
+                if ((i & (1 << j)) != 0):
+                    res.append(nums[j])
+            result.append(res)
+        return result
+        

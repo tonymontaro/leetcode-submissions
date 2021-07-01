@@ -1,0 +1,14 @@
+// https://leetcode.com/problems/longest-repeating-substring
+
+class Solution:
+    def longestRepeatingSubstring(self, s: str) -> int:
+        """O(n^2) time | O(n) space"""
+        ans = 0
+        for i in range(1, len(s)):
+            seen = set()
+            for j in range(i, len(s) + 1):
+                w = s[j - i:j]
+                if w in seen:
+                    ans = i
+                seen.add(w)
+        return ans

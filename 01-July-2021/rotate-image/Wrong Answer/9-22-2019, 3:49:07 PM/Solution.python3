@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/rotate-image
+
+
+class Solution:
+    def rotate(self, matrix: list) -> None:
+        """
+        Do not return anything, modify matrix in-place instead.
+        """
+        n = len(matrix)
+        for i in range(n-1):
+            startVal = matrix[0][i]
+            current = start = (0, i)
+            while True:
+                next_ = self.getNext(current, n)
+                if next_ == start:
+                    matrix[current[0]][current[1]] = startVal
+                    break
+                self.swap(current, next_, matrix)
+                current = next_
+        return matrix
+    def swap(self, first, second, m):
+        m[first[0]][first[1]], m[second[0]][second[1]] = m[second[0]][second[1]], m[first[0]][first[1]]
+    
+    def getNext(self, current, n):
+        return (n-current[1]-1, current[0])

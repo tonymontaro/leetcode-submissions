@@ -1,0 +1,38 @@
+// https://leetcode.com/problems/number-of-ways-to-reconstruct-a-tree
+
+from collections import defaultdict
+
+class Solution:
+    def checkWays(self, pairs: List[List[int]]) -> int:
+        adj = defaultdict(set)
+        mx = 0
+        for a, b in pairs:
+            adj[a].add(b)
+            adj[b].add(a)
+            mx = max(mx, len(adj[a]), len(adj[b]))
+        n = len(adj)
+        if mx != n - 1:
+            return 0
+        
+        def get():
+            ans = None
+            for k in adj.keys():
+                if ans is None or len(adj[k]) > len(adj[ans]):
+                    ans = k
+            return ans
+        
+        while len(adj) > 1:
+            nxt = get()
+            mx = len(adj[nxt])
+            group = adj[nxt]
+            group.add(nxt)
+            for item in group:
+                if item == nxt:
+                    continue
+                if adj[item].difference(group):
+                    return 0
+                if len(adj[item]) == mx:
+                    return 2
+                adj[item].remove(nxt)
+            adj.pop(nxt)
+        return 1

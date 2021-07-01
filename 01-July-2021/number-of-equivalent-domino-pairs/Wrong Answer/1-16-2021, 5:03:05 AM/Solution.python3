@@ -1,0 +1,16 @@
+// https://leetcode.com/problems/number-of-equivalent-domino-pairs
+
+from collections import defaultdict
+
+class Solution:
+    def numEquivDominoPairs(self, dominoes: List[List[int]]) -> int:
+        seen = defaultdict(int)
+        ans = 0
+        for a, b in dominoes:
+            pair = (a, b)
+            ans += seen[pair]
+            seen[pair] += 1
+            seen[(b, a)] += 1
+        return ans
+            
+            

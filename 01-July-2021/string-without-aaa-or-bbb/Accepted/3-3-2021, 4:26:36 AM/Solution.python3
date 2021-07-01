@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/string-without-aaa-or-bbb
+
+class Solution:
+    def strWithout3a3b(self, a: int, b: int) -> str:
+        aa, bb = 'a', 'b'
+        mp = {'a': a, 'b': b}
+        if b > a:
+            aa, bb = 'b', 'a'
+        arr = []
+        while mp[aa] > 0 or mp[bb] > 0:
+            if mp[aa] > 0:
+                diff = 2 if mp[aa] - mp[bb] > 1 else 1
+                arr.append(aa * diff)
+                mp[aa] -= diff
+            if mp[bb] > 0:
+                diff = 2 if mp[bb] - mp[aa] > 1 else 1
+                arr.append(bb * diff)
+                mp[bb] -= diff
+        return "".join(arr)
+                

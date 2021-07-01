@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/count-number-of-homogenous-substrings
+
+class Solution:
+    def countHomogenous(self, s: str) -> int:
+        arr = []
+        prev = s[0]
+        left = 0
+        n = len(s)
+        for i, c in enumerate(s):
+            if c != prev:
+                arr.append((left, i-1))
+                left = i
+                prev = c
+        arr.append((left, n-1))
+        mod = 10**9 + 7
+        ans  = 0
+        for a, b in arr:
+            n = b-a+1
+            ans = (ans + (n * (n + 1))//2) % mod
+        return ans

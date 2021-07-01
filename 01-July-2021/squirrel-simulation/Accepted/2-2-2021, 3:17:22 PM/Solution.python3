@@ -1,0 +1,15 @@
+// https://leetcode.com/problems/squirrel-simulation
+
+from math import inf
+
+class Solution:
+    def minDistance(self, height: int, width: int, tree: List[int], squirrel: List[int], nuts: List[List[int]]) -> int:
+        savings = inf
+        total = 0
+        for r, c in nuts:
+            tDist = abs(tree[0] - r) + abs(tree[1] - c)
+            total += 2*tDist
+            sDist = abs(squirrel[0] - r) + abs(squirrel[1] - c)
+            savings = min(savings, sDist - tDist)
+        return total + savings
+        

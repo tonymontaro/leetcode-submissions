@@ -1,0 +1,28 @@
+// https://leetcode.com/problems/maximal-rectangle
+
+class Solution:
+    def maximalRectangle(self, grid) -> int:
+        """O(col * row) time | O(col) space"""
+        if not grid: return 0
+        heights = [int(i) for i in grid[0]]
+        total = self.largestRectangleArea(heights)
+        
+        for r in range(1, len(grid)):
+            heights = [heights[c]+1 if grid[r][c] == '1' else 0 for c in range(len(grid[0]))]
+            total = max(total, self.largestRectangleArea(heights))
+        return total
+        
+    def largestRectangleArea(self, arr):
+        """O(n) time and space"""
+        total = 0
+        stack = []
+        for i in range(len(arr)):
+            width_idx = i
+            while stack and stack[-1][0] > arr[i]:
+                val, w_idx = stack.pop()
+                total = max(total, val * (i - w_idx))
+                width_idx = w_idx
+            stack.append((arr[i], width_idx))
+        for val, w_idx in stack:
+            total = max(total, val * (len(arr) - w_idx))
+        return total

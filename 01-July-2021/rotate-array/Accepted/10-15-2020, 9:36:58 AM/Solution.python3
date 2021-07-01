@@ -1,0 +1,22 @@
+// https://leetcode.com/problems/rotate-array
+
+class Solution:
+    def rotate(self, nums: List[int], k: int) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        O(n) time | O(1) space
+        """
+        seen = {}
+        n = len(nums)
+        for i in range(n):
+            idx = i
+            num = nums[idx]
+            while (idx not in seen):
+                seen[idx] = True
+                nextIdx = (idx + k) % n
+                tmp = nums[nextIdx]
+                nums[nextIdx] = num
+                num = tmp
+                idx = nextIdx
+            
+        

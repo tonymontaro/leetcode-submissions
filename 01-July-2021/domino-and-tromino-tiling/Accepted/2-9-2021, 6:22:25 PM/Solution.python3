@@ -1,0 +1,35 @@
+// https://leetcode.com/problems/domino-and-tromino-tiling
+
+class Solution:
+    cache = {}
+    def numTilings(self, N: int) -> int:
+        mod = 10**9 + 7
+
+        def solve(a, b):
+            if a == 0 and b == 0:
+                return 1
+            if a < 0 or b < 0 or abs(a - b) > 2:
+                return 0
+            if (a, b) in self.cache:
+                return self.cache[(a, b)]
+            ans = 0
+            
+            if a == b:
+                ans = (ans + solve(a-1, b-1)) % mod
+                ans = (ans + solve(a-2, b-2)) % mod
+                ans = (ans + solve(a-1, b-2)) % mod
+                ans = (ans + solve(a-2, b-1)) % mod
+            if b - a == 1:
+                ans = (ans + solve(a-1, b-2)) % mod
+                ans = (ans + solve(a, b-2)) % mod
+            if a - b  == 1:
+                ans = (ans + solve(a-2, b-1)) % mod
+                ans = (ans + solve(a-2, b)) % mod
+            
+            
+            self.cache[(a, b)] = ans
+            return ans
+        
+        a = solve(N, N)
+        # print(cache)
+        return a

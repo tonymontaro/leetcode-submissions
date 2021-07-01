@@ -1,0 +1,16 @@
+// https://leetcode.com/problems/sort-colors
+
+from collections import Counter
+
+class Solution:
+    def sortColors(self, nums) -> None:
+        counts = Counter(nums)
+        current = 0
+        i = 0
+        while i < len(nums):
+            if counts[current] > 0:
+                nums[i] = current
+                counts[current] -= 1
+                i += 1
+            else:
+                current += 1

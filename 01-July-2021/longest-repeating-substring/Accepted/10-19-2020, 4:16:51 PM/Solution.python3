@@ -1,0 +1,41 @@
+// https://leetcode.com/problems/longest-repeating-substring
+
+class Solution:
+    def longestRepeatingSubstring(self, s: str) -> int:
+        # O(nlogn) time | O(n) space
+        nums = [ord(c) - ord('a') + 1 for c in s]
+        mod = 2**24
+        numUnique = 26
+        
+        lo = 1
+        hi = len(nums) - 1
+        ans = 0
+        while lo <= hi:
+            mid = (lo + hi) // 2
+            isValid = rabinKarp(nums, numUnique, mid, mod)
+            if isValid:
+                ans = mid
+                lo = mid + 1
+            else:
+                hi = mid - 1
+        return ans
+        
+
+
+def rabinKarp(nums, numUnique, ln, mod):
+    n = len(nums)
+    hsh = 0
+    for i in range(ln):
+        hsh = (hsh * numUnique + nums[i]) % mod
+
+    seen = set()
+    seen.add(hsh)
+    mult = pow(numUnique, ln - 1, mod)
+    for i in range(ln, n):
+        remove = nums[i - ln]
+        hsh = (hsh - remove * mult + mod) % mod
+        hsh = (hsh * numUnique + nums[i]) % mod
+        if hsh in seen:
+            return True
+        seen.add(hsh)
+    return False

@@ -1,0 +1,27 @@
+// https://leetcode.com/problems/search-a-2d-matrix
+
+class Solution:
+    def searchMatrix(self, grid: List[List[int]], target: int) -> bool:
+        # O(m * logn) time | O(1) space
+        if (len(grid) == 0 or len(grid[0]) == 0): return False
+
+        def binSearch(row, right):
+            if grid[row][0] > target: return -1
+            lo = 0
+            hi = right
+            valid = 0
+            while lo <= hi:
+                mid = (lo + hi) // 2
+                if grid[row][mid] <= target:
+                    valid = mid
+                    lo = mid + 1
+                else:
+                    hi = mid - 1
+            return valid
+        
+        right = len(grid[0]) - 1
+        for row in range(len(grid)):
+            right = binSearch(row, right)
+            if right == -1: return False
+            if grid[row][right] == target: return True
+        return False

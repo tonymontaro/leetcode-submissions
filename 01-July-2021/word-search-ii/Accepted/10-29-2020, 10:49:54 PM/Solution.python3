@@ -1,0 +1,49 @@
+// https://leetcode.com/problems/word-search-ii
+
+class Solution:
+    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
+        if not board or not words or not board[0]:
+            return []
+        rowlen = len(board)
+        colen = len(board[0])
+        dirs = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        result = set()
+
+        def search(row, col, node, seen):
+            cha = board[row][col]
+            if "*" in node[cha]:
+                result.add(node[cha]["*"])
+            seen[(row, col)] = True
+
+            for nRow, nCol in dirs:
+                r, c = row + nRow, col + nCol
+                isValid = 0 <= r < rowlen and 0 <= c < colen and (r, c) not in seen
+                isValid = isValid and board[r][c] in node[cha]
+                if isValid:
+                    search(r, c, node[cha], seen)
+            seen.pop((row, col))
+            return False
+        
+        root = {}
+        def process():
+            for r in range(rowlen):
+                for c in range(colen):
+                    if board[r][c] in root:
+                        search(r, c, root, {})
+                        if len(result) == len(words):
+                            return
+
+        def addToTrie(word):
+            node = root
+            for cha in word:
+                if cha not in node:
+                    node[cha] = {}
+                node = node[cha]
+            node["*"] = word
+
+        for word in words:
+            addToTrie(word)
+        process()
+        return sorted(result)
+        
+            

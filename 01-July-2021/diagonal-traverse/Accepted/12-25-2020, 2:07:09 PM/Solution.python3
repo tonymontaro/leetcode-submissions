@@ -1,0 +1,36 @@
+// https://leetcode.com/problems/diagonal-traverse
+
+class Solution:
+    def findDiagonalOrder(self, matrix: List[List[int]]) -> List[int]:
+        # O(m*n) time and space
+        if not matrix or not matrix[0]:
+            return []
+        rlen, clen = len(matrix), len(matrix[0])
+        res = []
+        r, c = 0, 0
+        while c < clen:
+            while r >= 0 and c < clen:
+                res.append(matrix[r][c])
+                r -= 1
+                c += 1
+            r += 1
+            c -= 1
+            if c + 1 < clen:
+                c += 1
+            else:
+                r += 1
+            if r >= rlen:
+                break
+            
+            while r < rlen and c >= 0:
+                res.append(matrix[r][c])
+                r += 1
+                c -= 1
+            r -= 1
+            c += 1
+            if r + 1 < rlen:
+                r += 1
+            else:
+                c += 1
+        return res
+        

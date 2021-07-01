@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/minimum-cost-tree-from-leaf-values
+
+class Solution:
+    def mctFromLeafValues(self, arr: List[int]) -> int:
+        ans = 0
+        mx = -1
+        if len(arr) % 2 == 1:
+            if arr[0] > arr[1]:
+                mx = arr[0]
+                arr = arr[1:]
+            else:
+                mx = arr[-1]
+                arr = arr[:-1]
+
+        while len(arr) > 1:
+            newArr = []
+            n = len(arr)
+            for i in range(0, n, 2):
+                if i + 1 < n:
+                    ans += arr[i] * arr[i + 1]
+                    newArr.append(max(arr[i], arr[i+1]))
+                else:
+                    newArr.append(arr[i])
+            arr = newArr
+        return ans if mx == -1 else (ans + arr[0]*mx)

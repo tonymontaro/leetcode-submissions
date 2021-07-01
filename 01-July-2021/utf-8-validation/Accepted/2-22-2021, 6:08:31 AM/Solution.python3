@@ -1,0 +1,28 @@
+// https://leetcode.com/problems/utf-8-validation
+
+class Solution:
+    def validUtf8(self, data: List[int]) -> bool:
+        data = [bin(x)[2:][-8:] for x in data]
+        data = [((8 - len(x)) * '0') + x for x in data]
+        # print(data)
+        idx = 0
+        n = len(data)
+        while idx < n:
+            if data[idx][0] == '0':
+                idx += 1
+                continue
+            j = 0
+            while data[idx][j] == '1':
+                j += 1
+                if j > 4:
+                    return False
+            # print(idx, j)
+            if idx + j - 1 >= n or j == 1:
+                return False
+            idx += 1
+            for _ in range(j - 1):
+                if data[idx][:2] != '10':
+                    return False
+                idx += 1
+            
+        return True

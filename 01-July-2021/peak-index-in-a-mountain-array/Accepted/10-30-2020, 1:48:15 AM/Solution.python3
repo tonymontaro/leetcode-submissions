@@ -1,0 +1,15 @@
+// https://leetcode.com/problems/peak-index-in-a-mountain-array
+
+class Solution:
+    def peakIndexInMountainArray(self, arr: List[int]) -> int:
+        lo = 0
+        hi = len(arr) - 1
+        while lo <= hi:
+            mid = (lo + hi) // 2
+            val = arr[mid]
+            if val > arr[mid - 1] and val > arr[mid + 1]:
+                return mid
+            elif val > arr[mid + 1]:
+                hi = mid
+            else:
+                lo = mid

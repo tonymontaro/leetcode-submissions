@@ -1,0 +1,24 @@
+// https://leetcode.com/problems/4sum
+
+from collections import defaultdict
+
+class Solution:
+    def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
+        # O(n^2) time and space
+        nums.sort()
+        seen = defaultdict(list)
+        result = set()
+        n = len(nums)
+        
+        for (i, num) in enumerate(nums):
+            
+            for j in range(i + 1, n):
+                diff = target - (num + nums[j])
+                if diff in seen:
+                    pair2 = [num, nums[j]]
+                    for pair in seen[diff]:
+                        result.add(tuple(pair + pair2))
+            
+            for j in range(0, i):
+                seen[num + nums[j]].append([nums[j], num])
+        return result

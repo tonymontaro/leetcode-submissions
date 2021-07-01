@@ -1,0 +1,8 @@
+// https://leetcode.com/problems/palindrome-permutation
+
+from collections import Counter
+
+class Solution:
+    def canPermutePalindrome(self, s: str) -> bool:
+        counts = Counter(s)
+        return sum(x % 2 for x in counts.values()) <= 1

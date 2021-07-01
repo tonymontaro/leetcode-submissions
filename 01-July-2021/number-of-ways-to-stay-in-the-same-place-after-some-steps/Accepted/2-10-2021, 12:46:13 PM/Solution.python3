@@ -1,0 +1,27 @@
+// https://leetcode.com/problems/number-of-ways-to-stay-in-the-same-place-after-some-steps
+
+class Solution:
+    def numWays(self, steps: int, arrLen: int) -> int:
+        mod = 10**9 + 7
+        
+        cache = {}
+        
+        def solve(idx, rem):
+            if idx == 0 and rem == 0:
+                return 1
+            if idx > rem or idx < 0 or rem == 0 or idx >= arrLen:
+                return 0
+            
+            if (idx, rem) in cache:
+                return cache[(idx, rem)]
+            
+
+            ans = solve(idx, rem-1) # stay
+            ans = (ans + solve(idx+1, rem-1)) % mod # go right
+            ans = (ans + solve(idx-1, rem-1)) % mod # go left
+            
+            cache[(idx, rem)] = ans
+            return ans
+        
+        return solve(0, steps)
+            

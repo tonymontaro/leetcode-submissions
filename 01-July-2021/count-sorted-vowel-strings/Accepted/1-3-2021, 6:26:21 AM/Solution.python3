@@ -1,0 +1,21 @@
+// https://leetcode.com/problems/count-sorted-vowel-strings
+
+class Solution:
+    def countVowelStrings(self, n: int) -> int:
+        vowels = 'aeiou'
+        indices = {cha: i for i, cha in enumerate(vowels)}
+        cache = [['' for _ in range(5)] for _ in range(n)]
+        
+        def solve(idx, cha):
+            if idx >= n - 1:
+                return 1
+            if cache[idx][indices[cha]] != '':
+                return cache[idx][indices[cha]]
+            ans = 0
+            for c in vowels:
+                if cha <= c:
+                    ans += solve(idx + 1, c)
+            cache[idx][indices[cha]] = ans
+            return ans
+        
+        return sum([solve(0, c) for c in vowels])

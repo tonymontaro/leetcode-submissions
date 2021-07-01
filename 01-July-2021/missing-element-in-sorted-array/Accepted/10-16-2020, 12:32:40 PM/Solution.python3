@@ -1,0 +1,26 @@
+// https://leetcode.com/problems/missing-element-in-sorted-array
+
+class Solution:
+    def missingElement(self, nums: List[int], k: int) -> int:
+        # O(logn) time | O(1) space
+        n = len(nums)
+        lo = 0
+        hi = n - 1
+        valid = 0
+        while lo <= hi:
+            mid = (lo + hi) // 2
+            missing = findMissing(nums, mid)
+            if missing < k:
+                valid = mid
+                lo = mid + 1
+            else:
+                hi = mid - 1
+
+        diff = k - findMissing(nums, valid)
+        return nums[valid] + diff
+
+def findMissing(nums, idx):
+    expected = nums[idx] - nums[0] + 1
+    actual = idx + 1
+    return expected - actual
+        

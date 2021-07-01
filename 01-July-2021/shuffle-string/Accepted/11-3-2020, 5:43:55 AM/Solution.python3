@@ -1,0 +1,7 @@
+// https://leetcode.com/problems/shuffle-string
+
+class Solution:
+    def restoreString(self, s: str, indices: List[int]) -> str:
+        pair = dict(zip(indices, s))
+        return "".join([pair[i] for i in range(len(s))])
+        

@@ -1,0 +1,26 @@
+// https://leetcode.com/problems/dice-roll-simulation
+
+import math
+
+class Solution:
+    def dieSimulator(self, N: int, rollMax: List[int]) -> int:
+        mod = 10**9 + 7
+        cache = {}
+        def solve(n, last, consec):
+            if n == 0:
+                return 1
+            if (n, last, consec) in cache:
+                return cache[(n, last, consec)]
+            
+            ans = 0
+            for i in range(6):
+                if i == last:
+                    if consec < rollMax[i]:
+                        ans = (ans + solve(n-1, i, consec+1)) % mod
+                    continue
+                ans = (ans + solve(n-1, i, 1)) % mod
+            
+            cache[(n, last, consec)] = ans
+            return ans
+        
+        return solve(N, -1, 0)        

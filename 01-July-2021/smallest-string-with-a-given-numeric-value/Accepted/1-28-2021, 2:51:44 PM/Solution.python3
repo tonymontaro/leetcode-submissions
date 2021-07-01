@@ -1,0 +1,16 @@
+// https://leetcode.com/problems/smallest-string-with-a-given-numeric-value
+
+from string import ascii_lowercase as ap
+
+class Solution:
+    def getSmallestString(self, n: int, k: int) -> str:
+        ans  = []
+        while n > 0:
+            other = (n - 1) * 26
+            for i in range(1, 27):
+                if (k - i) <= other:
+                    ans.append(ap[i-1])
+                    k -= i
+                    break
+            n -= 1
+        return ''.join(ans)

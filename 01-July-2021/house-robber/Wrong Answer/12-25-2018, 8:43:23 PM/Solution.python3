@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/house-robber
+
+class Solution:
+    def rob(self, houses):
+        pointer = -2
+        result = 0
+        while pointer < len(houses):
+            selection = houses[pointer+2:pointer+5]
+            if len(selection) == 0:
+                break
+            elif len(selection) < 3:
+                result += max(selection)
+                break
+            else:
+                a, b, c = selection
+                if b >= a + c:
+                    result += b
+                    pointer += 3
+                else:
+                    result += a
+                    pointer += 2
+        return result
+        

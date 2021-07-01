@@ -1,0 +1,30 @@
+// https://leetcode.com/problems/find-root-of-n-ary-tree
+
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, val=None, children=None):
+        self.val = val
+        self.children = children if children is not None else []
+"""
+
+class Solution:
+    def findRoot(self, tree: List['Node']) -> 'Node':
+        # O(n) time and space
+        seen = {}
+        root = None
+        
+        for node in tree:
+            if node.val in seen:
+                continue
+            seen[node.val] = 1
+            root = node
+            stack = [node]
+            while stack:
+                nn = stack.pop()
+                for child in nn.children:
+                    if child.val not in seen:
+                        seen[child.val] = 1
+                        stack.append(child)
+        return root
+            

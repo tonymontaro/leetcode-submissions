@@ -1,0 +1,24 @@
+// https://leetcode.com/problems/k-empty-slots
+
+class Solution:
+    def kEmptySlots(self, bulbs: List[int], k: int) -> int:
+        n = len(bulbs)
+        days = [0] * (n + 1)
+        for d in range(n):
+            days[bulbs[d]] = d + 1
+        # print(days)
+        days[0] = math.inf
+        ans = math.inf
+        lo = 0
+        hi = lo + k + 1
+        for bulb in range(1, n + 1):
+            d = days[bulb]
+            if d > days[lo] and d > days[hi]:
+                continue
+            if bulb == hi:
+                ans = min(ans, max(days[lo], days[hi]))
+            lo = bulb
+            hi = lo + k + 1
+            if hi >= n + 1:
+                break
+        return ans if ans != math.inf else -1

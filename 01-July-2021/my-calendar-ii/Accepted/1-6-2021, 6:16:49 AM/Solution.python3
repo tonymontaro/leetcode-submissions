@@ -1,0 +1,28 @@
+// https://leetcode.com/problems/my-calendar-ii
+
+from sortedcontainers import SortedList
+from collections import deque
+
+class MyCalendarTwo:
+
+    def __init__(self):
+        self.arr = SortedList()
+        
+
+    def book(self, start: int, end: int) -> bool:
+        deq = deque()
+        for x, y in self.arr:
+            if end <= x or start >= y:
+                continue
+            while deq and x >= deq[0][1]:
+                deq.popleft()
+            deq.append((x, y))
+            if len(deq) >= 2:
+                return False
+        self.arr.add((start, end))
+        return True
+
+
+# Your MyCalendarTwo object will be instantiated and called as such:
+# obj = MyCalendarTwo()
+# param_1 = obj.book(start,end)

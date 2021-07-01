@@ -1,0 +1,28 @@
+// https://leetcode.com/problems/rle-iterator
+
+class RLEIterator:
+
+    def __init__(self, A: List[int]):
+        self.arr = A
+        self.idx = 0
+
+    def next(self, n: int) -> int:
+        while self.idx < len(self.arr):
+            idx = self.idx
+
+            val = self.arr[idx + 1]
+            rm = min(n, self.arr[idx])
+            n -= rm
+            self.arr[idx] -= rm
+            if self.arr[idx] == 0:
+                idx += 2
+            self.idx = idx
+            if n == 0:
+                return val
+        return -1
+        
+
+
+# Your RLEIterator object will be instantiated and called as such:
+# obj = RLEIterator(A)
+# param_1 = obj.next(n)

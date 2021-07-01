@@ -1,0 +1,13 @@
+// https://leetcode.com/problems/sort-integers-by-the-number-of-1-bits
+
+class Solution:
+    def sortByBits(self, arr: List[int]) -> List[int]:
+        def bitCount(n):
+            res = 0
+            while n > 0:
+                res += (1 & n)
+                n >>= 1
+            return res
+        
+        arr = [(bitCount(num), num) for num in arr]
+        return [a[1] for a in sorted(arr)]

@@ -1,0 +1,12 @@
+// https://leetcode.com/problems/happy-number
+
+class Solution:
+    def isHappy(self, n: int) -> bool:
+        seen = {}
+        while True:
+            if n in seen:
+                return False
+            seen[n] = True
+            n = sum(int(i)**2 for i in str(n))
+            if n == 1:
+                return True

@@ -1,0 +1,26 @@
+// https://leetcode.com/problems/arithmetic-slices
+
+class Solution:
+    def numberOfArithmeticSlices(self, arr: List[int]) -> int:
+        left = 0
+        n = len(arr)
+        c = 0
+        ans = 0
+        while left < n - 1:
+            if c > 100:
+                break
+            c += 1
+            idx = left + 1
+            diff = arr[idx] - arr[idx - 1]
+            while idx < n and arr[idx] - arr[idx-1] == diff:
+                idx += 1
+            idx -= 1
+            a = idx - left + 1
+            if a >= 3:
+                a -= 2
+                ans += (a * (a + 1))//2
+            left = idx
+        return ans
+            
+            
+            

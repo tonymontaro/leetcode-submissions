@@ -1,0 +1,15 @@
+// https://leetcode.com/problems/broken-calculator
+
+from collections import deque
+
+class Solution:
+    def brokenCalc(self, x: int, y: int) -> int:
+        steps = 0
+        while y > x:
+            steps += 1
+            if y % 2 == 0:
+                y //= 2
+            else:
+                y += 1
+        return steps + (x - y)
+        

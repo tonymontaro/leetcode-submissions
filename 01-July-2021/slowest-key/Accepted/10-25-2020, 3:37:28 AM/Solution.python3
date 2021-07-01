@@ -1,0 +1,16 @@
+// https://leetcode.com/problems/slowest-key
+
+class Solution:
+    def slowestKey(self, releaseTimes: List[int], keysPressed: str) -> str:
+        prev = 0
+        best = None
+        val = 0
+        for i, cha in enumerate(keysPressed):
+            time = releaseTimes[i]
+            if (time - prev) >= val:
+                best = cha if (best is None or time - prev > val) else max(best, cha)
+                val = time - prev
+            # print(cha, time - prev)
+            prev = time
+        return best
+        

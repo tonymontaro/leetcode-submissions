@@ -1,0 +1,14 @@
+// https://leetcode.com/problems/self-dividing-numbers
+
+class Solution:
+    def selfDividingNumbers(self, left: int, right: int) -> List[int]:
+        def isSelfDividing(num):
+            n = num
+            while n > 0:
+                d = n % 10
+                n //= 10
+                if d == 0 or num % d != 0:
+                    return False
+            return True
+        return [x for x in range(left, right + 1) if isSelfDividing(x)]
+            

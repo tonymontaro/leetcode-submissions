@@ -1,0 +1,19 @@
+// https://leetcode.com/problems/minimum-increment-to-make-array-unique
+
+from collections import Counter
+
+class Solution:
+    def minIncrementForUnique(self, arr: List[int]) -> int:
+        if not arr:
+            return 0
+        count = Counter(arr)
+        left = min(count.keys())
+        ans = 0
+        for k in sorted(count.keys()):
+            diff = count[k] - 1
+            for _ in range(diff):
+                while left in count or left < k:
+                    left += 1
+                ans += left - k
+                left += 1
+        return ans

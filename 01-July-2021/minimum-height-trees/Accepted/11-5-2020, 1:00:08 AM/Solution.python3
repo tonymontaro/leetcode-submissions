@@ -1,0 +1,26 @@
+// https://leetcode.com/problems/minimum-height-trees
+
+class Solution:
+    def findMinHeightTrees(self, n: int, edges: List[List[int]]) -> List[int]:
+        if n <= 2:
+            return list(range(n))
+        
+        adj = [{} for _ in range(n)]
+        for a, b in edges:
+            adj[a][b] = True
+            adj[b][a] = True
+        
+        stack = [i for i in range(n) if len(adj[i]) == 1]
+
+        while stack:
+            if n <= 2:
+                return stack
+            n -= len(stack)
+            newStack = []
+            for node in stack:
+                for child in adj[node]:
+                    adj[child].pop(node)
+                    if len(adj[child]) == 1:
+                        newStack.append(child)
+            stack = newStack
+        

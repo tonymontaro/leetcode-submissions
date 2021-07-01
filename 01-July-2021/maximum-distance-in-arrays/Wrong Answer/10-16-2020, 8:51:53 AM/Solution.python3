@@ -1,0 +1,12 @@
+// https://leetcode.com/problems/maximum-distance-in-arrays
+
+from math import inf
+
+class Solution:
+    def maxDistance(self, arrays: List[List[int]]) -> int:
+        minNum = inf
+        maxNum = -inf
+        for arr in arrays:
+            minNum = min(minNum, arr[0])
+            maxNum = max(maxNum, arr[-1])
+        return maxNum - minNum

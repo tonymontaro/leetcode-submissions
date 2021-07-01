@@ -1,0 +1,14 @@
+// https://leetcode.com/problems/triangle
+
+class Solution:
+    def minimumTotal(self, triangle: List[List[int]]) -> int:
+        n = len(triangle)
+        rowLen = 2
+        prev = triangle[0]
+        for r in range(n - 1):
+            dp = [math.inf] * (len(prev) + 1)
+            for c, num in enumerate(prev):
+                dp[c] = min(dp[c], num + triangle[r+1][c])
+                dp[c + 1] = min(dp[c + 1], num + triangle[r+1][c + 1])
+            prev = dp
+        return min(prev)

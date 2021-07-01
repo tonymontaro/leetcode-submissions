@@ -1,0 +1,13 @@
+// https://leetcode.com/problems/valid-square
+
+class Solution:
+    def validSquare(self, p1: List[int], p2: List[int], p3: List[int], p4: List[int]) -> bool:
+        dist = []
+        x1, y1 = p1
+        for x2, y2 in [p2, p3, p4]:
+            a, b = x2 - x1, y2 - y1
+            dist.append(a*a + b*b)
+        dist.sort()
+        if dist[0] != dist[1] or dist[1] == dist[2]:
+            return False
+        return dist[0] * 2 == dist[2]

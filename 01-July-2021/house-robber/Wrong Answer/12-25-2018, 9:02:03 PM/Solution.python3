@@ -1,0 +1,16 @@
+// https://leetcode.com/problems/house-robber
+
+class Solution:
+    def rob(self, houses, cache={}):
+        if not houses:
+            return 0
+        ln = len(houses)
+        if ln in cache:
+            pass
+        elif ln <= 2:
+            cache[ln] = max(houses)
+        else:
+            first = houses[0] + self.rob(houses[2:], cache)
+            second = houses[1] + self.rob(houses[3:], cache)
+            cache[ln] = max(first, second)
+        return cache[ln]

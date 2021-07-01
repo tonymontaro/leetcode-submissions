@@ -1,0 +1,38 @@
+// https://leetcode.com/problems/maximum-score-from-removing-substrings
+
+class Solution:
+    def maximumGain(self, s: str, x: int, y: int) -> int:
+        cost = {'a': x, 'b': y}
+        def ab(start, end, seen, ch):
+            ans = 0
+            stack = []
+            for i in range(start, end):
+                if i in seen:
+                    continue
+                if s[i] == ch:
+                    stack.append(i)
+                elif stack:
+                    seen[i] = 1
+                    seen[stack.pop()] = 1
+                    ans += cost[ch]
+            return ans
+        seen = {}
+        idx = 0
+        ans = 0
+        while idx < len(s):
+            if s[idx] not in ['a', 'b']:
+                idx += 1
+                continue
+            start = idx
+            while idx < len(s) and s[idx] in ['a', 'b']:
+                idx += 1
+            if x >= y:
+                ans += ab(start, idx, seen, 'a')
+                ans += ab(start, idx, seen, 'b')
+            else:
+                ans += ab(start, idx, seen, 'b')
+                ans += ab(start, idx, seen, 'a')
+        return ans
+        
+        
+        

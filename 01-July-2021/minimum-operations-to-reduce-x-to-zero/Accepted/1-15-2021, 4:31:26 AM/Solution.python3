@@ -1,0 +1,32 @@
+// https://leetcode.com/problems/minimum-operations-to-reduce-x-to-zero
+
+from math import inf
+
+class Solution:
+    def minOperations(self, nums: List[int], x: int) -> int:
+        # O(n) time | O(1) space
+        n = len(nums)
+        if x > sum(nums):
+            return -1
+        
+        total = 0
+        ans = inf
+        left = 0
+        for i, num in enumerate(nums):
+            total += num
+            left = i
+            if total >= x:
+                if total == x:
+                    ans = i + 1
+                break
+        right = n - 1
+        while left >= 0:
+            total -= nums[left]
+            left -= 1
+            while (total < x):
+                total += nums[right]
+                right -= 1
+            if total == x:
+                ans = min(ans, left + n - right)
+        return ans if ans != inf else -1
+        

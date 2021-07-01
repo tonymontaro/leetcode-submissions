@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/search-a-2d-matrix
+
+class Solution:
+    def searchMatrix(self, grid: List[List[int]], target: int) -> bool:
+        # O(log(n*m)) time | O(1) space
+        if (len(grid) == 0 or len(grid[0]) == 0): return False
+        
+        lo = 0
+        rowlen, colen = len(grid), len(grid[0])
+        hi = rowlen * colen - 1
+        valid = 0
+        while (lo <= hi):
+            mid = (lo + hi) // 2
+            num = grid[mid//colen][mid % colen]
+            if (num == target): return True
+            elif (num < target): lo = mid + 1
+            else: hi = mid - 1
+        return False

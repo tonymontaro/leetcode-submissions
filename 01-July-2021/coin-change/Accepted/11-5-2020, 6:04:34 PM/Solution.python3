@@ -1,0 +1,19 @@
+// https://leetcode.com/problems/coin-change
+
+from math import inf
+
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        # O(n * m) time | O(m) space
+        prev = [inf] * (amount + 1)
+        prev[0] = 0
+
+        for coin in coins:
+            dp = [-1] * (amount + 1)
+            for i in range(amount + 1):
+                if i < coin:
+                    dp[i] = prev[i]
+                else:
+                    dp[i] = min(prev[i], dp[i - coin] + 1)
+            prev = dp
+        return prev[-1] if prev[-1] != inf else -1

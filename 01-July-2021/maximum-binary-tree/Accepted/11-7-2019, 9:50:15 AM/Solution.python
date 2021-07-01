@@ -1,0 +1,24 @@
+// https://leetcode.com/problems/maximum-binary-tree
+
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def constructMaximumBinaryTree(self, nums):
+        """O(N) time | O(1) space"""
+        stack = []
+        for num in nums:
+            last = None
+            num = TreeNode(num)
+            while stack and num.val > stack[-1].val:
+                last = stack.pop()
+            if last:
+                num.left = last
+            if stack:
+                stack[-1].right = num
+            stack.append(num)
+        return stack[0]

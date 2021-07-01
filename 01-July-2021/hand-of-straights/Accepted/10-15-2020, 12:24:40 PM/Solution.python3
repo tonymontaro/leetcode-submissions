@@ -1,0 +1,19 @@
+// https://leetcode.com/problems/hand-of-straights
+
+from collections import Counter, deque
+
+class Solution:
+    def isNStraightHand(self, hand: List[int], w: int) -> bool:
+        # O(nlogn) time and space | simulation
+        if (len(hand) % w != 0): return False
+        counts = Counter(hand)
+        deq = deque(sorted(counts.keys()))
+        while deq:
+            num = deq[0]
+            for i in range(w):
+                if (num not in counts or counts[num] <= 0): return False
+                counts[num] -= 1
+                num += 1
+            while (deq and counts[deq[0]] == 0):
+                deq.popleft()
+        return True

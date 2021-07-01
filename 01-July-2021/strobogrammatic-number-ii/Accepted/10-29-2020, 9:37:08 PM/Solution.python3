@@ -1,0 +1,24 @@
+// https://leetcode.com/problems/strobogrammatic-number-ii
+
+class Solution:
+    def findStrobogrammatic(self, n: int) -> List[str]:
+        # O(5^n) time and space
+        if n <= 0:
+            return [""]
+        grid = []
+        grid.append(["0", "1", "8"])
+        if n == 1:
+            return grid[-1]
+        grid.append(["00", "11", "69", "88", "96"])
+        pairs = grid[-1]
+        prev = 1
+        for i in range(2, n):
+            prev = len(grid[-2])
+            rs = []
+            for pair in pairs:
+                for num in grid[i - 2]:
+                    rs.append(pair[0] + num + pair[1])
+            grid.append(rs)
+
+        return grid[n - 1][prev:]
+        

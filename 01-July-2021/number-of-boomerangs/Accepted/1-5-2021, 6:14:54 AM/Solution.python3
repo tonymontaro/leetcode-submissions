@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/number-of-boomerangs
+
+from collections import defaultdict
+
+class Solution:
+    def numberOfBoomerangs(self, points: List[List[int]]) -> int:
+        n = len(points)
+        dists = [defaultdict(int) for _ in range(n)]
+        
+        for i, (a, b) in enumerate(points):
+            for j, (x, y) in enumerate(points):
+                dist = (a - x)**2 + (b - y)**2
+                dists[i][dist] += 1
+        
+        ans = 0
+        for i, (a, b) in enumerate(points):
+            for j, (x, y) in enumerate(points):
+                dist = (a - x)**2 + (b - y)**2
+                ans += dists[j][dist] - 1
+        return ans

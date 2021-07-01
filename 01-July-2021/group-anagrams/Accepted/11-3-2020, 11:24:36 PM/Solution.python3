@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/group-anagrams
+
+from collections import defaultdict, Counter
+from string import ascii_lowercase
+
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        # O(n * w) time : n -> len(strs), w -> average word length
+        cache = defaultdict(list)
+        for word in strs:
+            count = Counter(word)
+            anagramHash = []
+            for cha in ascii_lowercase:
+                if cha in count:
+                    anagramHash.append(cha + str(count[cha]))
+            cache["".join(anagramHash)].append(word)
+
+        return list(cache.values())

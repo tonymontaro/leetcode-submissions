@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/shuffle-an-array
+
+from random import choice
+class Solution:
+    def __init__(self, arr):
+        self.original = arr
+        self.shuffled = list(arr)
+    def shuffle(self):
+        seen = set()
+        self.shuffled = []
+        orig = range(len(self.original))
+        while len(seen) < len(self.original):
+            selected = choice(orig)
+            if selected not in seen:
+                seen.add(selected)
+                self.shuffled.append(self.original[selected])
+        return self.shuffled
+    def reset(self):
+        self.shuffled = list(self.original)
+        return self.shuffled

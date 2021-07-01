@@ -1,0 +1,36 @@
+// https://leetcode.com/problems/tree-of-coprimes
+
+from math import gcd, inf
+from collections import defaultdict
+
+class Solution:
+    def getCoprimes(self, nums: List[int], edges: List[List[int]]) -> List[int]:
+        visited = {}
+        n = len(nums)
+        result = [0] * n
+        adj = defaultdict(list)
+        for a, b in edges:
+            adj[a].append(b)
+            adj[b].append(a)
+        
+        def solve(node, depth, seen):
+            visited[node] = 1
+            val = nums[node]
+            ans = -1
+            d = inf
+            for k in seen.keys():
+                if len(seen[k]) == 0:
+                    continue
+                if gcd(val, k) == 1 and (depth - seen[k][-1][1]) < d:
+                    d = depth - seen[k][-1][1]
+                    ans = seen[k][-1][0]
+            seen[val].append((node, depth))
+            result[node] = ans
+            for child in adj[node]:
+                if child in visited:
+                    continue
+                solve(child, depth + 1, seen)
+            seen[val].pop()
+        seen = defaultdict(list)
+        solve(0, 0, seen)
+        return result

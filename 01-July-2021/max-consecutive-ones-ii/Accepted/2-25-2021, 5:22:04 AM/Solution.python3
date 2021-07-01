@@ -1,0 +1,13 @@
+// https://leetcode.com/problems/max-consecutive-ones-ii
+
+class Solution:
+    def findMaxConsecutiveOnes(self, nums: List[int]) -> int:
+        left = -1
+        flip = -1
+        ans = 0
+        for i, num in enumerate(nums):
+            if num == 0:
+                left = flip
+                flip = i
+            ans = max(ans, i - left)
+        return ans

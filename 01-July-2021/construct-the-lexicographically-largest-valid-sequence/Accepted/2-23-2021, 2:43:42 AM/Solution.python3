@@ -1,0 +1,36 @@
+// https://leetcode.com/problems/construct-the-lexicographically-largest-valid-sequence
+
+class Solution:
+    def constructDistancedSequence(self, n: int) -> List[int]:
+        nums = n
+        n = n * 2 - 1
+        self.ans = []
+        def solve(idx, seen, arr):
+            # print(idx, seen, arr)
+            if idx >= n:
+                self.ans = list(arr)
+                return True
+            if arr[idx] != -1:
+                return solve(idx + 1, seen, arr)
+            
+            for i in range(nums, 0, -1):
+                if i in seen:
+                    continue
+                if i > 1 and idx + i >= n:
+                    return False
+                if i > 1 and arr[idx + i] != -1:
+                    continue
+                seen.add(i)
+                arr[idx] = i
+                if i > 1:
+                    arr[idx + i] = i
+                if solve(idx + 1, seen, arr):
+                    return True
+                seen.remove(i)
+                arr[idx] = -1
+                if i > 1:
+                    arr[idx + i] = -1
+            return False
+        
+        solve(0, set(), [-1] * n)
+        return self.ans

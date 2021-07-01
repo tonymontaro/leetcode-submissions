@@ -1,0 +1,34 @@
+// https://leetcode.com/problems/my-calendar-ii
+
+class MyCalendarTwo:
+    
+    def __init__(self):
+        self.arr = []    
+
+    def book(self, start: int, end: int) -> bool:
+        # O(n^2) time | O(n) space
+        cnt = 0
+        intersects = []
+        for s, e in self.arr:
+            if start >= e or end <= s: continue
+            ee = min(end, e) if end != e else e - 1
+            intersects.append((max(start, s), ee))
+        if intersects:
+            intersects.sort()
+            # print(start, end, intersects)
+            ps, pe = intersects[0]
+            for i in range(1, len(intersects)):
+                s1, e1 = intersects[i]
+                if s1 < pe:
+                    return False
+                ps, pe = s1, e1
+
+        self.arr.append((start, end))
+        return True
+
+
+# Your MyCalendarTwo object will be instantiated and called as such:
+# obj = MyCalendarTwo()
+# param_1 = obj.book(start,end)
+
+# [null,true,true,true,true,false,true,true,false,true,false,true,false,true,false,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false]

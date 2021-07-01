@@ -1,0 +1,12 @@
+// https://leetcode.com/problems/count-primes
+
+class Solution:
+    def countPrimes(self, num):
+        non_primes = set()
+        for prime in range(2, math.ceil(math.sqrt(num))):
+            if prime not in non_primes:
+                current = prime * 2
+                while current < num:
+                    non_primes.add(current)
+                    current += prime
+        return num - len(non_primes) - 2 if num > 2 else 0

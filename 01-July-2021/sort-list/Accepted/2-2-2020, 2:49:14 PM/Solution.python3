@@ -1,0 +1,32 @@
+// https://leetcode.com/problems/sort-list
+
+class Solution:
+    def sortList(self, node: ListNode) -> ListNode:
+        """O(nlogn) time"""
+        if not node or node.next is None: return node
+        
+        slow = node
+        fast = node.next
+        
+        while fast is not None:
+            if fast.next is None: break
+            slow = slow.next
+            fast = fast.next.next
+        
+        right = self.sortList(slow.next)
+        slow.next = None
+        left = self.sortList(node)
+        return self.mergeTwoLists(left, right)
+    
+    def mergeTwoLists(self, l1, l2):
+        def merge(root, l1, l2):
+            if not l1 and not l2:
+                return
+            if (not l1 and l2) or (l1 and l2 and l1.val > l2.val):
+                l1, l2 = l2, l1
+            if root:
+                root.next = l1
+            merge(l1, l2, l1.next)
+            return l1
+        
+        return merge(None, l1, l2)

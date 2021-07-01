@@ -1,0 +1,13 @@
+// https://leetcode.com/problems/consecutive-characters
+
+class Solution:
+    def maxPower(self, s: str) -> int:
+        # O(n) time | O(1) space
+        idx = 0
+        ans = 0
+        while idx < len(s):
+            prev = idx
+            while idx < len(s) and s[idx] == s[prev]:
+                idx += 1
+            ans = max(ans, idx - prev)
+        return ans

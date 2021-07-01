@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/find-kth-largest-xor-coordinate-value
+
+class Solution:
+    def kthLargestValue(self, grid: List[List[int]], k: int) -> int:
+        rlen, clen = len(grid), len(grid[0])
+        prev = [0] * clen
+        ans = []
+        for r in range(rlen):
+            pp = grid[r][0]
+            current = [0] * clen
+            current[0] = pp ^ prev[0]
+            ans.append(current[0])
+            for c in range(1, clen):
+                pp = pp ^ grid[r][c]
+                current[c] = pp ^ prev[c]
+                ans.append(current[c])
+            prev = current
+        ans.sort(reverse=True)
+        return ans[k-1]
+        

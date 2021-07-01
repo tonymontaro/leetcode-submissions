@@ -1,0 +1,10 @@
+// https://leetcode.com/problems/smallest-range-i
+
+class Solution:
+    def smallestRangeI(self,arr: List[int], k: int) -> int:
+        mx = max(arr)
+        mn = min(arr)
+        
+        up = min(mx, mn + k)
+        down = max(up, mx - k)
+        return down - up

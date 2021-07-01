@@ -1,0 +1,19 @@
+// https://leetcode.com/problems/min-stack
+
+class MinStack:
+    def __init__(self):
+        self.stack = []
+        self.min = float('inf')
+        self.getMin = lambda: self.min
+    def push(self, val):
+        self.min = min(self.min, val)
+        self.stack.append(val)
+    def pop(self):
+        if self.stack:
+            last = self.stack.pop()
+            if last == self.min and self.stack:
+                self.min = min(self.stack)
+            return last
+    def top(self):
+        if self.stack:
+            return self.stack[-1]

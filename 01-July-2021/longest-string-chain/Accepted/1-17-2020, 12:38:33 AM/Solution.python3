@@ -1,0 +1,28 @@
+// https://leetcode.com/problems/longest-string-chain
+
+class Solution:
+    def longestStrChain(self, words) -> int:
+        """O(n^2) time | O(n) space"""
+        self.cache = {}
+        self.words = set(words)
+        best = 0
+        for word in words:
+            best = max(best, self.solve(word))
+        return best
+    
+    def solve(self, word):
+
+        if word not in self.cache:
+            if len(word) == 1:
+                self.cache[word] = [1, None]
+            else:
+                result = 0
+                self.cache[word] = [1, None]
+                for i in range(len(word)):
+                    new_word = word[:i] + word[i+1:]
+                    if new_word in self.words:
+                        rs = self.solve(new_word)
+                        if rs > result:
+                            result = rs
+                            self.cache[word] = [rs+1, i]
+        return self.cache[word][0]

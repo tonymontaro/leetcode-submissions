@@ -1,0 +1,15 @@
+// https://leetcode.com/problems/pairs-of-songs-with-total-durations-divisible-by-60
+
+from collections import Counter
+
+class Solution:
+    def numPairsDivisibleBy60(self, time: List[int]) -> int:
+        counts = Counter([num % 60 for num in time])
+        ans = 0
+        for k, c  in counts.items():
+            other = (60 - k) % 60
+            if other == k:
+                ans += (c - 1) * c
+            else:
+                ans += c * counts.get(other, 0)
+        return ans // 2

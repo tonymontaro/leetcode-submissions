@@ -1,0 +1,14 @@
+// https://leetcode.com/problems/min-cost-climbing-stairs
+
+class Solution:
+    def minCostClimbingStairs(self, costs) -> int:
+        """O(n) time | O(1) space"""
+        two_step_back = 0
+        one_step_back = costs[0]
+        best_cost = float('inf')
+        for i in range(1, len(costs)):
+            cost = costs[i]
+            best_cost = min((two_step_back + cost), (one_step_back + cost))
+            two_step_back = one_step_back
+            one_step_back = best_cost
+        return min(one_step_back, two_step_back)

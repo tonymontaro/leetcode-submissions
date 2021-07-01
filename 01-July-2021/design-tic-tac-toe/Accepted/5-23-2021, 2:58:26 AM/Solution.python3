@@ -1,0 +1,43 @@
+// https://leetcode.com/problems/design-tic-tac-toe
+
+class TicTacToe:
+
+    def __init__(self, n: int):
+        """
+        Initialize your data structure here.
+        """
+        self.n = n
+        self.rows = {}
+        self.cols = {}
+        self.diagonals = {}
+        for i in range(n):
+            self.rows[i] = {"players": set(), "count": 0}
+            self.cols[i] = {"players": set(), "count": 0}
+            if i <= 1:
+                self.diagonals[i] = {"players": set(), "count": 0}
+
+    def add(self, n, obj, player):
+        obj["players"].add(player)
+        obj["count"] += 1
+        return obj["count"] == n and len(obj["players"]) == 1
+
+    def move(self, row: int, col: int, player: int) -> int:
+        """
+        # O(1) time and space
+        """
+        n = self.n
+        r = self.rows[row]
+        c = self.cols[col]
+        if self.add(n, r, player) or self.add(n, c, player):
+            return player
+        if row == col and self.add(n, self.diagonals[0], player):
+            return player
+        if row == n - col - 1 and self.add(n, self.diagonals[1], player):
+            return player
+        return 0
+        
+
+
+# Your TicTacToe object will be instantiated and called as such:
+# obj = TicTacToe(n)
+# param_1 = obj.move(row,col,player)

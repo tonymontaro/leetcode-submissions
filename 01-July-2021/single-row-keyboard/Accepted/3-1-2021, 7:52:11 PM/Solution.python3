@@ -1,0 +1,11 @@
+// https://leetcode.com/problems/single-row-keyboard
+
+class Solution:
+    def calculateTime(self, keyboard: str, word: str) -> int:
+        mp = {ch: i for i, ch in enumerate(keyboard)}
+        prev = 0
+        ans = 0
+        for ch in word:
+            ans += abs(mp[ch] - prev)
+            prev = mp[ch]
+        return ans

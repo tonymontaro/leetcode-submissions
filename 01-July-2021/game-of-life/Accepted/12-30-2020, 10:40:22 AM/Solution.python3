@@ -1,0 +1,34 @@
+// https://leetcode.com/problems/game-of-life
+
+class Solution:
+    def gameOfLife(self, grid: List[List[int]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+        O(n*m) time | O(1) space
+        """
+        if not grid or not grid[0]:
+            return grid
+        directions = [(x, y) for x in range(-1, 2) for y in range(-1, 2) if (x, y) != (0, 0)]
+        rowlen = len(grid)
+        colen = len(grid[0])
+        
+        def isAlive(r, c):
+            if 0 <= r < rowlen and 0 <= c < colen and grid[r][c] in [1, -1]:
+                return 1
+            return 0
+        
+        for r in range(rowlen):
+            for c in range(colen):
+                alive = sum([isAlive(r + x, c + y) for x, y in directions])
+                if grid[r][c] == 1 and (alive < 2 or alive > 3):
+                    grid[r][c] = -1
+                if grid[r][c] == 0 and (alive == 3):
+                    grid[r][c] = 2
+        
+        mapping = {1: 1, 2: 1, 0: 0, -1: 0}
+        for r in range(rowlen):
+            for c in range(colen):
+                grid[r][c] = mapping[grid[r][c]]
+        
+        return grid
+        

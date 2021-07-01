@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/number-of-corner-rectangles
+
+from collections import defaultdict
+
+class Solution:
+    def countCornerRectangles(self, grid: List[List[int]]) -> int:
+        # O(n * m) time and space
+        seen = defaultdict(int)
+        n = len(grid[0])
+        ans = 0
+        for row in grid:
+            ones = []
+            for c in range(n):
+                if row[c] == 0:
+                    continue
+                for other in ones:
+                    ans += seen[(other, c)]
+                    seen[(other, c)] += 1
+                ones.append(c)
+        return ans

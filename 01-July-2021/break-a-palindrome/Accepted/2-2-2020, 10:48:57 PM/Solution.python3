@@ -1,0 +1,14 @@
+// https://leetcode.com/problems/break-a-palindrome
+
+class Solution:
+    def breakPalindrome(self, palindrome: str) -> str:
+        """O(n) time and space"""
+        ln = len(palindrome)
+        if ln <= 1: return ''
+        arr = list(palindrome)
+        for i in range(ln//2):
+            if arr[i] != 'a':
+                arr[i] = 'a'
+                return ''.join(arr)
+        arr[-1] = 'b'
+        return ''.join(arr)

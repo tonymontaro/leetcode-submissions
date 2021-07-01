@@ -1,0 +1,9 @@
+// https://leetcode.com/problems/number-of-rectangles-that-can-form-the-largest-square
+
+from collections import defaultdict
+
+class Solution:
+    def countGoodRectangles(self, rectangles: List[List[int]]) -> int:
+        found = defaultdict(int)
+        largest = max(min(a, b) for a, b in rectangles)
+        return sum(1 if min(a, b) >= largest else 0 for a, b in rectangles)

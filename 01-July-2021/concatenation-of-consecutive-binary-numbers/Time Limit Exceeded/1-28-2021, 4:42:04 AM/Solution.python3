@@ -1,0 +1,15 @@
+// https://leetcode.com/problems/concatenation-of-consecutive-binary-numbers
+
+class Solution:
+    def concatenatedBinary(self, n: int) -> int:
+        mod = 10**9 + 7
+        ans = 0
+        power = 1
+        for i in range(n, 0, -1):
+            num = i
+            while num > 0:
+                if (1 & num) != 0:
+                    ans = (ans + power) % mod
+                num >>= 1
+                power = (power * 2) % mod
+        return ans

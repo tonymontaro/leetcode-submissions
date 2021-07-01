@@ -1,0 +1,15 @@
+// https://leetcode.com/problems/next-greater-element-iii
+
+class Solution:
+    def nextGreaterElement(self, num: int) -> int:
+        arr = [int(i) for i in str(num)]
+        n = len(arr)
+        
+        for i in range(n-1, 0, -1):
+            if arr[i - 1] > arr[i]:
+                continue
+            arr[i], arr[i-1] = arr[i-1], arr[i]
+            res = arr[:i] + sorted(arr[i:])
+            return int("".join(map(str, res)))
+        
+        return -1

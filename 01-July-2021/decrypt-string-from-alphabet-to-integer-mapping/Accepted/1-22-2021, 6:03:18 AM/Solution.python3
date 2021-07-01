@@ -1,0 +1,17 @@
+// https://leetcode.com/problems/decrypt-string-from-alphabet-to-integer-mapping
+
+from string import ascii_lowercase as al
+
+class Solution:
+    def freqAlphabets(self, s: str) -> str:
+        idx = len(s) - 1
+        res = []
+        while idx >= 0:
+            if s[idx].isdigit():
+                res.append(al[int(s[idx]) - 1])
+                idx -= 1
+            else:
+                num = int(s[idx-2:idx])
+                res.append(al[num - 1])
+                idx -= 3
+        return "".join(res[::-1])

@@ -1,0 +1,22 @@
+// https://leetcode.com/problems/dungeon-game
+
+from math import inf
+
+class Solution:
+    def calculateMinimumHP(self, grid: List[List[int]]) -> int:
+        rlen, clen = len(grid), len(grid[0])
+        for r in range(rlen-1, -1, -1):
+            for c in range(clen-1, -1, -1):
+                if (r, c) == (rlen-1, clen-1):
+                    grid[r][c] = max(1, -grid[r][c] + 1)
+                    continue
+                
+                val = -grid[r][c]
+                needed = inf
+                if r < rlen-1:
+                    needed = max(1, val + grid[r+1][c])
+                if c < clen-1:
+                    needed = min(needed, max(1, val + grid[r][c+1]))
+                grid[r][c] = needed
+
+        return grid[0][0]

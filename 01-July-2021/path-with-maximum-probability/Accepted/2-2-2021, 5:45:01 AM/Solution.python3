@@ -1,0 +1,28 @@
+// https://leetcode.com/problems/path-with-maximum-probability
+
+from heapq import heappush, heappop
+
+class Solution:
+    def maxProbability(self, n: int, edges: List[List[int]], succProb: List[float], start: int, end: int) -> float:
+        adj = [[] for _ in range(n + 1)]
+        for i, (a, b) in enumerate(edges):
+            prob = succProb[i]
+            adj[a].append((b, prob))
+            adj[b].append((a, prob))
+        
+        heap = [(-1, start)]
+        seen = {start: 1}
+        while heap:
+            prob, node = heappop(heap)
+            prob = -prob
+            if node == end:
+                return prob
+            
+            for child, p in adj[node]:
+                calc = p*prob
+                if child in seen and seen[child] >= calc:
+                    continue
+                
+                seen[child] = calc
+                heappush(heap, (-calc, child))
+        return 0

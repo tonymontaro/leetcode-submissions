@@ -1,0 +1,19 @@
+// https://leetcode.com/problems/candy
+
+import heapq
+
+class Solution:
+    def candy(self, ratings: List[int]) -> int:
+        arr = [(rating, i) for i, rating in enumerate(ratings)]
+        heapq.heapify(arr)
+        result = [1] * len(ratings)
+        while arr:
+            rating, i = heapq.heappop(arr)
+            if i > 0 and ratings[i - 1] < rating:
+                result[i] = max(result[i], result[i - 1] + 1)
+            if i < len(ratings) - 1 and ratings[i + 1] < rating:
+                result[i] = max(result[i], result[i + 1] + 1)
+
+        return sum(result)
+                 
+        

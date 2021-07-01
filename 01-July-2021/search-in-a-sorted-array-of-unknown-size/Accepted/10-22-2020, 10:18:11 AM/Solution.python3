@@ -1,0 +1,30 @@
+// https://leetcode.com/problems/search-in-a-sorted-array-of-unknown-size
+
+# """
+# This is ArrayReader's API interface.
+# You should not implement it, or speculate about its implementation
+# """
+#class ArrayReader:
+#    def get(self, index: int) -> int:
+
+class Solution:
+    def search(self, reader, target):
+        """
+        :type reader: ArrayReader
+        :type target: int
+        :rtype: int
+        # O(logn) time | O(1) space | using binary search
+        """
+        lo = 0
+        hi = 10000
+        while lo <= hi:
+            mid = (lo + hi) // 2
+            val = reader.get(mid)
+            if val == target:
+                return mid
+            elif val > target:
+                hi = mid - 1
+            else:
+                lo = mid + 1
+        return -1
+        

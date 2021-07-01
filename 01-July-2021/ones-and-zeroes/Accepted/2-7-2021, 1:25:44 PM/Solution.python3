@@ -1,0 +1,27 @@
+// https://leetcode.com/problems/ones-and-zeroes
+
+class Solution:
+    def findMaxForm(self, strs: List[str], m: int, n: int) -> int:
+        
+        cache = {}
+        
+        def solve(idx, mZeros, nOnes):
+            if idx >= len(strs):
+                return 0
+            if (idx, mZeros, nOnes) in cache:
+                return cache[(idx, mZeros, nOnes)]
+            
+            zeros = strs[idx].count('0')
+            ones = len(strs[idx]) - zeros
+            
+            res = solve(idx + 1, mZeros, nOnes)
+            
+            if zeros <= mZeros and ones <= nOnes:
+                include = 1 + solve(idx + 1, mZeros - zeros, nOnes - ones)
+                res = max(res, include)
+            
+            cache[(idx, mZeros, nOnes)] = res
+            return res
+
+        ans =  solve(0, m, n)
+        return ans

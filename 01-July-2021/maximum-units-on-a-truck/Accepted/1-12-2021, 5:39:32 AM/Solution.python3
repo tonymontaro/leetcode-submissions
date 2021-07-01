@@ -1,0 +1,14 @@
+// https://leetcode.com/problems/maximum-units-on-a-truck
+
+class Solution:
+    def maximumUnits(self, boxTypes: List[List[int]], truckSize: int) -> int:
+        n = len(boxTypes)
+        boxTypes.sort(key=lambda x: x[1], reverse=True)
+        ans = 0
+        idx = 0
+        while truckSize > 0 and idx < n:
+            sz = min(truckSize, boxTypes[idx][0])
+            ans += sz * boxTypes[idx][1]
+            truckSize -= sz
+            idx += 1
+        return ans

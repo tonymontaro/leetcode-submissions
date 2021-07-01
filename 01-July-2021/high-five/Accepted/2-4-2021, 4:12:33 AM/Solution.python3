@@ -1,0 +1,10 @@
+// https://leetcode.com/problems/high-five
+
+from collections import defaultdict as dd
+
+class Solution:
+    def highFive(self, items: List[List[int]]) -> List[List[int]]:
+        students = dd(list)
+        for idx, score in items:
+            students[idx].append(score)
+        return sorted([[idx, sum(sorted(v, reverse=True)[:5])//5] for idx, v in students.items()])

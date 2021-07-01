@@ -1,0 +1,14 @@
+// https://leetcode.com/problems/pairs-of-songs-with-total-durations-divisible-by-60
+
+from collections import defaultdict
+
+class Solution:
+    def numPairsDivisibleBy60(self, time: List[int]) -> int:
+        arr = [x % 60 for x in time]
+        seen = defaultdict(int)
+        ans = 0
+        for num in arr:
+            other = (60 - num) % 60
+            ans += seen[other]
+            seen[num] += 1
+        return ans

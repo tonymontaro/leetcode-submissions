@@ -1,0 +1,37 @@
+// https://leetcode.com/problems/rotting-oranges
+
+from collections import deque
+
+class Solution:
+    def orangesRotting(self, grid: List[List[int]]) -> int:
+        # O(r * c) time and space
+        
+        queue = deque()
+        rowlen = len(grid)
+        colen = len(grid[0])
+        fresh = 0
+        
+        for r in range(rowlen):
+            for c in range(colen):
+                if grid[r][c] == 1:
+                    fresh += 1
+                elif grid[r][c] == 2:
+                    queue.append((0, r, c))
+        
+        neighbors = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        days = 0
+        while queue:
+            day, row, col = queue.popleft()
+            days = max(day, days)
+            
+            for rAdd, cAdd in neighbors:
+                r, c = rAdd + row, cAdd + col
+                isValid = 0 <= r < rowlen and 0 <= c < colen and grid[r][c] == 1
+                if isValid:
+                    fresh -= 1
+                    grid[r][c] = 2
+                    queue.append((day + 1, r, c))
+
+        return days if fresh == 0 else -1
+        
+            

@@ -1,0 +1,12 @@
+// https://leetcode.com/problems/best-time-to-buy-and-sell-stock
+
+from math import inf
+
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        ans = 0
+        mn = inf
+        for num in prices:
+            mn = min(mn, num)
+            ans = max(ans, num - mn)
+        return ans

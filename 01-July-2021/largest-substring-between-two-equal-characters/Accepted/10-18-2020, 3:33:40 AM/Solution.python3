@@ -1,0 +1,13 @@
+// https://leetcode.com/problems/largest-substring-between-two-equal-characters
+
+class Solution:
+    def maxLengthBetweenEqualCharacters(self, s: str) -> int:
+        lastSeen = {}
+        ans = -1
+        for (i, ch) in enumerate(s):
+            if ch in lastSeen:
+                ans = max(ans, i - lastSeen[ch] - 1)
+            else:
+                lastSeen[ch] = i
+        return ans
+        

@@ -1,0 +1,26 @@
+// https://leetcode.com/problems/count-vowels-permutation
+
+class Solution:
+    cache = {}
+    def countVowelPermutation(self, n: int) -> int:
+        nexts = {'a': 'e', 'e': 'ai', 'i': 'aeou', 'o': 'iu', 'u': 'a'}
+        mod = 10**9 + 7
+        
+        def solve(rem, last):
+            if rem == 1:
+                return 1
+            if (rem, last) in self.cache:
+                return self.cache[(rem, last)]
+            
+            ans = 0
+            
+            for cha in nexts[last]:
+                ans = (ans + solve(rem-1, cha)) % mod
+            
+            self.cache[(rem, last)] = ans
+            return ans
+        
+        res = 0
+        for cha in nexts.keys():
+            res = (res + solve(n, cha)) % mod
+        return res

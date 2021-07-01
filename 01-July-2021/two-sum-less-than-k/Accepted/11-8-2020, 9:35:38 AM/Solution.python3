@@ -1,0 +1,21 @@
+// https://leetcode.com/problems/two-sum-less-than-k
+
+class Solution:
+    def twoSumLessThanK(self, arr: List[int], k: int) -> int:
+        # O(nlogn) time | O(1) space 
+        arr.sort(reverse=True)
+        i = 0 
+        n = len(arr)
+        j = n - 1
+        ans = -1
+        while j > i:
+            valid = None
+            while j > i and arr[i] + arr[j] < k:
+                valid = j
+                j -= 1
+            
+            if valid is not None and arr[i] + arr[valid] < k:
+                ans = max(ans, arr[i] + arr[valid])
+                j = valid
+            i += 1
+        return ans

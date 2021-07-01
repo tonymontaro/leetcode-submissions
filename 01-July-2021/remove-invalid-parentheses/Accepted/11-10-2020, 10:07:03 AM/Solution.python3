@@ -1,0 +1,21 @@
+// https://leetcode.com/problems/remove-invalid-parentheses
+
+class Solution:
+    def removeInvalidParentheses(self, s: str) -> List[str]:
+        
+        def isValid(word):
+            count = 0
+            for cha in word:
+                count += (cha == "(") - (cha == ")")
+                if count < 0:
+                    return False
+            return count == 0
+        
+        processing = {s}
+        n = len(s)
+        while processing:
+            valid = [word for word in processing if isValid(word)]
+            if valid:
+                return valid
+            processing = {w[:i] + w[i+1:] for i in range(n) for w in processing}
+            n -= 1

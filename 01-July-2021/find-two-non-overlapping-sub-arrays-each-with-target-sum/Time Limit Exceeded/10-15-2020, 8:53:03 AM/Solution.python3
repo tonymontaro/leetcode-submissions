@@ -1,0 +1,32 @@
+// https://leetcode.com/problems/find-two-non-overlapping-sub-arrays-each-with-target-sum
+
+class Solution:
+    def minSumOfLengths(self, arr: List[int], target: int) -> int:
+        seen = {0: -1}
+        valid = []
+        total = 0
+        for (i, num) in enumerate(arr):
+            total += num
+            diff = total - target
+            if (diff in seen):
+                ln = i - seen[diff]
+                valid.append((seen[diff] + 1, i))
+            seen[total] = i
+        if len(valid) < 2:
+            return -1
+        
+        valid.sort(key=lambda x: x[1] - x[0])
+        best = -1
+        for j in range(len(valid)):
+            a, b = valid[j]
+            l1 = b - a + 1
+            for i in range(j + 1, len(valid)):
+                a2, b2 = valid[i]
+                if (b2 < a) or (a2 > b):
+                    val = l1 + b2 - a2 + 1
+                    # print(j, val, valid[j], valid[i])
+                    best = val if best == -1 else min(best, val)
+                    break
+        return best
+            
+        # return sum([a, b]) if (a != -1 and b != -1) else -1

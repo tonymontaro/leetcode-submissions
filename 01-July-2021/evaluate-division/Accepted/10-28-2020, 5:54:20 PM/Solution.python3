@@ -1,0 +1,37 @@
+// https://leetcode.com/problems/evaluate-division
+
+class Solution:
+    def calcEquation(self, equations: List[List[str]], values: List[float], queries: List[List[str]]) -> List[float]:
+        # O(q * n) time | O(n) space
+        adj = {}
+        for i, eq in enumerate(equations):
+            a, b = eq
+            for key in [a, b]:
+                if key not in adj:
+                    adj[key] = {}
+            adj[a][b] = values[i]
+            adj[b][a] = 1/values[i]
+        
+        def dfs(node, target, mult, seen):
+            seen[node] = True
+            if target in adj[node]:
+                return adj[node][target] * mult
+            for child in adj[node]:
+                if child not in seen:
+                    rs = dfs(child, target, mult * adj[node][child], seen)
+                    if rs is not None:
+                        return rs
+
+            return None
+        result = []
+        for a, b in queries:
+            if a not in adj or b not in adj:
+                result.append(-1)
+            elif a == b:
+                result.append(1)
+            else:
+                rs = dfs(a, b, 1, {})
+                if rs is None:
+                    rs = -1
+                result.append(rs)
+        return result

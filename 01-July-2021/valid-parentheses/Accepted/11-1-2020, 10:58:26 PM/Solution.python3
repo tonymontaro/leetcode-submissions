@@ -1,0 +1,16 @@
+// https://leetcode.com/problems/valid-parentheses
+
+class Solution:
+    def isValid(self, s: str) -> bool:
+        pairs = {
+            '(': ')', '{': '}', '[': ']'
+        }
+        stack = []
+        for bracket in s:
+            if bracket in pairs:
+                stack.append(bracket)
+            elif not stack or bracket != pairs[stack[-1]]:
+                return False
+            else:
+                stack.pop()
+        return len(stack) == 0

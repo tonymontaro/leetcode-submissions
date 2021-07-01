@@ -1,0 +1,11 @@
+// https://leetcode.com/problems/average-waiting-time
+
+class Solution:
+    def averageWaitingTime(self, customers: List[List[int]]) -> float:
+        prev = 0
+        arr = []
+        for arrival, cooktime in customers:
+            prev = max(arrival, prev)
+            prev += cooktime
+            arr.append(prev - arrival)
+        return sum(arr) / len(arr)

@@ -1,0 +1,27 @@
+// https://leetcode.com/problems/moving-average-from-data-stream
+
+from collections import deque
+
+class MovingAverage:
+
+    def __init__(self, size: int):
+        """
+        Initialize your data structure here.
+        """
+        self.sz = size
+        self.n = 0
+        self.total = 0
+        self.deq = deque()
+
+    def next(self, val: int) -> float:
+        if self.n < self.sz:
+            self.n += 1
+        else:
+            self.total -= self.deq.popleft()
+        self.deq.append(val)
+        self.total += val
+        return self.total / self.n
+        
+# Your MovingAverage object will be instantiated and called as such:
+# obj = MovingAverage(size)
+# param_1 = obj.next(val)

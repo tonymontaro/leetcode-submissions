@@ -1,0 +1,13 @@
+// https://leetcode.com/problems/reverse-bits
+
+class Solution:
+    def reverseBits(self, n: int) -> int:
+        ans = 0
+        count = 0
+        while n != 0:
+            count += 1
+            ans <<= 1
+            ans |= (1 & n)
+            n >>= 1
+        ans <<= (32 - count)
+        return ans

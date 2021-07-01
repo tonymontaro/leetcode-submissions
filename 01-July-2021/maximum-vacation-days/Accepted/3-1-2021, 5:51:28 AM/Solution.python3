@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/maximum-vacation-days
+
+from math import inf
+from functools import lru_cache
+
+class Solution:
+    def maxVacationDays(self, flights: List[List[int]], days: List[List[int]]) -> int:
+        n = len(flights)
+        w = len(days[0])
+        
+        @lru_cache(None)
+        def solve(city, weeks):
+            if weeks >= w:
+                return 0
+            
+            ans = days[city][weeks] + solve(city, weeks + 1)
+            for child in range(n):
+                if flights[city][child] == 1:
+                    ans = max(ans, days[child][weeks] + solve(child, weeks + 1))
+
+            return ans
+        
+        return solve(0, 0)

@@ -1,0 +1,12 @@
+// https://leetcode.com/problems/building-boxes
+
+class Solution:
+    def minimumBoxes(self, n: int) -> int:
+        prev = 0
+        total = 0
+
+        for i in range(1, 1000000):
+            prev = i + prev
+            total += prev
+            if total >= n:
+                return prev

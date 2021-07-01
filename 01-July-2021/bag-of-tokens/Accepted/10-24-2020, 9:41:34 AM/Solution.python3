@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/bag-of-tokens
+
+from collections import deque
+
+class Solution:
+    def bagOfTokensScore(self, tokens: List[int], p: int) -> int:
+        # O(nlogn) time | O(n) space | greedy
+        tokens = deque(sorted(tokens))
+        ans = 0
+        coins = 0
+        while tokens:
+            while tokens and p >= tokens[0]:
+                coins += 1
+                p -= tokens.popleft()
+            if coins == 0: break
+            ans = max(ans, coins)
+            if tokens:
+                p += tokens.pop()
+                coins -= 1
+        return ans

@@ -1,0 +1,6 @@
+// https://leetcode.com/problems/find-all-numbers-disappeared-in-an-array
+
+class Solution:
+    def findDisappearedNumbers(self, nums):
+        """O(n) time | O(n) space"""
+        return set(range(1, len(nums))) - set(nums)

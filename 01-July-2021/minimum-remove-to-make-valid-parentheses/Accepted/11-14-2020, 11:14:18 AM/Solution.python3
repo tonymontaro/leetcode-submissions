@@ -1,0 +1,19 @@
+// https://leetcode.com/problems/minimum-remove-to-make-valid-parentheses
+
+class Solution:
+    def minRemoveToMakeValid(self, s: str) -> str:
+        toRemove = {}
+        
+        stack = []
+        for i, cha in enumerate(s):
+            if cha == "(":
+                stack.append(i)
+            elif cha == ")":
+                if not stack:
+                    toRemove[i] = True
+                else:
+                    stack.pop()
+        for i in stack:
+            toRemove[i] = True
+        return "".join(cha for i, cha in enumerate(s) if i not in toRemove)
+        

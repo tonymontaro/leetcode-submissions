@@ -1,0 +1,36 @@
+// https://leetcode.com/problems/soup-servings
+
+class Solution:
+    def soupServings(self, N: int) -> float:
+        if N > 5000: # I don't know why this is true yet
+            return 1
+
+        cache = {}
+        def solve(a, b):
+            if a == 0 and b == 0:
+                return (0, 1)
+            elif a == 0:
+                return (1, 0)
+            elif b == 0:
+                return (0, 0)
+            
+            if (a, b) in cache:
+                return cache[(a, b)]
+            
+            ans = [0, 0]
+            
+            for aSub, bSub in [(100, 0), (75, 25), (50, 50), (25, 75)]:
+                aa, bb = max(0, a - aSub), max(0, b - bSub)
+                r1, r2 = solve(aa, bb)
+                ans[0] += (1/4) * r1
+                ans[1] += (1/4) * r2
+
+            ans = tuple(ans)
+            cache[(a, b)] = ans
+            return ans
+     
+        x, y = solve(N, N)
+
+        return x + (y/2)
+        
+        

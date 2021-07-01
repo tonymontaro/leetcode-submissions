@@ -1,0 +1,17 @@
+// https://leetcode.com/problems/build-an-array-with-stack-operations
+
+class Solution:
+    def buildArray(self, target: List[int], n: int) -> List[str]:
+        idx = 0
+        num = 1
+        ans = []
+        while idx < len(target):
+            ans.append("Push")
+            if num != target[idx]:
+                ans.append("Pop")
+            else:
+                idx += 1
+            num += 1
+            
+        return ans
+            

@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/largest-number
+
+class Number:
+    def __init__(self, num):
+        self.num = str(num)
+    
+    def __eq__(self, other):
+        return self.num == other.num
+    
+    def __gt__(self, other):
+        return self.num + other.num > other.num + self.num
+
+class Solution:
+    def largestNumber(self, nums: List[int]) -> str:
+        numbers = [Number(num) for num in nums]
+        numbers.sort(reverse=True)
+        res = "".join([number.num for number in numbers])
+        if res and res[0] == "0":
+            return "0"
+        return res

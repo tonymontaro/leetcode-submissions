@@ -1,0 +1,15 @@
+// https://leetcode.com/problems/diameter-of-binary-tree
+
+class Solution:
+    def diameterOfBinaryTree(self, node: TreeNode) -> int:
+        """O(n) time | O(d) space"""
+        def helper(node, max_len):
+            if node is None: return 0
+            left = helper(node.left, max_len)
+            right = helper(node.right, max_len)
+            all_len = 1 + left + right
+            max_len['val'] = max(max_len['val'], all_len)
+            return 1 + max(left, right)
+        max_len = {'val': 0}
+        helper(node, max_len)
+        return max(max_len['val'] - 1, 0)

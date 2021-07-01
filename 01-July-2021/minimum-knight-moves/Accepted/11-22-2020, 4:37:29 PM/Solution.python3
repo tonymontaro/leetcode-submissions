@@ -1,0 +1,26 @@
+// https://leetcode.com/problems/minimum-knight-moves
+
+from collections import deque
+
+class Solution:
+    def minKnightMoves(self, x: int, y: int) -> int:
+        seen = {}
+        queue = deque()
+        queue.append((x, y, 0))
+        seen[(x, y)] = True
+        neighbors = [(-2, 1), (-1, 2), (1, 2), (2, 1), (2, -1), (1, -2), (-1, -2), (-2, -1)]
+        
+        while queue:
+            oldX, oldY, move = queue.popleft()
+            
+            if (oldX, oldY) == (0, 0):
+                return move
+            
+            for xAdd, yAdd in neighbors:
+                x, y = oldX + xAdd, oldY + yAdd
+                if (x, y) not in seen:
+                    seen[(x, y)] = True
+                    queue.append((x, y, move + 1))
+        return 0
+                    
+        

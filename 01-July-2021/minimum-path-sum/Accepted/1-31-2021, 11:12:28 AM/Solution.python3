@@ -1,0 +1,14 @@
+// https://leetcode.com/problems/minimum-path-sum
+
+class Solution:
+    def minPathSum(self, grid: List[List[int]]) -> int:
+        rlen, clen = len(grid), len(grid[0])
+        for r in range(rlen):
+            for c in range(clen):
+                if r == 0 and c == 0:
+                    continue
+                val = grid[r][c]
+                up = val + (grid[r-1][c] if r > 0 else math.inf)
+                left = val + (grid[r][c-1] if c > 0 else math.inf)
+                grid[r][c] = min(up, left)
+        return grid[rlen-1][clen-1]

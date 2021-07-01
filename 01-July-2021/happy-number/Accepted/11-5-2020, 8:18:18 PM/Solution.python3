@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/happy-number
+
+class Solution:
+    def isHappy(self, n: int) -> bool:
+        def getNext(num):
+            ans = 0
+            while num != 0:
+                ans += (num % 10) * (num % 10)
+                num //= 10
+            return ans
+        
+        seen = {n: True}
+        while n != 1:
+            n = getNext(n)
+            if n in seen:
+                return False
+            seen[n] = True
+        return True

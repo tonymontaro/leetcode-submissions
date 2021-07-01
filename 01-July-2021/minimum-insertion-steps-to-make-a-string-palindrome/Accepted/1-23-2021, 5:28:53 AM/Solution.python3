@@ -1,0 +1,24 @@
+// https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome
+
+from math import inf
+
+class Solution:
+    def minInsertions(self, s: str) -> int:
+        n = len(s)
+        cache = {}
+
+        def solve(i, j):
+            if i >= j:
+                return 0
+
+            if (i, j) in cache:
+                return cache[(i, j)]
+            
+            ans = 1 + min(solve(i + 1, j), solve(i, j - 1))
+            if s[i] == s[j]:
+                ans = min(ans, solve(i + 1, j - 1))
+            cache[(i, j)] = ans
+            return ans
+        
+        return solve(0, n - 1)
+            

@@ -1,0 +1,24 @@
+// https://leetcode.com/problems/string-compression
+
+class Solution:
+    def compress(self, chars: List[str]) -> int:
+        ans = 0
+        n = len(chars)
+        i = 0
+        j = 0
+        while i < n:
+            cha = chars[i]
+            chars[j] = cha
+            j += 1
+            count = 0
+            ans += 1
+            while i < n and cha == chars[i]:
+                i += 1
+                count += 1
+            if count > 1:
+                numStr = str(count)
+                ans += len(numStr)
+                for num in numStr:
+                    chars[j] = num
+                    j += 1
+        return ans

@@ -1,0 +1,19 @@
+// https://leetcode.com/problems/maximum-product-subarray
+
+from math import inf
+
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int:
+        # O(n) time and O(1) space
+        if not nums:
+            return 0
+    
+        ans = nums[0]
+        mx = mn = ans
+        for i in range(1, len(nums)):
+            num = nums[i]
+            arr = [num, num * mx, num * mn]
+            mx = max(arr)
+            mn = min(arr)
+            ans = max(ans, mx)
+        return ans

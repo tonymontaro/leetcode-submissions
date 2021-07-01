@@ -1,0 +1,44 @@
+// https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended-ii
+
+from heapq import heappop, heappush
+
+class Solution:
+    def maxValue(self, events: List[List[int]], kTotal: int) -> int:
+        # start, end, value
+        events = [(end, start, value) for start, end, value in events]
+        events.sort()
+        n = len(events)
+        cache = {}
+        
+        
+        def solve(idx, k):
+            if idx < 0 or k == 0:
+                return 0
+            if (idx, k) in cache:
+                return cache[(idx, k)]
+            # skip
+            skip = solve(idx - 1, k)
+            
+            # include
+            include = events[idx][2]
+            end, start, value = events[idx]
+            nxt = -1
+            lo = 0
+            hi = idx - 1
+            while lo <= hi:
+                mid = (lo + hi) // 2
+                ee, ss, _ = events[mid]
+                if start > ee:
+                    nxt = mid
+                    lo = mid + 1
+                else:
+                    hi = mid - 1
+            if nxt >= 0:
+                include += solve(nxt, k - 1)
+            
+            res = max(skip, include)
+            cache[(idx, k)] = res
+            return res
+        
+        return solve(n - 1, kTotal)
+        

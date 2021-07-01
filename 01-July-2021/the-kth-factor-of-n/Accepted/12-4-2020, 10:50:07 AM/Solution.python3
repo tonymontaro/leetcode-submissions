@@ -1,0 +1,15 @@
+// https://leetcode.com/problems/the-kth-factor-of-n
+
+class Solution:
+    def kthFactor(self, n: int, k: int) -> int:
+        # O(sqrt(n)) time | O(factors) space
+        factors = []
+        i = 1
+        while i * i <= n:
+            if n % i == 0:
+                factors.append(i)
+                if i * i != n:
+                    factors.append(n // i)
+            i += 1
+        factors.sort()
+        return factors[k - 1] if k <= len(factors) else -1

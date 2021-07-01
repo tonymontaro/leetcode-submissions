@@ -1,0 +1,33 @@
+// https://leetcode.com/problems/recover-a-tree-from-preorder-traversal
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def recoverFromPreorder(self, s: str) -> TreeNode:
+        # O(n) time and space
+        nodes = []
+        idx = 0
+        depth = 0
+        while idx < len(s):
+            j = idx
+            while j < len(s) and s[j].isdigit():
+                j += 1
+            node = TreeNode(int(s[idx:j]))
+            idx = j
+            while depth < len(nodes):
+                nodes.pop()
+            if nodes and nodes[-1].left is None:
+                nodes[-1].left = node
+            elif nodes:
+                nodes[-1].right = node
+            nodes.append(node)
+            depth = 0
+            while idx < len(s) and s[idx] == '-':
+                depth += 1
+                idx += 1
+        return nodes[0]
+            

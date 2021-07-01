@@ -1,0 +1,8 @@
+// https://leetcode.com/problems/longest-common-prefix
+
+class Solution:
+    def longestCommonPrefix(self, arr):
+        for i, group in enumerate(zip(*arr)):
+            if len(set(group)) > 1:
+                return arr[0][:i]
+        return min(arr) if arr else ''

@@ -1,0 +1,27 @@
+// https://leetcode.com/problems/leftmost-column-with-at-least-a-one
+
+# """
+# This is BinaryMatrix's API interface.
+# You should not implement it, or speculate about its implementation
+# """
+#class BinaryMatrix(object):
+#    def get(self, row: int, col: int) -> int:
+#    def dimensions(self) -> list[]:
+from math import inf
+
+class Solution:
+    def leftMostColumnWithOne(self, matrix: 'BinaryMatrix') -> int:
+        # O(rlogc) time | O(1) space
+        rowlen, colen = matrix.dimensions()
+        ans = inf
+        for r in range(rowlen):
+            lo = 0
+            hi = colen - 1
+            while lo <= hi:
+                mid = (lo + hi) // 2
+                if matrix.get(r, mid) == 1:
+                    ans = min(ans, mid)
+                    hi = mid - 1
+                else:
+                    lo = mid + 1
+        return -1 if ans == inf else ans

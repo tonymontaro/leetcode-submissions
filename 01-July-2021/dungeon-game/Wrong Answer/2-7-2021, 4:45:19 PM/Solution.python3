@@ -1,0 +1,29 @@
+// https://leetcode.com/problems/dungeon-game
+
+from heapq import heappush, heappop
+
+class Solution:
+    def calculateMinimumHP(self, grid: List[List[int]]) -> int:
+        if not grid or not grid[0]:
+            return 0
+        rlen, clen = len(grid), len(grid[0])
+        grid = [[-x for x in row] for row in grid]
+        # print(grid)
+        first = grid[0][0]
+        seen = {(0, 0): first}
+        heap = [(first, first, 0, 0)]
+
+        while heap:
+            mx, prev, row, col = heappop(heap)
+            if (row, col) == (rlen-1, clen-1):
+                return max(0, mx) + 1
+            
+            for rAdd, cAdd in [(0, 1), (1, 0)]:
+                r, c = rAdd + row, cAdd + col
+                if 0 <= r < rlen and 0 <= c < clen:
+                    val = prev + grid[r][c]
+                    mxx = max(mx, val)
+                    if (r, c) not in seen or mxx < seen[(r, c)]:
+                        seen[(r, c)] = mxx
+                        heappush(heap, (mxx, val, r, c))
+            

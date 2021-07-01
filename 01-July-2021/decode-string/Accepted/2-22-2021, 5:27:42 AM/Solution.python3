@@ -1,0 +1,22 @@
+// https://leetcode.com/problems/decode-string
+
+class Solution:
+    def decodeString(self, s: str) -> str:
+        n = len(s)
+        def solve(idx):
+            ans = []
+            while idx < n:
+                if s[idx] ==']':
+                    return (''.join(ans), idx + 1)
+                if s[idx].isdigit():
+                    j = idx
+                    while s[j].isdigit():
+                        j += 1
+                    num = int(s[idx:j])
+                    ss, idx = solve(j + 1)
+                    ans.append(ss * num)
+                else:
+                    ans.append(s[idx])
+                    idx += 1
+            return "".join(ans)
+        return solve(0)

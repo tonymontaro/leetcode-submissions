@@ -1,0 +1,52 @@
+// https://leetcode.com/problems/closest-subsequence-sum
+
+from math import inf
+
+class Solution:
+    def minAbsDifference(self, nums: List[int], goal: int) -> int:
+        cache = {}
+        n = len(nums)
+        nums.sort()
+        self.ans = math.inf
+
+        self.cnt = 0
+        def solve(idx, last, total, arr):
+            if idx >= last:
+                arr.add(total)
+                return
+            solve(idx + 1, last, total, arr)
+            solve(idx + 1, last, total + nums[idx], arr)
+        
+        half = n // 2
+        aa = set()
+        bb = set()
+        solve(0, half, 0, aa)
+        solve(half, n, 0, bb)
+        aa = sorted(aa)
+        bb = sorted(bb)
+        # print(sorted(bb))
+        ans = inf
+        for num in aa:
+            diff = goal - num
+            inc = len(bb) - 1
+            idx = 0
+            g = abs(goal - (num + bb[idx]))
+            while inc > 0:
+                if idx + inc < len(bb):
+                    b = abs(goal - (num + bb[idx + inc]))
+                    if b < g:
+                        g = b
+                        idx = idx + inc
+                        continue
+                if idx - inc >= 0:
+                    b = abs(goal - (num + bb[idx - inc]))
+                    if b < g:
+                        g = b
+                        idx = idx - inc
+                        continue
+                inc = inc // 2
+            # print(num, idx)
+            ans = min(ans, abs(goal - (num + bb[idx])))
+            
+        
+        return ans

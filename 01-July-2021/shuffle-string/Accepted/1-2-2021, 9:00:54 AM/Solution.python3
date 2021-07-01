@@ -1,0 +1,9 @@
+// https://leetcode.com/problems/shuffle-string
+
+class Solution:
+    def restoreString(self, s: str, indices: List[int]) -> str:
+        n  = len(s)
+        res = [""] * n
+        for i, idx in enumerate(indices):
+            res[idx] = s[i]
+        return ''.join(res)

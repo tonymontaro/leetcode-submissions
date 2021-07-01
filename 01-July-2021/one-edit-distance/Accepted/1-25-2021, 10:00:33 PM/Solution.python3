@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/one-edit-distance
+
+class Solution:
+    def isOneEditDistance(self, a: str, b: str) -> bool:
+        def oneDiff(a, b):
+            if len(a) - len(b) > 1:
+                return False
+            diff = 0
+            j = 0
+            for i, cha in enumerate(a):
+                if j >= len(b) or b[j] != cha:
+                    diff += 1
+                    if len(a) == len(b):
+                        j += 1
+                else:
+                    j += 1
+            return diff == 1
+        return oneDiff(a, b) if len(a) > len(b) else oneDiff(b, a)

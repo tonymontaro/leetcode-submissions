@@ -1,0 +1,13 @@
+// https://leetcode.com/problems/max-consecutive-ones-iii
+
+class Solution:
+    def longestOnes(self, A: List[int], k: int) -> int:
+        presum = {-1: 0}
+        left = -1
+        ans = 0
+        for i, num in enumerate(A):
+            presum[i] = presum[i-1] + (1 if num == 0 else 0)
+            while presum[i] - presum[left] > k:
+                left += 1
+            ans = max(ans, i - left)
+        return ans

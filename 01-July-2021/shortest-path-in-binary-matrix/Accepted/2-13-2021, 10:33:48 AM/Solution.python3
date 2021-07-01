@@ -1,0 +1,27 @@
+// https://leetcode.com/problems/shortest-path-in-binary-matrix
+
+from collections import deque
+
+class Solution:
+    def shortestPathBinaryMatrix(self, grid: List[List[int]]) -> int:
+        n = len(grid)
+        if grid[0][0] == 1 or grid[n-1][n-1] == 1:
+            return -1
+        
+        deq = deque()
+        deq.append((0, 0, 1))
+        dirs = [(i, j) for i in range(-1, 2) for j in range(-1, 2) if not (i == 0 and j == 0)]
+        seen = {(0, 0): 1}
+        
+        while deq:
+            row, col, dist = deq.popleft()
+            if (row, col) == (n-1,n-1):
+                return dist
+            for rAdd, cAdd in dirs:
+                r, c = row + rAdd, col + cAdd
+                if 0 <= r < n and 0 <= c < n and grid[r][c] == 0  and (r, c) not in seen:
+                    seen[(r, c)] = 1
+                    deq.append((r, c, dist + 1))
+        return -1
+        
+                    

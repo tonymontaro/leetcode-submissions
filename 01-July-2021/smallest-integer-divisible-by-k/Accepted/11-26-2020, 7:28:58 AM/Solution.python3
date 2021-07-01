@@ -1,0 +1,15 @@
+// https://leetcode.com/problems/smallest-integer-divisible-by-k
+
+class Solution:
+    def smallestRepunitDivByK(self, k: int) -> int:
+        # O(k) time and space
+        ln = 1
+        value = 1
+        seen = {}
+        while value not in seen:
+            if value % k == 0:
+                return ln
+            ln += 1
+            seen[value] = True
+            value = (value * 10 + 1) % k
+        return -1

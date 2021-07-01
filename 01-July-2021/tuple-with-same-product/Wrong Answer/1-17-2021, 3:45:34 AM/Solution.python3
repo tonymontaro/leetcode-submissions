@@ -1,0 +1,14 @@
+// https://leetcode.com/problems/tuple-with-same-product
+
+class Solution:
+    def tupleSameProduct(self, nums: List[int]) -> int:
+        seen = {}
+        n = len(nums)
+        ans = 0
+        for i, num in enumerate(nums):
+            for j in range(i + 1, n):
+                prod = num * nums[j]
+                if prod in seen:
+                    ans += 8
+                seen[prod] = 1
+        return ans

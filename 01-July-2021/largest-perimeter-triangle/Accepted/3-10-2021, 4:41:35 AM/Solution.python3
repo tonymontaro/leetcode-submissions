@@ -1,0 +1,14 @@
+// https://leetcode.com/problems/largest-perimeter-triangle
+
+class Solution:
+    def largestPerimeter(self, nums: List[int]) -> int:
+        nums.sort(reverse=True)
+        i = 0
+        while i < len(nums):
+            if i + 2 >= len(nums):
+                return 0
+            if nums[i]  >= sum(nums[i+1:i+3]):
+                i += 1
+                continue
+            return sum(nums[i:i+3])
+        return 0

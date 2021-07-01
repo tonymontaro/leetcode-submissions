@@ -1,0 +1,43 @@
+// https://leetcode.com/problems/find-median-from-data-stream
+
+from sortedcontainers import SortedList
+
+class MedianFinder:
+
+    def __init__(self):
+        self.arr = SortedList()
+        self.count = {}
+        self.total = 0
+
+    def addNum(self, num: int) -> None:
+        self.total += 1
+        if num not in self.count:
+            self.count[num] = 0
+            self.arr.add(num)
+        self.count[num] += 1
+        
+    def findMedian(self) -> float:
+        if self.total == 0:
+            return 0
+        def find(start, seen, target):
+            for i in range(start, len(self.arr)):
+                num = self.arr[i]
+                seen += self.count[num]
+                if seen > target:
+                    return (i, seen)
+
+        a = b = self.total // 2
+        if self.total % 2 == 0:
+            a -= 1
+        idx, sm = find(0, 0, a)
+        first = self.arr[idx]
+
+        idx, sm = find(idx, sm - self.count[first], b)
+        second = self.arr[idx]
+        return (first + second) / 2
+
+
+# Your MedianFinder object will be instantiated and called as such:
+# obj = MedianFinder()
+# obj.addNum(num)
+# param_2 = obj.findMedian()

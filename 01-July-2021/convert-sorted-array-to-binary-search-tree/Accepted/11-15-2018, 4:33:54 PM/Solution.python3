@@ -1,0 +1,22 @@
+// https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def sortedArrayToBST(self, arr):
+        left, right = 0, len(arr)-1
+        def check(left, right):
+            if left > right:
+                return None
+            mid = (left + right) // 2
+            node = TreeNode(arr[mid])
+            node.left = check(left, mid-1)
+            node.right = check(mid+1, right)
+            return node
+        return check(left, right)
+        

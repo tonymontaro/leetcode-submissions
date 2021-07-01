@@ -1,0 +1,27 @@
+// https://leetcode.com/problems/minimum-swaps-to-arrange-a-binary-grid
+
+class Solution:
+    def minSwaps(self, grid: List[List[int]]) -> int:
+        def getEndZeros(row):
+            z = 0
+            for i in row[::-1]:
+                if i == 0:
+                    z += 1
+                else:
+                    break
+            return z
+        zeros = [getEndZeros(row) for row in grid]
+        req = len(zeros) - 1
+        ans = 0
+        while req > 0:
+            idx = -1
+            for i in range(len(zeros)):
+                if zeros[i] >= req:
+                    idx = i
+                    break
+            if idx == -1:
+                return -1
+            ans += idx
+            req -= 1
+            zeros = [num for i, num in enumerate(zeros) if i != idx]
+        return ans

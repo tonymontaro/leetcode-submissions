@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/longest-palindromic-subsequence
+
+class Solution:
+    def longestPalindromeSubseq(self, s: str) -> int:
+
+        cache = {}
+        def solve(idx, hi):
+            if idx > hi:
+                return 0
+            
+            if (idx, hi) in cache:
+                return cache[(idx, hi)]
+
+            skip = solve(idx + 1, hi)
+            i = hi
+            while s[i] != s[idx]:
+                i -= 1
+            include = 1 if idx == i else 2 + solve(idx + 1, i - 1)
+            ans = max(skip, include)
+            cache[(idx, hi)] = ans
+            return ans
+        
+        return solve(0, len(s)-1)

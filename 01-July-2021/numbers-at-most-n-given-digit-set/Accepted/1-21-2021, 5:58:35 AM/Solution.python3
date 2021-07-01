@@ -1,0 +1,27 @@
+// https://leetcode.com/problems/numbers-at-most-n-given-digit-set
+
+class Solution:
+    def atMostNGivenDigitSet(self, digits: List[str], n: int) -> int:
+        digits = sorted([int(i) for i in digits])
+        ans = 0
+        numStr = str(n)
+        ln = len(numStr)
+        digitsLn = len(digits)
+        for i in range(1, ln):
+            ans += digitsLn ** i
+        
+        for i, cha in enumerate(numStr):
+            numDigit = int(cha)
+            last = -1
+            for d in digits:
+                last = d
+                if d < numDigit:
+                    ans += digitsLn ** (ln - i - 1)
+                else:
+                    break
+            if last != numDigit:
+                return ans
+        ans += 1
+        return ans
+
+

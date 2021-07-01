@@ -1,0 +1,45 @@
+// https://leetcode.com/problems/concatenated-words
+
+class Solution:
+    def findAllConcatenatedWordsInADict(self, words: List[str]) -> List[str]:
+        trie = {}
+        words = sorted(set(words), key=lambda x: len(x))
+        ans = set()
+        
+        def addWord(word):
+            node = trie
+            for i, cha in enumerate(word):
+                if cha not in node:
+                    node[cha] = {}
+                if "*" in node and check(i, word):
+                    ans.add(word)
+                node = node[cha]
+            node['*'] = 1
+        
+        seen = {}
+        def check(idx, word):
+            # print(idx, word)
+            if (idx, word) in seen:
+                return seen[(idx, word)]
+            if idx >= len(word):
+                return False
+            node = trie
+            broke = -1
+            for i in range(idx, len(word)):
+                cha = word[i]
+                if cha not in node:
+                    broke = i
+                    break
+                node = node[cha]
+                if '*' in node and check(i + 1, word):
+                    seen[(idx, word)] = True
+                    return True
+            # print(idx, word, "*" in node)
+            seen[(idx, word)] = broke == -1 and '*' in node
+            return seen[(idx, word)]
+        
+        for word in words:
+            addWord(word)
+        # print(trie)
+        return list(ans)
+                    

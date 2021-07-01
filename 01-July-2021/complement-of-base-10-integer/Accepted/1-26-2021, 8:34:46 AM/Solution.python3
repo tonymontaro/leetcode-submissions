@@ -1,0 +1,15 @@
+// https://leetcode.com/problems/complement-of-base-10-integer
+
+class Solution:
+    def bitwiseComplement(self, N: int) -> int:
+        if N == 0:
+            return 1
+        n = N
+        ones = 0
+        while n > 0:
+            ones |= 1
+            n >>= 1
+            if n > 0:
+                ones <<= 1
+        # print(bin(N), bin(ones))
+        return ones ^ N

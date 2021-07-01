@@ -1,0 +1,43 @@
+// https://leetcode.com/problems/checking-existence-of-edge-length-limited-paths
+
+from heapq import heappush, heappop
+
+class Solution:
+    def distanceLimitedPathsExist(self, n: int, edgeList: List[List[int]], queries: List[List[int]]) -> List[bool]:
+        edges = {}
+        for a, b, dist in edgeList:
+            if a not in edges:
+                edges[a] = {}
+            if b not in edges:
+                edges[b] = {}
+            
+            if b in edges[a]:
+                edges[a][b] = min(edges[a][b], dist)
+            else:
+                edges[a][b] = dist
+            
+            if a in edges[b]:
+                edges[b][a] = min(edges[b][a], dist)
+            else:
+                edges[b][a] = dist
+        
+        ans = []
+        
+        def find(a, b, limit):
+            res = False
+            heap = [(0, a)]
+            seen = {a: 1}
+            while heap:
+                mxEdge, node = heappop(heap)
+                for child in edges[node]:
+                    if child == b and edges[node][child] < limit:
+                        return True
+                    if child not in seen and edges[node][child] < limit:
+                        seen[child] = 1
+                        heappush(heap, (max(mxEdge, edges[node][child]), child))
+            return False
+    
+        for a, b, limit in queries:
+            ans.append(find(a, b, limit))
+        return ans
+            

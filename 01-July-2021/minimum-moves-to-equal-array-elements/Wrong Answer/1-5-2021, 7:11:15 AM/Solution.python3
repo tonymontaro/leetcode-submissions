@@ -1,0 +1,13 @@
+// https://leetcode.com/problems/minimum-moves-to-equal-array-elements
+
+class Solution:
+    def minMoves(self, nums: List[int]) -> int:
+        n = len(nums)
+        diff = (n * max(nums)) - sum(nums)
+
+        count = 0
+        incr = 0
+        while not (incr >= diff and incr % n == 0):
+            incr += (n - 1)
+            count += 1
+        return count

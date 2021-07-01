@@ -1,0 +1,11 @@
+// https://leetcode.com/problems/house-robber
+
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        rob, dont = 0, 0
+        for num in nums:
+            cDont = rob
+            cRob = max(num + dont, cDont)
+            rob, dont = cRob, cDont
+        return max(rob, dont)
+            

@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/triples-with-bitwise-and-equal-to-zero
+
+from collections import defaultdict
+
+class Solution:
+    def countTriplets(self, arr: List[int]) -> int:
+        cnt = defaultdict(int)
+        n = len(arr)
+        for i in range(n):
+            for j in range(n):
+                cnt[arr[i] & arr[j]] += 1
+        
+        ans = 0
+        for num in arr:
+            for k in cnt.keys():
+                if num & k == 0:
+                    ans += cnt[k]
+        return ans

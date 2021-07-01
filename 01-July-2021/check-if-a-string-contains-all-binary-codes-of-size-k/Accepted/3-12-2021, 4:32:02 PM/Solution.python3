@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/check-if-a-string-contains-all-binary-codes-of-size-k
+
+class Solution:
+    def hasAllCodes(self, s: str, k: int) -> bool:
+        if k > len(s):
+            return False
+        cnt = 2**k
+        seen = set()
+        mask = 0
+        arr = [int(i) for i in s]
+        for i in range(k):
+            mask = (mask << 1) | arr[i]
+        seen.add(mask)
+        left = 0
+        for i in range(k, len(arr)):
+            mask <<= 1
+            if arr[left] == 1:
+                mask = mask ^ cnt
+            left += 1
+            mask |= arr[i]
+            seen.add(mask)
+        
+        return len(seen) >= cnt

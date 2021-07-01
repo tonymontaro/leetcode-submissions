@@ -1,0 +1,70 @@
+// https://leetcode.com/problems/falling-squares
+
+import bisect
+#Input: [[1, 2], [2, 3], [6, 1]]
+# Output: [2, 5, 5]
+class Solution:
+    def fallingSquares(self, arr: List[List[int]]) -> List[int]:
+        unique = set()
+        for a, b in arr:
+            unique.add(a)
+            unique.add(a + b - 1)
+        mp = {x: i for i, x in enumerate(unique)}
+        n = len(mp)
+        ar = [0] * n
+        sg = SegmentTree(0, n-1, ar)
+        res = []
+        mx = 0
+        # print(mp)
+        # {1: 0, 2: 1, 4: 2, 6: 3}
+        
+        # sg.update(0, 1, 2)
+        # print(sg.rangeQuery(1, 2))
+        for a, b in arr:
+            x, y = mp[a], mp[a+b-1]
+            prevH = sg.rangeQuery(x, y)
+            # print(a, b, prevH)
+            # print(x, y)
+            h = prevH + b
+            mx = max(mx, h)
+            res.append(mx)
+            sg.update(x, y, h)
+        return res
+        
+
+        
+
+class SegmentTree:
+    def __init__(self, left, right, arr):
+        self.left = left
+        self.right = right
+        self.h = 0
+
+        if left == right:
+            self.h = arr[left]
+        else:
+            mid = (left + right) // 2
+            self.leftChild = SegmentTree(left, mid, arr)
+            self.rightChild = SegmentTree(mid + 1, right, arr)
+            self.reCalculate()
+
+    def reCalculate(self):
+        if self.left != self.right:
+            self.h = max(self.leftChild.h, self.rightChild.h)
+    
+    def rangeQuery(self, left, right):
+        if left > self.right or right < self.left:
+            return 0
+        if self.left >= left and self.right <= right:
+            return self.h
+        return max(self.leftChild.rangeQuery(left, right), self.rightChild.rangeQuery(left, right))
+    
+    def update(self, left, right, h):
+        if left > self.right or right < self.left:
+            return
+        if self.left == self.right:
+            self.h = h
+        else:
+            self.leftChild.update(left, right, h)
+            self.rightChild.update(left, right, h)
+            self.reCalculate()

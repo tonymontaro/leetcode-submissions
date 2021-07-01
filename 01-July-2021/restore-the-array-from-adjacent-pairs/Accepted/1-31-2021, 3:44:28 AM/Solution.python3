@@ -1,0 +1,27 @@
+// https://leetcode.com/problems/restore-the-array-from-adjacent-pairs
+
+from collections import defaultdict
+
+class Solution:
+    def restoreArray(self, pairs: List[List[int]]) -> List[int]:
+        adj = defaultdict(list)
+        for a, b in pairs:
+            adj[a].append(b)
+            adj[b].append(a)
+        node = None
+        n = len(adj)
+        for a, v in adj.items():
+            if len(v) == 1:
+                node = a
+                break
+        ans = [node]
+        seen = {node: 1}
+        while len(ans) < n:
+            node = ans[-1]
+            for child in adj[node]:
+                if child in seen:
+                    continue
+                seen[child] = 1
+                ans.append(child)
+        return ans
+        

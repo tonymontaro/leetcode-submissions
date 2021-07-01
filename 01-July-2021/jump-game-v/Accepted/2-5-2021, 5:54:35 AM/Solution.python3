@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/jump-game-v
+
+class Solution:
+    def maxJumps(self, arr: List[int], d: int) -> int:
+        # O(n^2) time | O(n) space
+        cache = {}
+        n = len(arr)
+        
+        def solve(idx):
+            if idx in cache:
+                return cache[idx]
+            num = arr[idx]
+            res = 0
+            for i in range(idx + 1, min(n, idx + d + 1)):
+                if arr[i] >= num:
+                    break
+                res = max(res, solve(i))
+            for i in range(idx - 1, max(-1, idx - d - 1), -1):
+                if arr[i] >= num:
+                    break
+                res = max(res, solve(i))
+            cache[idx] = res + 1
+            return res + 1
+        
+        return max(solve(i) for i in range(n))

@@ -1,0 +1,29 @@
+// https://leetcode.com/problems/multiply-strings
+
+from collections import defaultdict
+
+class Solution:
+    def multiply(self, num1: str, num2: str) -> str:
+        if num1 == "0" or num2 == "0": return "0"
+        result = defaultdict(int)
+        num1 = [int(i) for i in num1][::-1]
+        num2 = [int(i) for i in num2][::-1]
+        
+        for i in range(len(num1)):
+            num = num1[i]
+            for j in range(i, i + len(num2)):
+                result[j] += num * num2[j - i]
+
+        ans = []
+        carry = 0
+        idx = 0
+        ln = len(result)
+        while idx < ln:
+            carry = result[idx] // 10
+            ans.append(result[idx] % 10)
+            result[idx + 1] += carry
+            idx += 1
+            if idx >= ln and carry != 0:
+                ln += 1
+        ans = [str(i) for i in ans]
+        return "".join(ans[::-1])

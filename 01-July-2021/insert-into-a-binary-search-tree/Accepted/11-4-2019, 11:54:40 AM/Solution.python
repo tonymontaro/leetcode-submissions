@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/insert-into-a-binary-search-tree
+
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def insertIntoBST(self, root, val):
+        node = root
+        while True:
+            if val > node.val:
+                if node.right is None:
+                    node.right  = TreeNode(val)
+                    return root
+                else:
+                    node = node.right
+            else:
+                if node.left is None:
+                    node.left  = TreeNode(val)
+                    return root
+                else:
+                    node = node.left

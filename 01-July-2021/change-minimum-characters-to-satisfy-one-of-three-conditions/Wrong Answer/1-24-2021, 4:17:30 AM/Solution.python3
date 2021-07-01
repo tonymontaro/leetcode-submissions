@@ -1,0 +1,24 @@
+// https://leetcode.com/problems/change-minimum-characters-to-satisfy-one-of-three-conditions
+
+from string import ascii_lowercase as alphas
+
+class Solution:
+    def minCharacters(self, a: str, b: str) -> int:
+        
+        def makeLess(aa, bb):
+            ans = len(aa) + len(bb)
+            for alpha in alphas[-1]:
+                cnt = sum([1 if cha <= alpha else 0 for cha in aa])
+                cnt += sum([1 if cha > alpha else 0 for cha in bb])
+                ans = min(ans, cnt)
+            return ans
+        
+        def makeSame(aa, bb):
+            count = defaultdict(int)
+            both = aa + bb
+            for cha in both:
+                count[cha] += 1
+            res = sorted(count.items(), key=lambda x: x[1])
+            return len(both) - res[-1][1]
+            
+        return min(makeSame(a, b), makeLess(a, b), makeLess(b, a))

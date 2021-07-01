@@ -1,0 +1,6 @@
+// https://leetcode.com/problems/valid-anagram
+
+from collections import Counter
+class Solution:
+    def isAnagram(self, word1, word2):
+        return Counter(word1) == Counter(word2)

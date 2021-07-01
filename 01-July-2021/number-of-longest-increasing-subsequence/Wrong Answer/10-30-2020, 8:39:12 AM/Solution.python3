@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/number-of-longest-increasing-subsequence
+
+from collections import defaultdict
+
+class Solution:
+    def findNumberOfLIS(self, nums: List[int]) -> int:
+        # O(n^2) time | O(n) space
+        cache = defaultdict(int)
+        n = len(nums)
+        cache[1] = n
+        longestIncreasing = [0] * n
+        for i in range(n):
+            longest = 1
+            for j in range(0, i):
+                if nums[i] > nums[j]:
+                    prevLongest = longestIncreasing[j] + 1
+                    cache[prevLongest] += 1
+                    longest = max(longest, prevLongest)
+            longestIncreasing[i] = longest
+        return cache[max(cache.keys())]

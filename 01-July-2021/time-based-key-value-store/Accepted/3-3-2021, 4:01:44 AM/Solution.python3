@@ -1,0 +1,33 @@
+// https://leetcode.com/problems/time-based-key-value-store
+
+from collections import defaultdict
+import bisect
+
+class TimeMap:
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.mp = defaultdict(list)
+        self.vals = defaultdict(list)
+        
+
+    def set(self, key: str, value: str, timestamp: int) -> None:
+        self.mp[key].append(timestamp)
+        self.vals[key].append(value)
+        
+
+    def get(self, key: str, timestamp: int) -> str:
+        idx = bisect.bisect_right(self.mp[key], timestamp)
+        if idx == 0:
+            return ""
+        if idx >= len(self.mp[key]) or self.mp[key][idx] > timestamp:
+            idx -= 1
+        return self.vals[key][idx]
+
+
+# Your TimeMap object will be instantiated and called as such:
+# obj = TimeMap()
+# obj.set(key,value,timestamp)
+# param_2 = obj.get(key,timestamp)

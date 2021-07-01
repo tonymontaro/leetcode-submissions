@@ -1,0 +1,10 @@
+// https://leetcode.com/problems/permutations-ii
+
+from itertools import permutations
+
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        seen = {}
+        for arr in permutations(nums):
+            seen[tuple(arr)] = True
+        return list(seen.keys())

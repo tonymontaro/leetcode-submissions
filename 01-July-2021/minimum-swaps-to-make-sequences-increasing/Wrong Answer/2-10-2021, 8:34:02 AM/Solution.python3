@@ -1,0 +1,33 @@
+// https://leetcode.com/problems/minimum-swaps-to-make-sequences-increasing
+
+class Solution:
+    def minSwap(self, A: List[int], B: List[int]) -> int:
+        
+        cache = {}
+        def solve(idx):
+            if idx == 0:
+                return (0, 1)
+            if idx in cache:
+                return cache[idx]
+            
+            # no swap
+            noSwap = inf
+            prevNoSwap, prevSwap = solve(idx - 1)
+            if A[idx] > A[idx-1] and B[idx] > B[idx-1]:
+                noSwap = min(noSwap, prevNoSwap)
+            if A[idx] > B[idx-1] and B[idx] > A[idx-1]:
+                noSwap = min(noSwap, prevSwap)
+            
+            # swap
+            swap = inf
+            if B[idx] > A[idx-1] and A[idx] > B[idx-1]:
+                swap = 1 + min(prevNoSwap, swap)
+            if B[idx] > B[idx-1] and A[idx] > A[idx-1]:
+                swap = 1 + min(prevSwap, swap)
+            # print(idx, noSwap, swap)
+            cache[idx] = (noSwap, swap)
+            return (noSwap, swap)
+
+        n = len(A)
+        ans = min(solve(n - 1))
+        return ans

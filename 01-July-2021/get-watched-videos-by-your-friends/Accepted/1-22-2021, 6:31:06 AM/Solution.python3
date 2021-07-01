@@ -1,0 +1,26 @@
+// https://leetcode.com/problems/get-watched-videos-by-your-friends
+
+from collections import defaultdict, deque
+
+class Solution:
+    def watchedVideosByFriends(self, watchedVideos: List[List[str]], friends: List[List[int]], id: int, level: int) -> List[str]:
+        seen = {id: 1}
+        count = defaultdict(int)
+        deq = deque()
+        deq.append((id, 0))
+        
+        while deq:
+            node, depth = deq.popleft()
+            if depth == level:
+                for vid in watchedVideos[node]:
+                    count[vid] += 1
+                continue
+            for child in friends[node]:
+                if child not in seen:
+                    seen[child] = 1
+                    deq.append((child, depth + 1))
+        
+        res = [(v, k) for k, v in count.items()]
+        res.sort()
+        
+        return [x[1] for x in res]

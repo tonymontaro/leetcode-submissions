@@ -1,0 +1,21 @@
+// https://leetcode.com/problems/minimum-number-of-refueling-stops
+
+from heapq import heappush, heappop
+
+class Solution:
+    def minRefuelStops(self, target: int, tank: int, stations: List[List[int]]) -> int:
+        fuels = []
+        stations.append((target, 0))
+        prev = 0
+        ans = 0
+        for dist, fuel in stations:
+            tank -= dist - prev
+            prev = dist
+            while fuels and tank < 0:
+                ans += 1
+                tank += -heappop(fuels)
+            if tank < 0:
+                return -1
+            heappush(fuels, -fuel)
+        return ans
+        

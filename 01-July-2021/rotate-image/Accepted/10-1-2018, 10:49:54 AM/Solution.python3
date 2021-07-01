@@ -1,0 +1,13 @@
+// https://leetcode.com/problems/rotate-image
+
+class Solution:
+    def rotate(self, matrix):
+        ln = len(matrix)
+        for i in range(ln):
+            for j in range(i):
+                matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+
+        for i in range(ln):
+            for j in range(ln//2):
+                matrix[i][j], matrix[i][~j] = matrix[i][~j],  matrix[i][j]
+        

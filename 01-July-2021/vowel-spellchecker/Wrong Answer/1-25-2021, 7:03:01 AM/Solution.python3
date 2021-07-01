@@ -1,0 +1,68 @@
+// https://leetcode.com/problems/vowel-spellchecker
+
+from collections import defaultdict
+
+class Solution:
+    def spellchecker(self, wordlist: List[str], queries: List[str]) -> List[str]:
+        trie = {}
+        for i, word in enumerate(wordlist):
+            w = word.lower()
+            node = trie
+            for cha in w:
+                if cha not in node:
+                    node[cha] = {}
+                node = node[cha]
+            if '*' not in node:
+                node['*'] = []
+            node['*'].append((word, i))
+
+        ans = defaultdict(list)
+        vowels = 'aeiou'
+        def solve1(idx, node, word):
+            if idx >= len(word):
+                if '*' in node:
+                    res = node['*'][0]
+                    for w, i in node['*']:
+                        if w == word:
+                            res = (w, i)
+                            break
+                    ans[word].append(res)
+            cha = word[idx].lower()
+            if cha in node:
+                return solve(idx + 1, node[cha], word)
+            return False
+
+        def solve(idx, node, word):
+            if idx >= len(word):
+                if '*' in node:
+                    res = node['*'][0]
+                    for w, i in node['*']:
+                        if w == word:
+                            res = (w, i)
+                            break
+                    ans[word].append(res)
+                return
+            cha = word[idx].lower()
+            if cha in node:
+                solve(idx + 1, node[cha], word)
+            if cha not in vowels:
+                return
+
+            for v in vowels:
+                if v in node:
+                    solve(idx + 1, node[v], word)
+        
+        res = []
+        for q in queries:
+            a = solve1(0, trie, q)
+            if not a:
+                solve(0, trie, q)
+
+            if q in ans:
+                res.append(min(ans[q], key=lambda x: x[1])[0])
+            else:
+                res.append("")
+        return res
+            
+            
+                    

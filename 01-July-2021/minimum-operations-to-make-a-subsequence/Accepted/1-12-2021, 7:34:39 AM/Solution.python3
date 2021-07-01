@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/minimum-operations-to-make-a-subsequence
+
+import bisect
+
+class Solution:
+    def minOperations(self, target: List[int], arr: List[int]) -> int:
+        # O(nlogn) time | O(n) space
+        lis = []
+        order = {num: i for i, num in enumerate(target)}
+        for num in arr:
+            if num not in order:
+                continue
+            orderId = order[num]
+            idx = bisect.bisect_left(lis, orderId)
+            if idx >= len(lis):
+                lis.append(orderId)
+            else:
+                lis[idx] = orderId
+
+        return len(target) - len(lis)

@@ -1,0 +1,14 @@
+// https://leetcode.com/problems/set-mismatch
+
+class Solution:
+    def findErrorNums(self, nums: List[int]) -> List[int]:
+        cnt = collections.Counter(nums)
+        ans = []
+        dup = None
+        missing = None
+        for i in range(1, len(nums) + 1):
+            if i not in cnt:
+                missing = i
+            if cnt[i] > 1:
+                dup = i
+        return [dup, missing]

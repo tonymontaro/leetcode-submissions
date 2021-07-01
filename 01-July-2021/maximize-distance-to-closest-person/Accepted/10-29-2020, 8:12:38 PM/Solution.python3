@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/maximize-distance-to-closest-person
+
+from math import inf
+
+class Solution:
+    def maxDistToClosest(self, seats: List[int]) -> int:
+        "O(n) time and space | two pass"
+        lastOccupied = -inf
+        n = len(seats)
+        dp = [0] * n
+        for i in range(n):
+            if seats[i] == 1:
+                lastOccupied = i
+            else:
+                dp[i] = i - lastOccupied
+        ans = 0
+        lastOccupied = inf
+        for i in range(n-1, -1, -1):
+            if seats[i] == 1:
+                lastOccupied = i
+            else:
+                ans = max(ans, min(dp[i], lastOccupied - i))
+        return ans

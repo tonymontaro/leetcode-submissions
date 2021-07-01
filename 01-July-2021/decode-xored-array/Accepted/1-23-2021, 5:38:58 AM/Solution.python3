@@ -1,0 +1,10 @@
+// https://leetcode.com/problems/decode-xored-array
+
+class Solution:
+    def decode(self, encoded: List[int], first: int) -> List[int]:
+        prev = first
+        ans = [prev]
+        for num in encoded:
+            prev = prev ^ num
+            ans.append(prev)
+        return ans

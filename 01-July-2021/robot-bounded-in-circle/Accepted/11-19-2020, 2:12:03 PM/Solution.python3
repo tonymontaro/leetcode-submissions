@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/robot-bounded-in-circle
+
+class Solution:
+    def isRobotBounded(self, instructions: str) -> bool:
+        direction = 0
+        row, col = 0, 0
+        movement = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+        
+        for cha in instructions:
+            if cha == "G":
+                r, c = movement[direction]
+                row, col = row + r, col + c
+            elif cha == "L":
+                direction = (direction + 1) % 4
+            else:
+                direction = (direction - 1 + 4) % 4
+
+        return not (direction == 0 and (row, col) != (0, 0))

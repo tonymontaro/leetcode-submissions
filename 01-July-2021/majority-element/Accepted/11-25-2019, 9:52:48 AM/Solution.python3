@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/majority-element
+
+from collections import Counter
+
+class Solution:
+    def majorityElement(self, nums):
+        "O(n) time | O(1) space"
+        majorElement = None
+        count = 0
+        for num in nums:
+            if count == 0:
+                majorElement = num
+                count += 1
+            elif num != majorElement:
+                count -= 1
+            else:
+                count += 1
+        return majorElement

@@ -1,0 +1,28 @@
+// https://leetcode.com/problems/count-number-of-nice-subarrays
+
+from collections import deque
+
+class Solution:
+    def numberOfSubarrays(self, nums: List[int], k: int) -> int:
+        odds = deque()
+        for i, num in enumerate(nums):
+            if num % 2 == 1:
+                odds.append(i)
+                k -= 1
+            if k == 0:
+                break
+        
+        n = len(nums)
+        left = -1
+        ans = 0
+        while odds and odds[-1] < n:
+            nextOdd = odds[-1] + 1
+            while nextOdd < n and nums[nextOdd] % 2 == 0:
+                nextOdd += 1
+            # print(odds, nextOdd)
+            ans += (odds[0] - left) * (nextOdd - odds[-1])
+            left = odds.popleft()
+            odds.append(nextOdd)
+        return ans
+
+            

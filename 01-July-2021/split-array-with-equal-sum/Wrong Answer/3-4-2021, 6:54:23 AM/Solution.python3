@@ -1,0 +1,29 @@
+// https://leetcode.com/problems/split-array-with-equal-sum
+
+class Solution:
+    def splitArray(self, nums: List[int]) -> bool:
+        n = len(nums)
+        sm = 0
+        smIdx = 0
+        while smIdx < n:
+            sm += nums[smIdx]
+            # print(sm, '=======')
+            smIdx += 1
+            
+            completed = 1
+            idx = smIdx + 1
+            s = 0
+            while idx < n:
+                s += nums[idx]
+                if s > sm:
+                    break
+                # print(idx, completed, s, sm)
+                if s == sm:
+                    completed += 1
+                    if completed == 4 and idx == n-1:
+                        return True
+                    s = 0
+                    idx += 2
+                else:
+                    idx += 1
+        return False

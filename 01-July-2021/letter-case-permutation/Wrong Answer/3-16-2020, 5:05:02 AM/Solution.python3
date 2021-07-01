@@ -1,0 +1,24 @@
+// https://leetcode.com/problems/letter-case-permutation
+
+class Solution:
+    def __init__(self):
+        self.result = []
+    
+    def letterCasePermutation(self, word: str):
+        self.permute(0, list(word.lower()))
+        return self.result
+
+    def permute(self, i, word):
+        if i == len(word)-1:
+            self.result.append(''.join(word))
+            if word[i].isalpha():
+                word[i] = word[i].upper()
+                self.result.append(''.join(word))
+            return
+        if word[i].isalpha():
+            self.permute(i+1, word)
+            word = list(word)
+            word[i] = word[i].upper()
+            self.permute(i+1, word)
+        else:
+            self.permute(i+1, word)

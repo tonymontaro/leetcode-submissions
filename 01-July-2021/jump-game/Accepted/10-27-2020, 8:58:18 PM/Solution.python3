@@ -1,0 +1,12 @@
+// https://leetcode.com/problems/jump-game
+
+class Solution:
+    def canJump(self, nums: List[int]) -> bool:
+        # O(n) time | O(1) space
+        n = len(nums)
+        lastIdx = n - 1
+        for i in range(n-1,-1,-1):
+            if i + nums[i] >= lastIdx:
+                lastIdx = i
+        return lastIdx == 0
+        

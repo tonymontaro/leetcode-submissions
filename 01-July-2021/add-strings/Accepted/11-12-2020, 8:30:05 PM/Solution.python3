@@ -1,0 +1,21 @@
+// https://leetcode.com/problems/add-strings
+
+class Solution:
+    def addStrings(self, num1: str, num2: str) -> str:
+        zero = ord("0")
+        num1 = [ord(cha) - zero for cha in num1][::-1]
+        num2 = [ord(cha) - zero for cha in num2][::-1]
+        carry = 0
+        res = []
+        n, m = len(num1), len(num2)
+        for i in range(max(n, m)):
+            total = carry
+            if i < n:
+                total += num1[i]
+            if i < m:
+                total += num2[i]
+            res.append(total % 10)
+            carry = total // 10
+        if carry > 0:
+            res.append(carry)
+        return "".join([chr(num + zero) for num in res][::-1])

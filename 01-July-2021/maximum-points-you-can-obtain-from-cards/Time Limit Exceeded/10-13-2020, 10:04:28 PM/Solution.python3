@@ -1,0 +1,21 @@
+// https://leetcode.com/problems/maximum-points-you-can-obtain-from-cards
+
+class Solution:
+    def maxScore(self, cardPoints: List[int], k: int) -> int:
+        self.dp = {}
+        self.cards = cardPoints
+        return self.find(0, len(cardPoints) - 1, k)
+    
+    def find(self, start, end, k):
+        if k == 0:
+            return 0
+        if (start, end) not in self.dp:
+            if (start == end):
+                ans = self.cards[start]
+            else:
+                a1 = self.cards[start] + self.find(start + 1, end, k - 1)
+                a2 = self.cards[end] + self.find(start, end - 1, k - 1)
+                ans = max(a1, a2)
+            self.dp[(start, end)] = ans
+        return self.dp[(start, end)]
+        

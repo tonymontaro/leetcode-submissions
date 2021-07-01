@@ -1,0 +1,13 @@
+// https://leetcode.com/problems/count-and-say
+
+import itertools
+
+
+class Solution:
+    def countAndSay(self, n):
+        result = '1'
+        for _ in range(n - 1):
+            result = ''.join([''.join([str(len(list(group))), num]) 
+                              for num, group in itertools.groupby(result)])
+        return result
+        

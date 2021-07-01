@@ -1,0 +1,28 @@
+// https://leetcode.com/problems/longest-uncommon-subsequence-ii
+
+class Solution:
+    def findLUSlength(self, arr: List[str]) -> int:
+        def isSub(a, b):
+            if a == b:
+                return True
+            if not a:
+                return False
+            i = 0
+            for cha in b:
+                if a[i] == cha:
+                    i += 1
+                if i >= len(a):
+                    return True
+            return False
+
+        ans = -1
+        for i, a in enumerate(arr):
+            valid = True
+            for j, b in enumerate(arr):
+                if i != j and isSub(a, b):
+                    valid = False
+                    break
+
+            if valid:
+                ans = max(ans, len(a))
+        return ans

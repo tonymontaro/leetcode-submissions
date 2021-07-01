@@ -1,0 +1,19 @@
+// https://leetcode.com/problems/zigzag-conversion
+
+from collections import defaultdict
+
+class Solution:
+    def convert(self, s: str, rowlen: int) -> str:
+        if rowlen <= 1:
+            return s
+        res = defaultdict(list)
+        
+        inc = 1
+        row = 0
+        for cha in s:
+            res[row].append(cha)
+            row += inc
+            if row == rowlen - 1 or row == 0:
+                inc *= -1
+        
+        return "".join("".join(res[i]) for i in range(rowlen))

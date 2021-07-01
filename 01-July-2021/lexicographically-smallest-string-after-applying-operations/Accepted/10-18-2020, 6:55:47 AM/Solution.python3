@@ -1,0 +1,50 @@
+// https://leetcode.com/problems/lexicographically-smallest-string-after-applying-operations
+
+class Solution:
+    def findLexSmallestString(self, s: str, a: int, b: int) -> str:
+        self.seen = set()
+        self.ans = None
+        self.stored = ""
+        self.dfs([int(i) for i in s], a, b)
+        return self.stored
+    def dfs(self, arr, a, b):
+        rep = getRep(arr)
+        if rep in self.seen: return
+        num = getNum(arr)
+        # print(rep, num)
+        if self.ans is None or num < self.ans:
+            self.ans = num
+            self.stored = rep
+        self.seen.add(rep)
+        rotated = rotate(list(arr), b)
+        added = add(list(arr), a)
+        # print(rep, getRep(added), getRep(rotated))
+        self.dfs(added, a, b)
+        self.dfs(rotate(list(arr), b), a, b)
+
+            
+def getRep(nums):
+    return "".join([str(i) for i in nums])
+def getNum(arr):
+    ans = 0
+    for num in arr:
+        ans = ans * 10 + num
+    return ans
+
+def add(arr, a):
+    for i in range(1, len(arr), 2):
+        arr[i] = (arr[i] + a) % 10
+    return arr
+def rotate(nums, k: int) -> None:
+    n = len(nums)
+    k = k % n
+    reverse(nums, 0, n - 1)
+    reverse(nums, 0, k - 1)
+    reverse(nums, k, n - 1)
+    return nums
+        
+def reverse(arr, start, end):
+    while start < end:
+        arr[start], arr[end] = arr[end], arr[start]
+        start += 1
+        end -= 1

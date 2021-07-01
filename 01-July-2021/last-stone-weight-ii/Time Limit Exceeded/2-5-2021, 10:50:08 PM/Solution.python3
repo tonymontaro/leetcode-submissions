@@ -1,0 +1,29 @@
+// https://leetcode.com/problems/last-stone-weight-ii
+
+from math import inf
+
+class Solution:
+    def lastStoneWeightII(self, stones: List[int]) -> int:
+        cache = {}
+        n = len(stones)
+
+        def solve(mask, rem):
+            if mask == 0:
+                return rem
+            
+            if (mask, rem) in cache:
+                return cache[(mask, rem)]
+            
+            ans = inf
+            for i in range(n):
+                if ((1 << i) & mask) == 0:
+                    continue
+                
+                newMask = mask ^ (1 << i)
+                newRem = abs(stones[i] - rem)
+                ans = min(ans, solve(newMask, newRem))
+
+            cache[(mask, rem)] = ans
+            return ans
+        
+        return solve((1 << n) - 1, 0)

@@ -1,0 +1,31 @@
+// https://leetcode.com/problems/sum-of-subarray-minimums
+
+class Solution:
+    def sumSubarrayMins(self, arr: List[int]) -> int:
+        mod = 10**9 + 7
+        ans = 0
+        l = r = 0
+        prev = None
+        n = len(arr)
+        for i, num in enumerate(arr):
+            if prev is not None and num == prev:
+                l = i - 1
+            elif prev is not None and num < prev:
+                r = i + 1
+            else:
+                l = i - 1
+                r = i + 1
+            while l >= 0 and num < arr[l]:
+                l -= 1
+            
+            while r < n and num <= arr[r]:
+                r += 1
+            
+            # print(num, l, r)
+            res = 1
+            left = i - l - 1
+            right = r - i - 1
+            res += (left + right)
+            res += left * right
+            ans = (ans + res * num) % mod
+        return ans

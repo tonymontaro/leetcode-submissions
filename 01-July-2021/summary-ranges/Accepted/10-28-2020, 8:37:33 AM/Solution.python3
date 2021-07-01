@@ -1,0 +1,19 @@
+// https://leetcode.com/problems/summary-ranges
+
+class Solution:
+    def summaryRanges(self, nums: List[int]) -> List[str]:
+        def getRange(a, b):
+            if a == b:
+                return str(a)
+            return f"{a}->{b}"
+        i = 0
+        result = []
+        while i < len(nums):
+            a = nums[i]
+            j = i + 1
+            while j < len(nums) and nums[j] - nums[j-1] == 1:
+                j += 1
+            b = nums[j-1]
+            result.append(getRange(a, b))
+            i = j
+        return result

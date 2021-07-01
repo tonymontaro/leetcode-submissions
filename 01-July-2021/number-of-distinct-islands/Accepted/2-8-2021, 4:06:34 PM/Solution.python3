@@ -1,0 +1,28 @@
+// https://leetcode.com/problems/number-of-distinct-islands
+
+class Solution:
+    def numDistinctIslands(self, grid: List[List[int]]) -> int:
+        if not grid or not grid[0]:
+            return 0
+        cache = {}
+        seen = {}
+        rlen, clen = len(grid), len(grid[0])
+        dirs = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        
+        def dfs(r, c, rr, cc, arr):
+            if r < 0 or r >= rlen or c < 0 or c >= clen or grid[r][c] == 0 or (r, c) in seen:
+                return arr
+            arr.append((rr, cc))
+            seen[(r, c)] = 1
+            for rAdd, cAdd in dirs:
+                dfs(r + rAdd, c + cAdd, rr + rAdd, cc + cAdd, arr)
+            return arr
+        
+        for r in range(rlen):
+            for c in range(clen):
+                if grid[r][c] == 1 and (r, c) not in seen:
+                    aa = sorted(dfs(r, c, 0, 0, []))
+                    cache[str(aa)] = 1
+
+        return len(cache)
+        

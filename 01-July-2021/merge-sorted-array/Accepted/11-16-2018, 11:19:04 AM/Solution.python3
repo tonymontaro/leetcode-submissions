@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/merge-sorted-array
+
+class Solution:
+    def merge(self, nums1, m, nums2, n):
+        i = j = 0
+        result = []
+        while True:
+            if j < n and i < m:
+                first, second = nums1[i], nums2[j]
+                if first < second:
+                    result.append(first)
+                    i += 1
+                else:
+                    result.append(second)
+                    j += 1
+            elif j >= n and i >= m:
+                break
+            elif j >= n:
+                result.append(nums1[i])
+                i += 1
+            else:
+                result.append(nums2[j])
+                j += 1
+        nums1[::] = result
+        

@@ -1,0 +1,21 @@
+// https://leetcode.com/problems/ones-and-zeroes
+
+from functools import lru_cache
+
+class Solution:
+    def findMaxForm(self, strs: List[str], M: int, N: int) -> int:
+        
+        @lru_cache(None)
+        def solve(idx, m, n):
+            if idx >= len(strs) or (m == 0 and n == 0):
+                return 0
+            
+            ones = strs[idx].count('1')
+            zeros = len(strs[idx]) - ones
+            ans = solve(idx + 1, m, n)
+            if ones <= n and zeros <= m:
+                ans = max(ans, 1 + solve(idx + 1, m - zeros, n - ones))
+            return ans
+        
+        return solve(0, M, N)
+            

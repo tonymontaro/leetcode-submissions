@@ -1,0 +1,12 @@
+// https://leetcode.com/problems/valid-parentheses
+
+class Solution:
+    def isValid(self, brackets: 'str') -> 'bool':
+        items = []
+        table = {'[': ']', '{': '}', '(': ')'}
+        for br in brackets:
+            if br in table:
+                items.append(br)
+            elif not items or table[items.pop()] != br:
+                return False
+        return len(items) == 0

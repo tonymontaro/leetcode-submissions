@@ -1,0 +1,11 @@
+// https://leetcode.com/problems/check-if-array-is-sorted-and-rotated
+
+class Solution:
+    def check(self, nums: List[int]) -> bool:
+        mn = min(nums)
+        mins = []
+        minIdx = 0
+        for i, num in enumerate(nums):
+            if num == mn:
+                mins.append(i)
+        return any([nums[minIdx:] + nums[:minIdx] == sorted(nums) for minIdx in mins])

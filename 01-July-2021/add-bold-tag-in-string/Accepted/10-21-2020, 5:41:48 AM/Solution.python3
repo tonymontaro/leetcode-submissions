@@ -1,0 +1,33 @@
+// https://leetcode.com/problems/add-bold-tag-in-string
+
+class Solution:
+    def addBoldTag(self, s: str, dct: List[str]) -> str:
+        # O(len(s) * len(dct)*wordLn)
+        n = len(s)
+        ranges = []
+        for word in dct:
+            idx = 0
+            while idx != -1 and idx < n:
+                idx = s.find(word, idx)
+                if idx != -1:
+                    ranges.append((idx, idx + len(word)))
+                    idx += 1
+        if not ranges:
+            return s
+        # print(ranges)
+        ranges.sort()
+        final = []
+        for start, end in ranges:
+            if final and start <= final[-1][1]:
+                prevS, prevE = final.pop()
+                final.append((prevS, max(prevE, end)))
+            else:
+                final.append((start, end))
+        res = ""
+        prev = 0
+        # print(final)
+        for start, end in final:
+            res += s[prev: start] + f"<b>{s[start: end]}</b>"
+            prev = end
+        res += s[prev:len(s)]
+        return res

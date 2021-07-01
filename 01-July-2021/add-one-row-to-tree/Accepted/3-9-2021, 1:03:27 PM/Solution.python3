@@ -1,0 +1,26 @@
+// https://leetcode.com/problems/add-one-row-to-tree
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def addOneRow(self, root: TreeNode, v: int, d: int) -> TreeNode:
+        
+        def solve(node, direction, depth):
+            if not node:
+                return None if depth < d else TreeNode(v)
+            if depth < d:
+                node.left = solve(node.left, 'left', depth + 1)
+                node.right = solve(node.right, 'right', depth + 1)
+                return node
+            newNode = TreeNode(v)
+            if direction == 'left':
+                newNode.left = node
+            else:
+                newNode.right = node
+            return newNode
+
+        return solve(root, 'left', 1)

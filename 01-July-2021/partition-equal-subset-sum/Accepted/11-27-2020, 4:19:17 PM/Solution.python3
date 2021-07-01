@@ -1,0 +1,19 @@
+// https://leetcode.com/problems/partition-equal-subset-sum
+
+class Solution:
+    def canPartition(self, nums: List[int]) -> bool:
+        total = sum(nums)
+        if total % 2 == 1:
+            return False
+        
+        half = total // 2
+        dp = [0] * (half + 1)
+        dp[0] = 1
+        for num in nums:
+            for i in range(half, num - 1, -1):
+                if dp[i - num] == 1:
+                    dp[i] = 1
+            if dp[-1] == 1:
+                return True
+        print(dp)
+        return False

@@ -1,0 +1,39 @@
+// https://leetcode.com/problems/fancy-sequence
+
+class Fancy:
+
+    def __init__(self):
+        # (num, prevAdd, prevMult)
+        self.mod = 10**9 + 7
+        self.arr = []
+        self.mult = 1
+        self.add = 0
+
+    def append(self, val: int) -> None:
+        self.arr.append((val, self.add, self.mult))
+
+    def addAll(self, inc: int) -> None:
+        self.add = (self.add + inc) % self.mod
+
+    def multAll(self, m: int) -> None:
+        mod = self.mod
+        self.mult = (self.mult * m) % mod
+        self.add = (self.add * m) % mod
+
+    def getIndex(self, idx: int) -> int:
+        if idx >= len(self.arr):
+            return -1
+        mod = self.mod
+        num, prevAdd, prevMult = self.arr[idx]
+        modInverse = pow(prevMult, mod - 2, mod)
+        multiplier = (self.mult * modInverse) % mod
+        ans = (multiplier * num) % mod + (self.add - (prevAdd * multiplier) % mod + mod)
+        return ans % mod
+
+
+# Your Fancy object will be instantiated and called as such:
+# obj = Fancy()
+# obj.append(val)
+# obj.addAll(inc)
+# obj.multAll(m)
+# param_4 = obj.getIndex(idx)

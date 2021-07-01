@@ -1,0 +1,22 @@
+// https://leetcode.com/problems/sum-of-beauty-of-all-substrings
+
+from math import inf
+from string import ascii_lowercase
+from collections import defaultdict
+
+class Solution:
+    def beautySum(self, s: str) -> int:
+        ans = 0
+        n = len(s)
+        for i in range(n):
+            cnt = defaultdict(int)
+            for j in range(i, n):
+                mn, mx = inf, 0
+                cnt[s[j]] += 1
+                for cha in ascii_lowercase:
+                    if cnt[cha] > 0:
+                        mn = min(mn, cnt[cha])
+                        mx = max(mx, cnt[cha])
+                ans += mx - mn
+        return ans
+                

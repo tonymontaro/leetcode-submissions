@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/degree-of-an-array
+
+from math import inf
+
+class Solution:
+    def findShortestSubArray(self, nums: List[int]) -> int:
+        seen = {}
+        degree = 0
+        for i, num in enumerate(nums):
+            if num not in seen:
+                seen[num] = [i, 0, 0]
+            seen[num][1] = i - seen[num][0] + 1
+            seen[num][2] += 1
+            degree = max(degree, seen[num][2])
+        
+        ans = inf
+        for k in seen.keys():
+            if seen[k][2] == degree:
+                ans = min(ans, seen[k][1])
+        return ans

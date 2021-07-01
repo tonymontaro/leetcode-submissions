@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/profitable-schemes
+
+class Solution:
+    def profitableSchemes(self, n: int, minProfit: int, group: List[int], profit: List[int]) -> int:
+        MOD = 10**9 + 7
+        cache = {}
+        
+        def solve(idx, remProfit, num):
+            if idx >= len(group):
+                return 1 if remProfit == 0 else 0
+
+            if (idx, remProfit, num) in cache:
+                return cache[(idx, remProfit, num)]
+            
+            take = 0
+            if num >= group[idx]:
+                take = solve(idx + 1, max(0, remProfit - profit[idx]), num - group[idx])
+            
+            skip = solve(idx + 1, remProfit, num)
+            cache[(idx, remProfit, num)] = (take + skip) % MOD
+            return cache[(idx, remProfit, num)]
+        
+        return solve(0, minProfit, n)

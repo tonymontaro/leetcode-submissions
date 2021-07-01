@@ -1,0 +1,31 @@
+// https://leetcode.com/problems/matchsticks-to-square
+
+class Solution:
+    def makesquare(self, nums: List[int]) -> bool:
+        total = sum(nums)
+        if total % 4 != 0 or total == 0:
+            return False
+        side = total // 4
+        seen = {}
+
+        def solve(sticks, sides):
+            if sides == 3:
+                return True
+            if (sticks, sides) in seen:
+                return False
+            
+            rem = sum([num for i, num in enumerate(nums) if (sticks & (1 << i)) != 0]) % side
+            if rem == 0:
+                rem = side
+            
+            for i, num in enumerate(nums):
+                if (sticks & (1 << i)) == 0 or num > rem:
+                    continue
+                sd = sides + 1 if num == rem else sides
+                st = sticks ^ (1 << i)
+                if solve(st, sd):
+                    return True
+            seen[(sticks, num)] = 1
+            
+        sticks = (1 << len(nums)) - 1
+        return solve(sticks, 0)

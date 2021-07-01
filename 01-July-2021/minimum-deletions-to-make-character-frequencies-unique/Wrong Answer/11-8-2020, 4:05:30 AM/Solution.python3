@@ -1,0 +1,40 @@
+// https://leetcode.com/problems/minimum-deletions-to-make-character-frequencies-unique
+
+from collections import Counter, deque
+
+class Solution:
+    def minDeletions(self, s: str) -> int:
+        vals = Counter(s).values()
+        cnt = Counter(vals)
+        mx = max(cnt.keys())
+
+        seen = {}
+        for val in cnt:
+            if val not in seen:
+                seen[val] = True
+                cnt[val] -= 1
+        
+        ans = 0
+        remaining = sorted([[k, c] for k, c in cnt.items() if c > 0])
+        
+        deq = deque(remaining)
+        # print(deq)
+        for i in range(mx, -1, -1):
+            if not deq:
+                return ans
+            if i in seen or i > deq[-1][0]:
+                continue
+
+            k, c = deq[-1]
+            ans += k - i
+            if c == 1:
+                deq.pop()
+            else:
+                deq[0][1] -= 1
+
+        while deq:
+            k, c = deq.popleft()
+            ans += k * c
+        return ans
+                
+            

@@ -1,0 +1,17 @@
+// https://leetcode.com/problems/maximum-product-subarray
+
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int:
+        # brute-force O(n^2), can we do better?
+        if not nums:
+            return 0
+        
+        n = len(nums)
+        best = nums[0]
+        for i, num in enumerate(nums):
+            total = num
+            best = max(best, total)
+            for j in range(i + 1, n):
+                total *= nums[j]
+                best = max(best, total)
+        return best

@@ -1,0 +1,9 @@
+// https://leetcode.com/problems/thousand-separator
+
+class Solution:
+    def thousandSeparator(self, n: int) -> str:
+        num = str(n)[::-1]
+        ans = []
+        for i in range(0, len(num), 3):
+            ans.append(num[i:i+3])
+        return ".".join(ans)[::-1]

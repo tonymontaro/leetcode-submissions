@@ -1,0 +1,31 @@
+// https://leetcode.com/problems/knight-dialer
+
+class Solution:
+    def knightDialer(self, num: int) -> int:
+        knight = [(-1, -2), (-2, -1), (-2, 1), (-1, 2), (1, -2), (2, -1), (2, 1), (1, 2)]
+        rlen, clen = 4, 3
+        invalid = [(3, 0), (3, 2)]
+        cache = {}
+        mod = 10**9 + 7
+
+        def solve(r, c, rem):
+            isValid = 0 <= r < rlen and 0 <= c < clen and (r, c) not in invalid
+            if not isValid:
+                return 0
+            
+            if rem == 1:
+                return 1
+            
+            if (r, c, rem) in cache:
+                return cache[(r, c, rem)]
+            ans = 0
+            for rAdd, cAdd in knight:
+                ans = (ans + solve(r + rAdd, c + cAdd, rem - 1)) % mod
+            cache[(r, c, rem)] = ans
+            return ans
+        
+        res = 0
+        for r in range(rlen):
+            for c in range(clen):
+                res = (res + solve(r, c, num)) % mod
+        return res

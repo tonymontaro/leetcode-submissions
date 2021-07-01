@@ -1,0 +1,13 @@
+// https://leetcode.com/problems/reach-a-number
+
+from collections import deque
+
+class Solution:
+    def reachNumber(self, target: int) -> int:
+        num = 0
+        incr = 1
+        while True:
+            if num >= target and (num - target) % 2 == 0:
+                return incr - 1
+            num += incr
+            incr += 1

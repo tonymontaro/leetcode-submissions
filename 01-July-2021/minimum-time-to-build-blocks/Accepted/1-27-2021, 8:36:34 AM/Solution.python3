@@ -1,0 +1,12 @@
+// https://leetcode.com/problems/minimum-time-to-build-blocks
+
+from heapq import heappop, heappush, heapify
+
+class Solution:
+    def minBuildTime(self, heap: List[int], splitTime: int) -> int:
+        heapify(heap)
+        while len(heap) > 1:
+            a = heappop(heap)
+            b = heappop(heap)
+            heappush(heap, b + splitTime)
+        return heap[0]

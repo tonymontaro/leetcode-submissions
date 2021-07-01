@@ -1,0 +1,66 @@
+// https://leetcode.com/problems/most-stones-removed-with-same-row-or-column
+
+class Solution:
+    def removeStones(self, stones: List[List[int]]) -> int:
+        n = len(stones)
+        rows = {}
+        cols = {}
+        disjoint = UnionFind(n)
+        best = 0
+        for i in range(n):
+            r, c = stones[i]
+            if r in rows:
+                disjoint.unify(i, rows[r])
+            if c in cols:
+                disjoint.unify(i, cols[c])
+            rows[r] = i
+            cols[c] = i
+        return n - disjoint.groups
+        
+
+class UnionFind:
+    """
+    UnionFind or DisjoinSet data-structure. Zero indexed.
+
+    Initialize:
+        UnionFind(n)
+    Methods:
+        disjoint.unify(p, q)        # unify p and q
+        disjoint.connected(p, q)    # is p connected to q (return bool)
+        disjoint.find(p)            # find the parent of q
+        disjoint.getSize(p)         # return the group size of p
+
+    """
+    def __init__(self, n):
+        self.size = n
+        self.groups = n
+        self.sizes = [0] * n
+        self.parents = [0] * n
+        
+        for i in range(n):
+            self.parents[i] = i
+            self.sizes[i] = 1
+    def find(self, p):
+        root = p
+        while (root != self.parents[root]):
+            root = self.parents[root]
+        # path compression
+        while (p != root):
+            p, self.parents[p] = self.parents[p], root
+        return root
+    def getSize(self, p):
+        return self.sizes[self.find(p)]
+    def connected(self, p, q):
+        return self.find(p) == self.find(q)
+    def unify(self, p, q):
+        root1 = self.find(p)
+        root2 = self.find(q)
+        if root1 == root2:
+            return
+        if self.sizes[root1] < self.sizes[root2]:
+            self.parents[root1] = root2
+            self.sizes[root2] += self.sizes[root1]
+        else:
+            self.parents[root2] = root1
+            self.sizes[root1] += self.sizes[root2]
+        self.groups -= 1

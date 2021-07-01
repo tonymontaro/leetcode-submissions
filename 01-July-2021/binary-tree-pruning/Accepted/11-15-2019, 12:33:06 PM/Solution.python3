@@ -1,0 +1,27 @@
+// https://leetcode.com/problems/binary-tree-pruning
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def pruneTree(self, root):
+        prune_tree_helper(root)
+        return root
+
+def prune_tree_helper(node):
+    total = node.val
+    if node.left:
+        total_left = prune_tree_helper(node.left)
+        total += total_left
+        if total_left == 0:
+            node.left = None
+    if node.right:
+        total_right = prune_tree_helper(node.right)
+        total += total_right
+        if total_right == 0:
+            node.right = None
+    return total

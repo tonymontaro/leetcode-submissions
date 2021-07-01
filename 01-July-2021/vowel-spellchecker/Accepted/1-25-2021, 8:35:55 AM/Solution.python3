@@ -1,0 +1,27 @@
+// https://leetcode.com/problems/vowel-spellchecker
+
+from collections import defaultdict
+
+class Solution:
+    def spellchecker(self, wordlist: List[str], queries: List[str]) -> List[str]:
+        caseSensitive = {}
+        caseInsensitive = {}
+        vowelInsensitive = {}
+        for word in wordlist:
+            caseSensitive[word] = word
+            lower = word.lower()
+            caseInsensitive.setdefault(lower, word)
+            v = "".join("*" if cha in 'aeiou' else cha for cha in lower)
+            vowelInsensitive.setdefault(v, word)
+            
+        def solve(word):
+            if word in caseSensitive:
+                return caseSensitive[word]
+            lower = word.lower()
+            if lower in caseInsensitive:
+                return caseInsensitive[lower]
+            v = "".join("*" if cha in 'aeiou' else cha for cha in lower)
+            return vowelInsensitive[v] if v in vowelInsensitive else ""
+        
+        return map(solve, queries)
+        

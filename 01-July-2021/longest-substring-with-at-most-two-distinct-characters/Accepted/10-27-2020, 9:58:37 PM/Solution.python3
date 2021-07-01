@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/longest-substring-with-at-most-two-distinct-characters
+
+from collections import defaultdict
+
+class Solution:
+    def lengthOfLongestSubstringTwoDistinct(self, s: str) -> int:
+        # O(n) time and space
+        left = 0
+        count = defaultdict(int)
+        inWindow = 0
+        ans = 0
+        for i, cha in enumerate(s):
+            if count[cha] == 0:
+                inWindow += 1
+            count[cha] += 1
+            while inWindow > 2:
+                leftCha = s[left]
+                count[leftCha] -= 1
+                if count[leftCha] == 0:
+                    inWindow -= 1
+                left += 1
+            ans = max(ans, i - left + 1)
+        return ans

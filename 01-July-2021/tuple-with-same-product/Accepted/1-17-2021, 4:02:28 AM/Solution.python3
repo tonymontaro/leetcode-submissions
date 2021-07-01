@@ -1,0 +1,19 @@
+// https://leetcode.com/problems/tuple-with-same-product
+
+from collections import defaultdict
+
+class Solution:
+    def tupleSameProduct(self, nums: List[int]) -> int:
+        ans = 0
+        seen = defaultdict(int)
+        for i, num in enumerate(nums):
+            for j, num2 in enumerate(nums):
+                seen[num * num2] += 1
+        for k, v in seen.items():
+            if v >= 4:
+                v = v // 2
+                total = (v * (v - 1)) // 2
+                ans += 8 * total
+                
+        return ans
+                

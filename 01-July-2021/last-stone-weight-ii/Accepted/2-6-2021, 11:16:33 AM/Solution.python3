@@ -1,0 +1,14 @@
+// https://leetcode.com/problems/last-stone-weight-ii
+
+from heapq import heappop, heappush, heapify
+
+class Solution:
+    def lastStoneWeightII(self, arr: List[int]) -> int:
+        sm = sum(arr)
+        dp = {0}
+        
+        for num in arr:
+            dp |= {num + item for item in dp}
+        return min(abs((sm - i) - i) for i in dp)
+        
+        

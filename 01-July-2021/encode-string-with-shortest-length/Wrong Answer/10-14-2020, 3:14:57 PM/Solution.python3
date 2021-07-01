@@ -1,0 +1,42 @@
+// https://leetcode.com/problems/encode-string-with-shortest-length
+
+class Solution:
+    def encode(self, s: str) -> str:
+        prev = len(s) + 1
+        # while (len(s) < prev):
+        #     self.dp = {}
+        #     prev = len(s)
+        #     s = self.shorten(0, s)
+        #     print(s, prev)
+        self.dp = {}
+        return self.shorten(s)
+        return s
+    def shorten(self, seq):
+        if (len(seq) <= 4): return seq
+        if (seq in self.dp): return self.dp[seq]
+
+        n = len(seq)
+        best = seq
+        half = (n + 1) // 2
+        for i in range(1, half + 1):
+            part = seq[:i]
+            count = 1
+            s = i
+            while (s < n):
+                if (seq[s:s+i] != part): break
+                count += 1
+                s += i
+            flatPart = f"{count}[{part}]"
+            # if count == 2:
+            #     print(seq, flatPart, len(part) * count, len(flatPart), s, seq[s:])
+            if (len(part) * count <= len(flatPart)): flatPart = part * count
+            else:
+                flatPart = self.shorten(part)
+                flatPart = f"{count}[{flatPart}]"
+            res = f"{flatPart}{self.shorten(seq[s:])}"
+            if (len(res) < len(best)): best = res
+
+        self.dp[seq] = best
+        return best
+        
+            

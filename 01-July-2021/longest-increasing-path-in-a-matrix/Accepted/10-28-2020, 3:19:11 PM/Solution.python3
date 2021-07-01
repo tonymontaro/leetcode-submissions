@@ -1,0 +1,28 @@
+// https://leetcode.com/problems/longest-increasing-path-in-a-matrix
+
+class Solution:
+    def longestIncreasingPath(self, grid: List[List[int]]) -> int:
+        # O(n*m) time and space
+        if len(grid) == 0 or len(grid[0]) == 0:
+            return 0
+        self.grid = grid
+        self.cache = {}
+        self.neighbors = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        result = 0
+        for r in range(len(self.grid)):
+            for c in range(len(self.grid[0])):
+                result = max(result, self.dfs(r, c))
+        return result
+    def dfs(self, row, col):
+        if (row, col) not in self.cache:
+            val = self.grid[row][col]
+            best = 0
+            for nRow, nCol in self.neighbors:
+                r, c = row + nRow, col + nCol
+                isValid = 0 <= r < len(self.grid) and 0 <= c < len(self.grid[0])
+                isValid = isValid and self.grid[r][c] > val
+                if isValid:
+                    best = max(best, self.dfs(r, c))
+            self.cache[(row, col)] = 1 + best
+        return self.cache[(row, col)]
+        

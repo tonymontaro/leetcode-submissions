@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/minimum-time-to-collect-all-apples-in-a-tree
+
+class Solution:
+    def minTime(self, n: int, edges: List[List[int]], hasApple: List[bool]) -> int:
+        adj = [[] for _ in range(n)]
+        for a, b in edges:
+            adj[a].append(b)
+            adj[b].append(a)
+        seen = {}
+        def solve(node):
+            # print(node)
+            seen[node] = 1
+            has = hasApple[node]
+            dist  = 0
+            for child in adj[node]:
+                if child not in seen:
+                    d, t = solve(child)
+                    if t:
+                        dist += d + 2
+                        has = True
+            return (dist, has)
+        return solve(0)[0]
+                        

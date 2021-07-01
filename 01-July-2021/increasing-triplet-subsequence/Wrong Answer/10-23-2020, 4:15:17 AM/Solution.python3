@@ -1,0 +1,15 @@
+// https://leetcode.com/problems/increasing-triplet-subsequence
+
+class Solution:
+    def increasingTriplet(self, nums: List[int]) -> bool:
+        # O(n) time | O(1) space
+        one = None
+        two = None
+        for num in nums:
+            if one == None or num < one:
+                one = num
+            elif two == None or (one < num < two):
+                two = num
+            elif num > two:
+                return True
+        return False

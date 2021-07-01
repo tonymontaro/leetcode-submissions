@@ -1,0 +1,32 @@
+// https://leetcode.com/problems/minimum-number-of-people-to-teach
+
+from collections import defaultdict
+from math import inf
+
+class Solution:
+    def minimumTeachings(self, n: int, languages: List[List[int]], friendships: List[List[int]]) -> int:
+        langs = defaultdict(set)
+        n = len(languages)
+        for i in range(1, n + 1):
+            for lang in languages[i-1]:
+                langs[lang].add(i)
+        
+        languages = [set(l) for l in languages]
+        arr = []
+        for a, b in friendships:
+            if languages[a-1].intersection(languages[b-1]):
+                continue
+            arr.append((a, b))
+
+        ans = inf
+        for lang in langs.keys():
+            res = 0
+            seen = {}
+            for a, b in arr:
+                for x in [a, b]:
+                    if lang not in languages[x-1] and x not in seen:
+                        res += 1
+                        seen[x] = 1
+            # print(lang, res)
+            ans = min(ans, res)
+        return ans

@@ -1,0 +1,16 @@
+// https://leetcode.com/problems/subarray-sums-divisible-by-k
+
+from collections import defaultdict
+
+class Solution:
+    def subarraysDivByK(self, arr: List[int], k: int) -> int:
+        presum = [0]
+        seen = defaultdict(int)
+        seen[0] += 1
+        ans = 0
+        for i, num in enumerate(arr):
+            mod = (num + presum[-1]) % k
+            ans += seen[mod]
+            seen[mod] += 1
+            presum.append(mod)
+        return ans

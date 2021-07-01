@@ -1,0 +1,12 @@
+// https://leetcode.com/problems/minimum-domino-rotations-for-equal-row
+
+from math import inf
+
+class Solution:
+    def minDominoRotations(self, A: List[int], B: List[int]) -> int:
+        n = len(A)
+        ans = inf
+        for num in [A[0], B[0]]:
+            if all(x == num or y == num for x, y in zip(A, B)):
+                ans = min(n - A.count(num), n - B.count(num))
+        return -1 if ans == inf else ans

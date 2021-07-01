@@ -1,0 +1,16 @@
+// https://leetcode.com/problems/minimum-add-to-make-parentheses-valid
+
+class Solution(object):
+    def minAddToMakeValid(self, string):
+        """O(n) time | O(1) space"""
+        not_closed = 0
+        brackets = 0
+        for char in string:
+            if char == ")":
+                if brackets <= 0:
+                    not_closed += 1
+                else:
+                    brackets -= 1
+            else:
+                brackets += 1
+        return not_closed + brackets

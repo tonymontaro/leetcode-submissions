@@ -1,0 +1,26 @@
+// https://leetcode.com/problems/find-minimum-time-to-finish-all-jobs
+
+from math import inf
+from collections import defaultdict
+
+class Solution:
+    def minimumTimeRequired(self, jobs: List[int], k: int) -> int:
+        self.ans = inf
+        n = len(jobs)
+        
+        def backtrack(idx, workers):
+            if idx >= n:
+                self.ans = min(self.ans, max(workers.values()))
+                return
+            
+            seen = {}
+            for i in range(k):
+                if workers[i] + jobs[idx] >= self.ans or workers[i] in seen:
+                    continue
+                seen[workers[i]] = 1
+                workers[i] += jobs[idx]
+                backtrack(idx + 1, workers)
+                workers[i] -= jobs[idx]
+        
+        backtrack(0, defaultdict(int))
+        return self.ans

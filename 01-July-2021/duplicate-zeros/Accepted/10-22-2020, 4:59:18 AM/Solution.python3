@@ -1,0 +1,17 @@
+// https://leetcode.com/problems/duplicate-zeros
+
+from collections import deque
+
+class Solution:
+    def duplicateZeros(self, arr: List[int]) -> None:
+        """
+        Do not return anything, modify arr in-place instead.
+        """
+        deq = deque()
+        for i in range(len(arr)):
+            deq.append(arr[i])
+            if arr[i] == 0:
+                deq.append(0)
+            arr[i] = deq.popleft()
+        
+        

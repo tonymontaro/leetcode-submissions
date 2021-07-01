@@ -1,0 +1,35 @@
+// https://leetcode.com/problems/roman-to-integer
+
+class Solution:
+    def romanToInt(self, word):
+        table = {
+            **self._gen_nums('I', 'V', 'X', 1), 
+            **self._gen_nums('X', 'L', 'C', 10),
+            **self._gen_nums('C', 'D', 'M', 100),
+            'M': 1000, 'MM': 2000, 'MMM': 3000,
+        }
+        num = 0
+        sub_str = ''
+        for char in word:
+            if (sub_str + char) not in table:
+                num += table[sub_str]
+                sub_str = char
+            else:
+                sub_str += char
+        num += table[sub_str]
+        return num
+    
+    @staticmethod
+    def _gen_nums(first, five, last, multiplier):
+        roman = [
+            first, 
+            first + first, 
+            first + first + first, 
+            first + five, 
+            five,
+            five + first,
+            five + first + first,
+            five + first + first + first,
+            first + last,
+        ]
+        return {rom: (num + 1)*multiplier for num, rom in enumerate(roman)}

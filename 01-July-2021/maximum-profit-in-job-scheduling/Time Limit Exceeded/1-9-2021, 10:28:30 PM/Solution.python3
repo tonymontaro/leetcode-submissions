@@ -1,0 +1,15 @@
+// https://leetcode.com/problems/maximum-profit-in-job-scheduling
+
+class Solution:
+    def jobScheduling(self, startTime: List[int], endTime: List[int], profit: List[int]) -> int:
+        n = len(startTime)
+        jobs = [(endTime[i], startTime[i], profit[i]) for i in range(n)]
+        jobs.sort()
+        
+        dp = [j[2] for j in jobs]
+        for i in range(n):
+            e, s, p = jobs[i]
+            for j in range(i):
+                if jobs[j][0] <= s:
+                    dp[i] = max(dp[i], p + dp[j])
+        return max(dp)

@@ -1,0 +1,34 @@
+// https://leetcode.com/problems/flatten-2d-vector
+
+class Vector2D:
+
+    def __init__(self, v: List[List[int]]):
+        self.grid = v
+        self.r = 0
+        self.c = 0
+        self.isValid =  True
+        self.setNext()
+    
+    def setNext(self):
+        while self.r < len(self.grid) and self.c >= len(self.grid[self.r]):
+            self.c = 0
+            self.r += 1
+        self.isValid = self.r < len(self.grid) and self.c < len(self.grid[self.r])
+
+    def next(self) -> int:
+        if not self.isValid: return None
+        val = self.grid[self.r][self.c]
+        self.c += 1
+        self.setNext()
+        return val
+
+    def hasNext(self) -> bool:
+        return self.isValid
+
+
+# Your Vector2D object will be instantiated and called as such:
+# obj = Vector2D(v)
+# param_1 = obj.next()
+# param_2 = obj.hasNext()
+
+# [[[1,2],[3,4],[4]]]

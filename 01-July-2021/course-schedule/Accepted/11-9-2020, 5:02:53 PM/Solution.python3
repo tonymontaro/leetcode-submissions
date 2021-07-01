@@ -1,0 +1,37 @@
+// https://leetcode.com/problems/course-schedule
+
+class Node:
+    def __init__(self, val):
+        self.val = val
+        self.children = []
+        self.in_progress = False
+        self.visited = False
+    def __repr__(self):
+        return f'Node: {self.val}, {self.in_progress}'
+
+class Solution:
+    """O(n) time and space"""
+    def canFinish(self, n: int, prerequisites: "list[list[int]]") -> bool:
+        self.idx = 1
+        seen = {}
+        adj = [[] for _ in range(n)]
+        for a, b in prerequisites:
+            adj[a].append(b)
+        
+        def dfs(node):
+            seen[node] = 0
+            for child in adj[node]:
+                if child not in seen:
+                    dfs(child)
+            seen[node] = self.idx
+            self.idx += 1
+        
+        for i in range(n):
+            if i not in seen:
+                dfs(i)
+        # print(seen)
+        for a, b in prerequisites:
+            if seen[a] < seen[b]:
+                return False
+        return True
+            

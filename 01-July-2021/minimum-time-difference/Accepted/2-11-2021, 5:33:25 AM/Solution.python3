@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/minimum-time-difference
+
+class Solution:
+    def findMinDifference(self, timePoints: List[str]) -> int:
+        mx = 24*60
+        arr = []
+        ans = math.inf
+        for time in timePoints:
+            hh = int(time[:2])*60
+            mm = int(time[3:])
+            arr.append(hh + mm)
+        arr.sort()
+        for i in range(1, len(arr)):
+            ans = min(ans, arr[i] - arr[i-1])
+        
+        ans = min(ans, mx - (arr[-1] - arr[0]))
+        return ans
+        

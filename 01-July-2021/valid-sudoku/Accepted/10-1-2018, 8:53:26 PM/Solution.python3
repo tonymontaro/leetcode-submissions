@@ -1,0 +1,31 @@
+// https://leetcode.com/problems/valid-sudoku
+
+from itertools import permutations
+
+class Solution:
+    def isValidSudoku(self, board):
+        for i in range(9):
+            rows = {str(num): 1 for num in range(1,10)}
+            cols = dict(rows)
+            for j in range(9):
+                row = board[i][j]
+                col = board[j][i]
+                if row in rows:
+                    if rows[row] < 1:
+                        return False
+                    rows[row] -= 1
+                if col in cols:
+                    if cols[col] < 1:
+                        return False
+                    cols[col] -= 1
+        for i, j in list(permutations([1,4,7], 2)) + [(1,1), (4,4), (7,7)]:
+            vals = {str(num): 1 for num in range(1,10)}
+            for x in [i+1, i, i-1]:
+                for y in [j+1, j, j-1]:
+                    val = board[x][y]
+                    if val in vals:
+                        if vals[val] < 1:
+                            return False
+                        vals[val] -= 1
+        return True
+        

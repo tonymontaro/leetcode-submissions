@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/maximum-score-from-removing-stones
+
+class Solution:
+    def maximumScore(self, a: int, b: int, c: int) -> int:
+        a, b, c = sorted([a, b, c])
+        if c >= a + b:
+            return min(c, a + b)
+        
+        diff = b - a
+        ans = diff
+        c -= diff
+        b -= diff
+        # print(a, b, c)
+        other = c // 2
+        # print(other)
+        ans += other*2 + (b - other)
+        return ans
+        

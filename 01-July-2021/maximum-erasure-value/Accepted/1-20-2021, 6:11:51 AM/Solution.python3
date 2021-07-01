@@ -1,0 +1,19 @@
+// https://leetcode.com/problems/maximum-erasure-value
+
+from collections import defaultdict
+
+class Solution:
+    def maximumUniqueSubarray(self, nums: List[int]) -> int:
+        seen = defaultdict(int)
+        ans = 0
+        total = 0
+        left = 0
+        for i, num in enumerate(nums):
+            while seen[num] > 0:
+                total -= nums[left]
+                seen[nums[left]] -= 1
+                left += 1
+            total += num
+            seen[num] += 1
+            ans = max(ans, total)
+        return ans

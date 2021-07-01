@@ -1,0 +1,21 @@
+// https://leetcode.com/problems/maximal-square
+
+class Solution:
+    def maximalSquare(s, matrix) -> int:
+        """O(r*c) time and space | r->rows, c->cols"""
+        s.cache = {}
+        s.m = matrix
+        s.rs = 0
+        s.solve(0, 0)
+        return s.rs**2
+    
+    def solve(s, r, c):
+        if (r, c) not in s.cache:
+            is_valid = 0 <= r < len(s.m) and 0 <= c < len(s.m[0])
+            rs = 0
+            if is_valid:
+                rs = 1 + min(s.solve(r, c+1), s.solve(r+1, c+1), s.solve(r+1, c))
+                rs = 0 if s.m[r][c] == '0' else rs
+                s.rs = max(s.rs, rs)
+            s.cache[(r, c)] = rs
+        return s.cache[(r, c)]

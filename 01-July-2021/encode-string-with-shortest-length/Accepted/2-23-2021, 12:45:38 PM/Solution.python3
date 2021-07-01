@@ -1,0 +1,24 @@
+// https://leetcode.com/problems/encode-string-with-shortest-length
+
+from functools import lru_cache
+
+class Solution:
+    def encode(self, s: str) -> str:
+        
+        @lru_cache(None)
+        def solve(word):
+            n = len(word)
+            res = [word]
+            double = word + word
+            repetitionIdx = double[1:].find(word)
+            if repetitionIdx < n - 1:
+                sz = n // (repetitionIdx + 1)
+                res.append(f"{str(sz)}[{solve(word[:repetitionIdx + 1])}]")
+            
+            for i in range(1, n):
+                res.append(solve(word[:i]) + solve(word[i:]))
+            
+            mn = min(res, key=len)
+            return mn if len(mn) < len(word) else word
+        
+        return solve(s)

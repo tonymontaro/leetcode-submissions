@@ -1,0 +1,27 @@
+// https://leetcode.com/problems/spiral-matrix
+
+class Solution:
+    def spiralOrder(self, grid: List[List[int]]) -> List[int]:
+        # O(m * n) time ans space
+        if (len(grid) == 0 or len(grid[0]) == 0): return []
+        top, bottom = 0, len(grid) - 1
+        left, right = 0, len(grid[0]) - 1
+        
+        ans = []
+        while top <= bottom:
+            for c in range(left, right + 1):
+                ans.append(grid[top][c])
+            if bottom > top:
+                for r in range(top + 1, bottom):
+                    ans.append(grid[r][right])
+                for c in range(right, left - 1, -1):
+                    ans.append(grid[bottom][c])
+            if bottom > top and right > left:
+                for r in range(bottom - 1, top, -1):
+                    ans.append(grid[r][left])
+            left += 1
+            right -= 1
+            top += 1
+            bottom -= 1
+        return ans
+        

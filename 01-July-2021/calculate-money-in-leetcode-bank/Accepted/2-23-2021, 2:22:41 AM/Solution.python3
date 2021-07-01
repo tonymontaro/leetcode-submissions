@@ -1,0 +1,17 @@
+// https://leetcode.com/problems/calculate-money-in-leetcode-bank
+
+class Solution:
+    def totalMoney(self, n: int) -> int:
+        prev = 0
+        day = 0
+        curr = 0
+        ans = 0
+        while day < n:
+            # print(day, curr, prev)
+            if day % 7 == 0:
+                curr = prev + 1
+                prev += 1
+            ans += curr
+            curr += 1
+            day += 1
+        return ans

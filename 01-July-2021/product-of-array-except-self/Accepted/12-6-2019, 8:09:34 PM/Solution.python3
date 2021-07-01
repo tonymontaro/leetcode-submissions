@@ -1,0 +1,16 @@
+// https://leetcode.com/problems/product-of-array-except-self
+
+class Solution:
+    def productExceptSelf(self, nums):
+        """O(n) time"""
+        ln = len(nums)
+        result = [1] * ln
+        l_product = 1
+        r_product = 1
+        for i in range(ln):
+            if i != 0:
+                l_product *= nums[i-1]
+                result[i] *= l_product
+                r_product *= nums[ln-i]
+                result[ln-i-1] *= r_product
+        return result

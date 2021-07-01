@@ -1,0 +1,10 @@
+// https://leetcode.com/problems/unique-morse-code-words
+
+class Solution:
+    def uniqueMorseRepresentations(self, words: List[str]) -> int:
+        morseCode = [".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.."]
+        seen = {}
+        for word in words:
+            morse = "".join(morseCode[ord(cha) - ord("a")] for cha in word)
+            seen[morse] = True
+        return len(seen)

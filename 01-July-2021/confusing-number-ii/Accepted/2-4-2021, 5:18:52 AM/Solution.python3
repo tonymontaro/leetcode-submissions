@@ -1,0 +1,53 @@
+// https://leetcode.com/problems/confusing-number-ii
+
+from collections import defaultdict
+
+class Solution:
+    def confusingNumberII(self, N: int) -> int:
+        # 0, 1, 6, 8, 9
+        pairs = {'0': '0', '1': '1', '8': '8', '6': '9', '9': '6'}
+        arr = ['', '0', '1', '8']
+        mirrors = defaultdict(list)
+        mirrors[1] = ['1', '8']
+        notDone = True
+        while notDone:
+            notDone = False
+            nm = []
+            for a, b in pairs.items():
+                for x in arr:
+                    numStr = a + x + b
+                    num = int(numStr)
+                    if numStr[0] != '0' and num <= N:
+                        mirrors[len(numStr)].append(numStr)
+                        notDone = True
+                    nm.append(numStr)
+            arr = nm
+        
+        ans = 0
+        valid = [0, 1, 6, 8, 9]
+        
+        nstr = str(N)
+        digits = len(str(N))
+        for i in range(1, digits):
+            ans += 4 * pow(5, i - 1) - len( mirrors[i])
+        
+        for i in range(digits):
+            mx = int(nstr[i])
+            current = None
+            for v in valid:
+                current = v
+                if v == 0 and i == 0:
+                    continue
+                if v >= mx:
+                    break
+                rem = digits - i - 1
+                
+                prefix = nstr[:i] + str(v)
+                rm = len([s for s in mirrors[digits] if s.startswith(prefix)])
+                # print(v, i, rem, rm)
+                ans += pow(5, rem) - rm
+                
+            if current != mx:
+                return ans
+        ans += 1
+        return ans

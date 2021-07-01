@@ -1,0 +1,26 @@
+// https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv
+
+class Solution:
+    def maxProfit(self, K: int, prices: List[int]) -> int:
+        cache = {}
+        # [one, zero]
+        def solve(idx, k):
+            if idx == 0:
+                one = -prices[0] if k > 0 else -inf
+                return [one, 0]
+            
+            if (idx, k) in cache:
+                return cache[(idx, k)]
+            
+            prevOne, prevZero = solve(idx - 1, k)
+            one = prevOne
+            if k > 0:
+                one = max(one, -prices[idx] + solve(idx-1, k-1)[1])
+            zero = max(prevZero, prevOne + prices[idx])
+            
+            cache[(idx, k)] = [one, zero]
+            return [one, zero]
+        
+        rs = solve(len(prices)-1, K)
+        # print(cache)
+        return max(rs)

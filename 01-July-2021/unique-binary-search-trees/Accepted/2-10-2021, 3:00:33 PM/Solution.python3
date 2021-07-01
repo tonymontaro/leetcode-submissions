@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/unique-binary-search-trees
+
+class Solution:
+    cache = {}
+    def numTrees(self, n: int) -> int:
+        
+        
+        def solve(lo, hi):
+            if lo >= hi:
+                return 1
+            if (lo, hi) in self.cache:
+                return self.cache[(lo, hi)]
+            
+            ans = 0
+            for x in range(lo, hi + 1):
+                ans += solve(lo, x-1) * solve(x+1, hi)
+            self.cache[(lo, hi)] = ans
+            return ans
+        
+        return solve(1, n)

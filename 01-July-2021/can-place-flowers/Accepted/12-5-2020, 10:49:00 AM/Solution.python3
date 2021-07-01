@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/can-place-flowers
+
+class Solution:
+    def canPlaceFlowers(self, flowerbed: List[int], target: int) -> bool:
+        # O(n) time | O(1) space
+        plants = 0
+        n = len(flowerbed)
+        if n <= 1:
+            return n - sum(flowerbed) >= target
+        
+        for i, num in enumerate(flowerbed):
+            if num == 1:
+                continue
+            
+            isvalid = (i == 0 or flowerbed[i - 1] == 0) and (i == n - 1 or flowerbed[i + 1] == 0)
+            if isvalid:
+                flowerbed[i] = 1
+                plants += 1
+        
+        return plants >= target

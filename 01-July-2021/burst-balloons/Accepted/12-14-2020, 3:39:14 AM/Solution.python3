@@ -1,0 +1,29 @@
+// https://leetcode.com/problems/burst-balloons
+
+class Solution:
+    def maxCoins(self, nums: List[int]) -> int:
+        # O(n^3) time | O(n^2) space
+        if not nums:
+            return 0
+        n = len(nums)
+        cache = {i: {} for i in range(n)}
+        
+        def get(idx):
+            if idx < 0 or idx >= n:
+                return 1
+            return nums[idx]
+        
+        for window in range(n):
+            for end in range(window, n):
+                start = end - window
+                best = 0
+                for i in range(start, end + 1):
+                    left = cache[start][i - 1] if i > start else 0
+                    right = cache[i + 1][end] if i < end else 0
+                    mid = get(start - 1) * nums[i] * get(end + 1)
+                    total = left + right + mid
+                    best = max(best, total)
+                cache[start][end] = best
+        return cache[0][n - 1]
+                
+            

@@ -1,0 +1,15 @@
+// https://leetcode.com/problems/count-good-meals
+
+from collections import defaultdict
+
+class Solution:
+    def countPairs(self, deliciousness: List[int]) -> int:
+        MOD = 10**9 + 7
+        ans = 0
+        for p in range(22):
+            seen = defaultdict(int)
+            power = 2**p
+            for num in deliciousness:
+                ans += seen[power - num]
+                seen[num] += 1
+        return ans

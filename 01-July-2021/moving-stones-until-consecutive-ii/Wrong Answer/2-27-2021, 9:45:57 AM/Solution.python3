@@ -1,0 +1,32 @@
+// https://leetcode.com/problems/moving-stones-until-consecutive-ii
+
+class Solution:
+    def numMovesStonesII(self, stones: List[int]) -> List[int]:
+        n = len(stones)
+        stones.sort()
+        mx = -min(stones[1] - stones[0]-1, stones[-1] - stones[-2]-1)
+        for i in range(1, n):
+            mx += stones[i] - stones[i-1] - 1
+        
+        
+        mn = n
+        empty = 0
+        left = 0
+        for i in range(1, n):
+            empty += stones[i] - stones[i-1] - 1
+            occupied = i - left + 1
+            total = empty + occupied
+            
+            while total >= n:
+                if total == n:
+                    mn = min(mn, empty)
+                else:
+                    extra = min(2, total - n)
+                    mn = min(mn, n - (i - left + 1) + extra)
+                
+                left += 1
+                diff = stones[left] - stones[left-1] - 1
+                total -= diff + 1
+                empty -= diff
+                
+        return [mn, mx]

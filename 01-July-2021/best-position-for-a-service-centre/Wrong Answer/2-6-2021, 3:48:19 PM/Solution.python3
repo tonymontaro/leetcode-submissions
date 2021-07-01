@@ -1,0 +1,29 @@
+// https://leetcode.com/problems/best-position-for-a-service-centre
+
+from math import inf, sqrt
+
+class Solution:
+    def getMinDistSum(self, positions: List[List[int]]) -> float:
+        limit = 10**(-5)
+        
+        def calc(x, y):
+            return sum([sqrt((x - a)**2 + (y - b)**2) for a, b in positions])
+
+        dirs = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        x = y = 0
+        ans = calc(x, y)
+        delta = 100
+        while delta > limit:
+            noChange = True
+            for xAdd, yAdd in dirs:
+                xx, yy = x + (xAdd*delta), y + (yAdd*delta)
+                res = calc(xx, yy)
+                if res < ans:
+                    ans = res
+                    x, y = xx, yy
+                    noChange = False
+            if noChange:
+                delta /= 2
+
+        return ans
+            

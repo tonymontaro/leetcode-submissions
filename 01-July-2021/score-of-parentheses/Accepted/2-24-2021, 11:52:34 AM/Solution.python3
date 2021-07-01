@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/score-of-parentheses
+
+class Solution:
+    def scoreOfParentheses(self, S: str) -> int:
+        pair = {}
+        stack = []
+        for i, cha in enumerate(S):
+            if cha == '(':
+                stack.append(i)
+            else:
+                pair[stack.pop()] = i
+        
+        def solve(start, end):
+            idx = start
+            ans = 0
+            while idx < end:
+                e = pair[idx]
+                if e - idx > 1:
+                    ans += 2 * solve(idx + 1, e - 1)
+                else:
+                    ans += 1
+                idx = e + 1
+            return ans
+        return solve(0, len(S)-1)
+            

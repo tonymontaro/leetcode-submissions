@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/spiral-matrix
+
+class Solution:
+    def spiralOrder(self, grid: List[List[int]]) -> List[int]:
+        # O(m * n) time ans space
+        if (len(grid) == 0 or len(grid[0]) == 0): return []
+            
+        rowlen = len(grid)
+        colen = len(grid[0])
+        direction = 0
+        directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+        r, c = 0, 0
+        ans = []
+        seen = {}
+        for _ in range(rowlen * colen):
+            ans.append(grid[r][c])
+            seen[(r, c)] = True
+            nRow, nCol = directions[direction]
+            row, col = r + nRow, c + nCol
+            if not (0 <= row < rowlen and 0 <= col < colen and (row, col) not in seen):
+                direction = (direction + 1) % 4
+                nRow, nCol = directions[direction]
+                row, col = r + nRow, c + nCol
+            r, c = row, col
+        return ans

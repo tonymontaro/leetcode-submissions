@@ -1,0 +1,48 @@
+// https://leetcode.com/problems/string-compression-ii
+
+import copy
+
+class Solution:
+    def getLengthOfOptimalCompression(self, s: str, k: int) -> int:
+        if k == len(s):
+            return 0
+        cmpr = []
+        prev = s[0]
+        count = 1
+        for i in range(1, len(s)):
+            if s[i] != prev:
+                cmpr.append([prev, count])
+                prev = s[i]
+                count = 1
+            else:
+                count += 1
+        cmpr.append([prev, count])
+        
+        def getRep(cmpr):
+            return ''.join(map(lambda x: x[0] + ("" if x[1] == 1 else str(x[1])),cmpr))
+        if k == 0:
+            return len(getRep(cmpr))
+        
+
+        seen = {}
+        def solve(cmpr, rem):
+            rep = getRep(cmpr)
+            if rep in seen:
+                return seen[rep]
+
+            ans = len(rep)
+            for i, (cha, num) in enumerate(cmpr):
+                if num <= rem:
+                    cmpr2 = [list(x) for j, x in enumerate(cmpr) if j != i]
+                    final = [cmpr2[0]]
+                    for j in range(1, len(cmpr2)):
+                        if cmpr2[j][0] == cmpr2[j-1][0]:
+                            final[-1][1] += cmpr2[j][1]
+                        else:
+                            final.append(cmpr2[j])
+                    ans = min(ans, solve(final, rem - num))
+            seen[rep] = ans
+            return ans
+                    
+                    
+        return solve(cmpr, k)

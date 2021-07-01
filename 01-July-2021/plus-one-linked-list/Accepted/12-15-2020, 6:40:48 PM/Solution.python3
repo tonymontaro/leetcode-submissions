@@ -1,0 +1,35 @@
+// https://leetcode.com/problems/plus-one-linked-list
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def plusOne(self, head: ListNode) -> ListNode:
+        # O(n) time | O(1) space
+        prev = None
+        while head:
+            nxt = head.next
+            head.next = prev
+            prev = head
+            head = nxt
+        rem = 1
+        head = prev
+        prev = None
+        while head:
+            val = head.val + rem
+            head.val = val % 10
+            rem = val // 10
+            nxt = head.next
+            head.next = prev
+            prev = head
+            head = nxt
+        head = prev
+        if rem > 0:
+            head = ListNode(rem, head)
+        return head
+
+            
+        
+        

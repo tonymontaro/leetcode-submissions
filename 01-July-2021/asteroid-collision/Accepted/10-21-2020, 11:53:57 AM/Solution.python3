@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/asteroid-collision
+
+class Solution:
+    def asteroidCollision(self, asteroids: List[int]) -> List[int]:
+        # O(n) time and space
+        res = []
+        for rock in asteroids:
+            if rock > 0:
+                res.append(rock)
+                continue
+            notExploded = True
+            rock = abs(rock)
+            while res and res[-1] > 0:
+                if rock > res[-1]:
+                    res.pop()
+                else:
+                    if rock == res[-1]:
+                        res.pop()
+                    notExploded = False
+                    break
+            if notExploded:
+                res.append(-rock)
+        return res

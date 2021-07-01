@@ -1,0 +1,16 @@
+// https://leetcode.com/problems/minimum-length-of-string-after-deleting-similar-ends
+
+class Solution:
+    def minimumLength(self, s: str) -> int:
+        l = 0
+        r = len(s) - 1
+        while l <= r:
+            cha = s[l]
+            if s[r] != cha:
+                return r - l + 1
+            while l < len(s) and s[l] == cha:
+                l += 1
+            while r >= 0 and s[r] == cha:
+                r -= 1
+        return 0
+        

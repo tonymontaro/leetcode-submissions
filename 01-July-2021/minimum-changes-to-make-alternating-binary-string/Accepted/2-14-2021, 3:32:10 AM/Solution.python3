@@ -1,0 +1,15 @@
+// https://leetcode.com/problems/minimum-changes-to-make-alternating-binary-string
+
+class Solution:
+    def minOperations(self, s: str) -> int:
+        s = [int(i) for i in s]
+        
+        def solve(arr, x):
+            ans = 0
+            for num in arr:
+                if num != x:
+                    ans += 1
+                x = (x + 1) % 2
+            return ans
+        
+        return min(solve(s, 0), solve(s, 1))

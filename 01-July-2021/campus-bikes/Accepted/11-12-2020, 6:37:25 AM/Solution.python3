@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/campus-bikes
+
+class Solution:
+    def assignBikes(self, workers: List[List[int]], bikes: List[List[int]]) -> List[int]:
+        # O(m * n log (m * n)) time | O(m * n) space
+        arr = []
+        for wi, worker in enumerate(workers):
+            for bi, bike in enumerate(bikes):
+                wx, wy = worker
+                bx, by = bike
+                dist = abs(wx - bx) + abs(wy - by)
+                arr.append((dist, wi, bi))
+
+        arr.sort()
+
+        result = [None] * len(workers)
+        seenBikes = {}
+        for node in arr:
+            dist, wi, bi = node
+            if result[wi] is not None or bi in seenBikes:
+                continue
+            result[wi] = bi
+            seenBikes[bi] = True
+        return result
+        

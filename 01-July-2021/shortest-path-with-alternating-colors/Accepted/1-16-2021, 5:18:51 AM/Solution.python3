@@ -1,0 +1,27 @@
+// https://leetcode.com/problems/shortest-path-with-alternating-colors
+
+from collections import deque
+
+class Solution:
+    def shortestAlternatingPaths(self, n: int, red_edges: List[List[int]], blue_edges: List[List[int]]) -> List[int]:
+        children = [[] for _ in range(n)]
+        for a, b in blue_edges:
+            children[a].append((b, 'b'))
+        for a, b in red_edges:
+            children[a].append((b, 'r'))
+        
+        seen = {}
+        deq = deque()
+        deq.append((0, 'n', 0))
+        result = [-1 for _ in range(n)]
+        while deq:
+            node, prev, dist = deq.popleft()
+            if result[node] == -1:
+                result[node] = dist
+            if (node, prev) in seen:
+                continue
+            seen[(node, prev)] = 1
+            for child, color in children[node]:
+                if color != prev:
+                    deq.append((child, color, dist + 1))
+        return result

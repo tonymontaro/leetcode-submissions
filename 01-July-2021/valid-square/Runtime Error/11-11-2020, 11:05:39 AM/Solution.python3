@@ -1,0 +1,21 @@
+// https://leetcode.com/problems/valid-square
+
+from collections import defaultdict
+
+class Solution:
+    def validSquare(self, p1: List[int], p2: List[int], p3: List[int], p4: List[int]) -> bool:
+        def getDist(x, y):
+            dist = []
+            for x2, y2 in [p1, p2, p3, p4]:
+                if (x, y) != (x2, y2):
+                    a, b = x2 - x, y2 - y
+                    dist.append((a*a + b*b))
+            return tuple(sorted(dist))
+        cache = defaultdict(int)
+        for x, y in [p1, p2, p3, p4]:
+            cache[getDist(x, y)] += 1
+        if len(cache) != 1:
+            return False
+        a, b, c = list(cache.keys())[0]
+        return a == b and c == a + b
+            

@@ -1,0 +1,27 @@
+// https://leetcode.com/problems/gas-station
+
+from collections import defaultdict
+
+class Solution:
+    def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
+        # O(n) time ans space
+        n = len(gas)
+        diffs = [gas[i] - cost[i] for i in range(n)]
+        if sum(diffs) < 0:
+            return -1
+        
+        idx = 0
+        while idx < n:
+            if diffs[idx] < 0:
+                idx += 1
+                continue
+            i, total = idx, 0
+            for _ in range(n):
+                total += diffs[i]
+                if total < 0:
+                    break
+                i = (i + 1) % n
+            else:
+                return idx
+            idx = i
+        

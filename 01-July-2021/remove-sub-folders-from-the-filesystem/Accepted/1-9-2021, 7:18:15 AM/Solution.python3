@@ -1,0 +1,26 @@
+// https://leetcode.com/problems/remove-sub-folders-from-the-filesystem
+
+class Solution:
+    def removeSubfolders(self, folder: List[str]) -> List[str]:
+        folder = [x[1:].split('/') for x in folder]
+        folder.sort(key=lambda x: [len(x), x])
+        
+        trie = {}
+        result = []
+        
+        def addFolder(f):
+            node = trie
+            for path in f:
+                if '#' in node:
+                    return
+                if path not in node:
+                    node[path] = {}
+                node = node[path]
+            result.append("/" + "/".join(f))
+            node["#"] = 1
+        
+        
+        for f in folder:
+            addFolder(f)
+        return result
+            

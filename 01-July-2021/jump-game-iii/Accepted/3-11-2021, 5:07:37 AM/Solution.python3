@@ -1,0 +1,17 @@
+// https://leetcode.com/problems/jump-game-iii
+
+class Solution:
+    def canReach(self, arr: List[int], start: int) -> bool:
+        n = len(arr)
+        stack = [start]
+        seen = {start: 1}
+        while stack:
+            idx = stack.pop()
+            if arr[idx] == 0:
+                return True
+            for x in [idx - arr[idx], idx + arr[idx]]:
+                if 0 <= x < n and (x not in seen):
+                    seen[x] = 1
+                    stack.append(x)
+
+        return False

@@ -1,0 +1,30 @@
+// https://leetcode.com/problems/jump-game-iv
+
+from collections import defaultdict, deque
+
+class Solution:
+    def minJumps(self, arr: List[int]) -> int:
+        adj = defaultdict(list)
+        for i, num in enumerate(arr):
+            adj[num].append(i)
+        n = len(arr)
+        deq = deque()
+        deq.append((n-1, 0))
+        seen = {}
+        seen[n-1] = 1
+        while deq:
+            i, dist = deq.popleft()
+            if i == 0:
+                return dist
+            if (arr[i], 0) not in seen:
+                for j in adj[arr[i]]:
+                    if j in seen:
+                        continue
+                    seen[j] = 1
+                    deq.append((j, dist + 1))
+                seen[(arr[i], 0)] = 1
+            for j in [i-1, i+1]:
+                if 0 <= j < n and j not in seen:
+                    seen[j] = 1
+                    deq.append((j, dist + 1))
+            

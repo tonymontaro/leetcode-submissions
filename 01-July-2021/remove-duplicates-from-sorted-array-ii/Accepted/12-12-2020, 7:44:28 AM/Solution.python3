@@ -1,0 +1,12 @@
+// https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii
+
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        # O(n) time | O(1) space
+        ln = 0
+        for i, val in enumerate(nums):
+            if ln < 2 or nums[i] != nums[ln - 2]:
+                nums[ln] = val
+                ln += 1
+        
+        return ln

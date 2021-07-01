@@ -1,0 +1,22 @@
+// https://leetcode.com/problems/missing-ranges
+
+class Solution:
+    def findMissingRanges(self, arr: List[int], lower: int, upper: int) -> List[str]:
+        # O(n) time and space
+        if not arr:
+            return [getRange(lower, upper)]
+        
+        res = []
+        if arr[0] != lower:
+            res.append(getRange(lower, arr[0] - 1))
+        for i in range(1, len(arr)):
+            if arr[i] - arr[i - 1] != 1:
+                res.append(getRange(arr[i - 1] + 1, arr[i] - 1))
+        if upper != arr[-1]:
+            res.append(getRange(arr[-1] + 1, upper))
+        return res
+        
+def getRange(start, end):
+    if start == end:
+        return str(start)
+    return f"{start}->{end}"

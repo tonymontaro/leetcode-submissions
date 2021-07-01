@@ -1,0 +1,40 @@
+// https://leetcode.com/problems/the-maze-iii
+
+from collections import defaultdict
+
+class Solution:
+    def findShortestWay(self, grid: List[List[int]], ball: List[int], hole: List[int]) -> str:
+        hole = tuple(hole)
+        rlen, clen = len(grid), len(grid[0])
+        a, b = ball
+        seen = {(a, b): 0}
+        result = defaultdict(list)
+        dirs = [(0, 1, 'r'), (0, -1, 'l'), (1, 0, 'd'), (-1, 0, 'u')]
+        
+        def backtrack(row, col, arr, dist):
+            if (row, col) in seen and dist > seen[(row, col)]:
+                return
+            seen[(row, col)] = dist
+            
+            for rAdd, cAdd, direct in dirs:
+                r, c = row, col
+                d = 0
+                arr.append(direct)
+                while 0 <= r < rlen and 0 <= c < clen and grid[r][c] == 0:
+                    if (r, c) == hole:
+                        result[dist + d].append(''.join(arr))
+                        arr.pop()
+                        return
+                    r, c = r + rAdd, c + cAdd
+                    d += 1
+                if d == 1:
+                    arr.pop()
+                    continue
+                r, c = r - rAdd, c - cAdd
+                backtrack(r, c, arr, dist + d - 1)
+                arr.pop()
+        
+        backtrack(a, b, [], 0)
+        keys = result.keys()
+        return min(result[min(keys)]) if keys else 'impossible'
+                

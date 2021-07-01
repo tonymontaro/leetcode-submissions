@@ -1,0 +1,34 @@
+// https://leetcode.com/problems/partition-to-k-equal-sum-subsets
+
+class Solution:
+    def canPartitionKSubsets(self, nums: List[int], k: int) -> bool:
+        n = len(nums)
+        t = (1 << n) - 1
+        sm = sum(nums)
+        if sm % k != 0:
+            return False
+        # print('here', bin(t))
+        each = sm // k
+        cache = {}
+        def solve(mask, filled):
+            if filled == (k - 1):
+                return True
+            if (mask, filled) in cache:
+                return False
+            rem = sum([nums[i] for i in range(n) if ((1 << i) & mask) != 0]) % each
+            if rem == 0:
+                rem = each
+            # print(bin(mask), rem)
+            
+            for i in range(n):
+                if ((1 << i) & mask) == 0 or nums[i] > rem:
+                    continue
+                nMask = mask ^ (1 << i)
+                nFilled = (filled + 1) if rem == nums[i] else filled
+                if solve(nMask, nFilled):
+                    return True
+            cache[(mask, filled)] = 1
+            return False
+        
+        return solve(t, 0)
+        

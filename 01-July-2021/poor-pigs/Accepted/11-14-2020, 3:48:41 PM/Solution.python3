@@ -1,0 +1,11 @@
+// https://leetcode.com/problems/poor-pigs
+
+import math
+
+class Solution:
+    def poorPigs(self, buckets: int, minutesToDie: int, minutesToTest: int) -> int:
+        # O(1) time and space. Had to read the solution: https://leetcode.com/problems/poor-pigs/solution/
+        states = 1 + minutesToTest // minutesToDie
+        
+        ans = math.log(buckets) / math.log(states)
+        return math.ceil(ans)

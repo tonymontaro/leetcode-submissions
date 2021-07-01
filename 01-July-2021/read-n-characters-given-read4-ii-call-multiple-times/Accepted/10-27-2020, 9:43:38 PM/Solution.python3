@@ -1,0 +1,29 @@
+// https://leetcode.com/problems/read-n-characters-given-read4-ii-call-multiple-times
+
+# The read4 API is already defined for you.
+# def read4(buf4: List[str]) -> int:
+
+class Solution:
+    def __init__(self):
+        self.hold = [''] * 4
+        self.idx = 4
+        self.max = 4
+        self.hasMore = True
+
+    def read(self, buf: List[str], n: int) -> int:
+        bufIdx = 0
+        while n > 0 and (self.hasMore or self.idx < self.max):
+            if self.hasMore and self.idx == self.max:
+                read = read4(self.hold)
+                self.idx = 0
+                if read < 4:
+                    self.hasMore = False
+                self.max = read
+            writes = min(self.max - self.idx, n)
+            for i in range(self.idx, self.idx + writes):
+                buf[bufIdx] = self.hold[self.idx]
+                bufIdx += 1
+                self.idx += 1
+                n -= 1
+
+        return bufIdx

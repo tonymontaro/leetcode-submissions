@@ -1,0 +1,39 @@
+// https://leetcode.com/problems/throne-inheritance
+
+class Node:
+    def __init__(self, name):
+        self.name = name
+        self.children = []
+        self.alive = True
+
+class ThroneInheritance:
+
+    def __init__(self, kingName: str):
+        self.king = Node(kingName)
+        self.mp = {kingName: self.king}
+
+    def birth(self, parentName: str, childName: str) -> None:
+        node = Node(childName)
+        self.mp[parentName].children.append(node)
+        self.mp[childName] = node
+
+    def death(self, name: str) -> None:
+        self.mp[name].alive = False
+        
+
+    def getInheritanceOrder(self) -> List[str]:
+        ans = []
+        def solve(node):
+            if node.alive:
+                ans.append(node.name)
+            for child in node.children:
+                solve(child)
+        solve(self.king)
+        return ans
+
+
+# Your ThroneInheritance object will be instantiated and called as such:
+# obj = ThroneInheritance(kingName)
+# obj.birth(parentName,childName)
+# obj.death(name)
+# param_3 = obj.getInheritanceOrder()

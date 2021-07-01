@@ -1,0 +1,31 @@
+// https://leetcode.com/problems/longest-consecutive-sequence
+
+class Solution:
+    def longestConsecutive(self, nums: List[int]) -> int:
+        # O(n) time and space
+        adj = {}
+        nums = set(nums)
+        
+        for num in nums:
+            adj[num] = {}
+            if num - 1 in adj:
+                adj[num][num - 1] = True
+                adj[num - 1][num] = True
+            if num + 1 in adj:
+                adj[num][num + 1] = True
+                adj[num + 1][num] = True
+        
+        def dfs(num, seen):
+            seen[num] = True
+            count = 1
+            for child in adj[num]:
+                if child not in seen:
+                    count += dfs(child, seen)
+            return count
+        
+        best = 0
+        visited = {}
+        for num in nums:
+            if num not in visited:
+                best = max(best, dfs(num, visited))
+        return best

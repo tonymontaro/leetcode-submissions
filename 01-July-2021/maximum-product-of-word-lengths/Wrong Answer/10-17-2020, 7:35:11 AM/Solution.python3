@@ -1,0 +1,15 @@
+// https://leetcode.com/problems/maximum-product-of-word-lengths
+
+from string import ascii_lowercase
+
+class Solution:
+    def maxProduct(self, words: List[str]) -> int:
+        # O(n^2)
+        words = [set(w) for w in words]
+        ans = 0
+        for (i, wSet1) in enumerate(words):
+            for j in range(i + 1, len(words)):
+                wSet2 = words[j]
+                if (len(wSet1.intersection(wSet2)) == 0):
+                    ans = max(ans, len(wSet1) * len(wSet2))
+        return ans

@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/number-of-substrings-containing-all-three-characters
+
+class Solution:
+    def numberOfSubstrings(self, s: str) -> int:
+        left = 0
+        count = {x: 0 for x in 'abc'}
+        unique = 0
+        ans = 0
+        for i, cha in enumerate(s):
+            if count[cha] == 0:
+                unique += 1
+            count[cha] += 1
+            while unique == 3 and count[s[left]] > 1:
+                count[s[left]] -= 1
+                left += 1
+            if unique == 3:
+                ans += left + 1
+        return ans

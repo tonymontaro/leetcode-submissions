@@ -1,0 +1,24 @@
+// https://leetcode.com/problems/fruit-into-baskets
+
+from collections import deque, defaultdict
+
+class Solution:
+    def totalFruit(self, tree: List[int]) -> int:
+        deq = deque()
+        seen = defaultdict(int)
+        inDeq = 0
+        best = 0
+        for num in tree:
+            if (seen[num] == 0):
+                inDeq += 1
+            seen[num] += 1
+            deq.append(num)
+            while (inDeq > 2):
+                last = deq.popleft()
+                seen[last] -= 1
+                if (seen[last] <= 0):
+                    inDeq -= 1
+            best = max(best, len(deq))
+        return best
+        
+        

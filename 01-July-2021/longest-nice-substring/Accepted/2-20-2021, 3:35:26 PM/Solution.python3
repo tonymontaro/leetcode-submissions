@@ -1,0 +1,22 @@
+// https://leetcode.com/problems/longest-nice-substring
+
+
+
+class Solution:
+    def longestNiceSubstring(self, s: str) -> str:
+        
+        def isNice(word):
+            c = set(word)
+            for k in c:
+                if k.lower() not in c or k.upper() not in c:
+                    return False
+            return True
+        
+        ans = ""
+        for i in range(len(s)):
+            for j in range(i + 1):
+                sub = s[j:i+1]
+                if isNice(sub) and i - j + 1 > len(ans):
+                    ans = sub
+        return ans
+                

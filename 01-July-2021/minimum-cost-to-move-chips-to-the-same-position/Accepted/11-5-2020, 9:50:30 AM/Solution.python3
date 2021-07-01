@@ -1,0 +1,8 @@
+// https://leetcode.com/problems/minimum-cost-to-move-chips-to-the-same-position
+
+class Solution:
+    def minCostToMoveChips(self, position: List[int]) -> int:
+        counts = [0] * 2
+        for pos in position:
+            counts[pos % 2] += 1
+        return min(counts)

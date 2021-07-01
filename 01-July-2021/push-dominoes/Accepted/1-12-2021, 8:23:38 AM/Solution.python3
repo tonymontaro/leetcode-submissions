@@ -1,0 +1,39 @@
+// https://leetcode.com/problems/push-dominoes
+
+from collections import deque
+
+class Solution:
+    def pushDominoes(self, dominoes: str) -> str:
+        result = {i: ch for i, ch in enumerate(dominoes) if ch != '.'}
+        fall = {}
+        deq = deque()
+        def add(idx, ch, stack):
+            if idx < 0 or idx >= len(dominoes) or idx in result:
+                return
+            if idx not in fall:
+                fall[idx] = ch
+                stack.append(idx)
+            elif fall[idx] != ch:
+                fall[idx] = '.'
+
+        for i, ch in enumerate(dominoes):
+            if ch != '.':
+                if ch == 'R':
+                    add(i + 1, ch, deq)
+                else:
+                    add(i - 1, ch, deq)
+
+        while deq:
+            for i in deq:
+                result[i] = fall[i]
+            newDeq = deque()
+            for i in deq:
+                ch = fall[i]
+                if ch == 'R':
+                    add(i + 1, ch, newDeq)
+                elif ch == 'L':
+                    add(i - 1, ch, newDeq)
+            deq = newDeq
+
+        n = len(dominoes)
+        return "".join(result[i] if i in result else dominoes[i] for i in range(n))

@@ -1,0 +1,9 @@
+// https://leetcode.com/problems/count-sorted-vowel-strings
+
+import math
+
+class Solution:
+    def countVowelStrings(self, n: int) -> int:
+        total = n + 5 - 1
+        choose = 5 - 1
+        return math.comb(total, choose)

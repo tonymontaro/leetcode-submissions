@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/champagne-tower
+
+class Solution:
+    def champagneTower(self, poured: int, query_row: int, query_glass: int) -> float:
+        row = [poured]
+        r = 0
+        while r < query_row:
+            r += 1
+            nextRow = [0] * (r + 1)
+            for i, val in enumerate(row):
+                if val <= 1:
+                    continue
+                diff = (val - 1) / 2
+                nextRow[i] += diff
+                nextRow[i+1] += diff
+            row = nextRow
+        return min(row[query_glass], 1)
+        

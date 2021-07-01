@@ -1,0 +1,29 @@
+// https://leetcode.com/problems/detect-cycles-in-2d-grid
+
+class Solution:
+    def containsCycle(self, grid: List[List[str]]) -> bool:
+        rlen, clen = len(grid), len(grid[0])
+        dirs = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        self.ans = False
+        seen = {}
+
+        def dfs(row, col, prev):
+            seen[(row, col)] = 1
+            cha = grid[row][col]
+            for rAdd, cAdd in dirs:
+                r, c = row + rAdd, col + cAdd
+                if 0 <= r < rlen and 0 <= c < clen and grid[r][c] == cha and (r, c) != prev:
+                    if (r, c) in seen:
+                        self.ans = True
+                    else:
+                        dfs(r, c, (row, col))
+        for r in range(rlen):
+            for c in range(clen):
+                if (r, c) not in seen:
+                    dfs(r, c, (-1, -1))
+                if self.ans:
+                    return True
+        return False
+                    
+            
+            

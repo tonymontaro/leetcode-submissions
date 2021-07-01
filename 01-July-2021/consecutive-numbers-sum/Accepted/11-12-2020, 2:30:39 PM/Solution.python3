@@ -1,0 +1,24 @@
+// https://leetcode.com/problems/consecutive-numbers-sum
+
+class Solution:
+    def consecutiveNumbersSum(self, num: int) -> int:
+        # O(sqrt(n)log(n)) time | O(1) space
+        ans = 0
+        n = 1
+        while (n * n // 2) <= num:
+            lo = 1
+            hi = num
+            
+            while lo <= hi:
+                first = (lo + hi) // 2
+                numerator = n * (first + first + n - 1)
+                total = numerator // 2
+                if numerator % 2 == 0 and total == num:
+                    ans += 1
+                    break
+                elif total > num:
+                    hi = first - 1
+                else:
+                    lo = first + 1
+            n += 1
+        return ans

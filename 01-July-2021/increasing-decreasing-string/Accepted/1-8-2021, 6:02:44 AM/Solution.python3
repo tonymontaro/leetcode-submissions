@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/increasing-decreasing-string
+
+from string import ascii_lowercase
+from collections import Counter
+
+class Solution:
+    def sortString(self, s: str) -> str:
+        count = Counter(s)
+        n = len(s)
+        res = []
+        while n > 0:
+            for cha in ascii_lowercase:
+                if count.get(cha, 0) > 0:
+                    n -= 1
+                    count[cha] -= 1
+                    res.append(cha)
+            for cha in ascii_lowercase[::-1]:
+                if count.get(cha, 0) > 0:
+                    n -= 1
+                    count[cha] -= 1
+                    res.append(cha)
+        return ''.join(res)
+        

@@ -1,0 +1,26 @@
+// https://leetcode.com/problems/knight-probability-in-chessboard
+
+class Solution:
+    def knightProbability(self, N: int, K: int, row: int, col: int) -> float:
+        # r, c, rem
+        rlen = clen = N
+        cache = {}
+        dirs = [(-1, -2), (-2, -1), (-2, 1), (-1, 2), (1, -2), (2, -1), (2, 1), (1, 2)]
+        
+        def solve(r, c, moves):
+            if moves == 0:
+                return 1
+            if (r, c, moves) in cache:
+                return cache[(r, c, moves)]
+            
+            ans = 0
+            
+            for rAdd, cAdd in dirs:
+                rr, cc = r + rAdd, c + cAdd
+                if 0 <= rr < rlen and 0 <= cc < rlen:
+                    ans += (1/8 * solve(rr, cc, moves-1))
+            
+            cache[(r, c, moves)] = ans
+            return ans
+        
+        return solve(row, col, K)

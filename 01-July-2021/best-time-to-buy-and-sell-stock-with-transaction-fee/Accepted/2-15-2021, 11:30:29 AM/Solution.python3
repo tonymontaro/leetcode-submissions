@@ -1,0 +1,14 @@
+// https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee
+
+class Solution:
+    def maxProfit(self, prices: List[int], fee: int) -> int:
+        if not prices:
+            return 0
+        
+        deal = -math.inf
+        prev = 0
+        for num in prices:
+            best = max(prev, num + deal)
+            deal = max(deal, prev - num - fee)
+            prev = best
+        return prev

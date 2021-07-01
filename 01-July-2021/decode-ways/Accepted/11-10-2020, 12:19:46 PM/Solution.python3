@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/decode-ways
+
+from string import ascii_lowercase
+
+class Solution:
+    def numDecodings(self, s: str) -> int:
+        if (len(s) <= 0 or s[0] == '0'): return 0
+        self.mapping = {str(num) : ch  for ch, num in zip(ascii_lowercase, range(1, 27))}
+        self.dp = {}
+        return self.decode(0, s)
+        
+    def decode(self, idx, seq):
+        # O(n) time and space using dynamic programming
+        n = len(seq)
+        if (idx >= n): return 1
+        if idx not in self.dp:
+            ans = 0
+            if seq[idx] in self.mapping:
+                ans += self.decode(idx + 1, seq)
+            if (idx < n - 1 and seq[idx:idx + 2] in self.mapping):
+                ans += self.decode(idx + 2, seq)
+            self.dp[idx] = ans
+        return self.dp[idx]

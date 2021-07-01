@@ -1,0 +1,14 @@
+// https://leetcode.com/problems/powx-n
+
+class Solution:
+    def myPow(self, x: float, n: int) -> float:
+        # O(logn) time | O(1) space
+        def power(a, p):
+            if p == 0:
+                return 1
+            if p == 1:
+                return a
+            return power(a, p//2) * power(a, p//2) if p % 2 == 0 else a * power(a, p - 1)
+        
+        ans = power(x, abs(n))
+        return ans if n >= 0 else 1/ans

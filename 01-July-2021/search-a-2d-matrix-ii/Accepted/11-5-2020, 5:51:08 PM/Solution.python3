@@ -1,0 +1,13 @@
+// https://leetcode.com/problems/search-a-2d-matrix-ii
+
+import bisect
+
+class Solution:
+    def searchMatrix(self, matrix, target):
+        "nlogm time | O(1) space"
+        for row in matrix:
+            idx = bisect.bisect_left(row, target)
+            if idx < len(row) and row[idx] == target:
+                return True
+        return False
+        

@@ -1,0 +1,36 @@
+// https://leetcode.com/problems/number-of-ways-of-cutting-a-pizza
+
+from math import inf
+
+class Solution:
+    def ways(self, grid: List[str], k: int) -> int:
+        rlen, clen = len(grid), len(grid[0])
+        mod = 10**9 + 7
+        cache = {}
+        
+        @lru_cache(None)
+        def solve(row, col, count):
+            if count == 0:
+                return 1
+            
+            mxRow, mnRow = -inf, inf
+            mxCol, mnCol = -inf, inf
+            for r in range(row, rlen):
+                for c in range(col, clen):
+                    if grid[r][c] == 'A':
+                        mxRow, mnRow = max(mxRow, r), min(mnRow, r)
+                        mxCol, mnCol = max(mxCol, c), min(mnCol, c)
+            if mxRow == -inf:
+                return 0
+
+            ans = 0
+            for i in range(mnRow, mxRow):
+                ans = (ans + solve(i + 1, col, count - 1)) % mod
+            for i in range(mnCol, mxCol):
+                ans = (ans + solve(row, i + 1, count - 1)) % mod
+            
+            return ans
+            
+        
+        rs = solve(0, 0, k-1)
+        return rs

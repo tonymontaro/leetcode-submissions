@@ -1,0 +1,10 @@
+// https://leetcode.com/problems/find-the-highest-altitude
+
+class Solution:
+    def largestAltitude(self, gain: List[int]) -> int:
+        ans = 0
+        alt = 0
+        for num in gain:
+            alt += num
+            ans = max(ans, alt)
+        return ans

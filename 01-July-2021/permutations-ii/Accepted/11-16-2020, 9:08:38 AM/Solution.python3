@@ -1,0 +1,26 @@
+// https://leetcode.com/problems/permutations-ii
+
+from collections import Counter
+
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        # O(unique ^ n) time
+        n = len(nums)
+        result = []
+        
+        def backtrack(counts, arr):
+            if len(arr) >= n:
+                result.append(list(arr))
+                return
+            
+            for num in counts:
+                if counts[num] > 0:
+                    counts[num] -= 1
+                    arr.append(num)
+                    backtrack(counts, arr)
+                    arr.pop()
+                    counts[num] += 1
+
+        counts = Counter(nums)
+        backtrack(counts, [])
+        return result

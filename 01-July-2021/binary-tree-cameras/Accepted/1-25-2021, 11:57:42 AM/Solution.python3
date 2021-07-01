@@ -1,0 +1,30 @@
+// https://leetcode.com/problems/binary-tree-cameras
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+from math import inf
+
+class Solution:
+    def minCameraCover(self, root: TreeNode) -> int:
+        
+        def solve(node):
+            # -> uncovered, covered(no camera), camera
+            if not node:
+                return 0, 0, inf
+            left = solve(node.left)
+            right = solve(node.right)
+            
+            uncovered = min(left[1:]) + min(right[1:])
+            covered = min(
+                left[2] + min(right[1:]),
+                right[2] + min(left[1:])
+            )
+            camera = 1 + min(right) + min(left)
+            # print(uncovered, covered, camera)
+            return uncovered, covered, camera
+        
+        return min(solve(root)[1:])

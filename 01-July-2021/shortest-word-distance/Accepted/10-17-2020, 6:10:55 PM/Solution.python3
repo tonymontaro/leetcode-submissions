@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/shortest-word-distance
+
+from math import inf
+class Solution:
+    def shortestDistance(self, words: List[str], word1: str, word2: str) -> int:
+        # O(n) time | O(w) space
+        if word1 == word2: return -1
+        lastSeen = {word1: -1, word2: -1}
+        ans = inf
+        for i, word in enumerate(words):
+            if word in lastSeen:
+                if word == word1 and lastSeen[word2] >= 0:
+                    ans = min(ans, i - lastSeen[word2])
+                elif word == word2 and lastSeen[word1] >= 0:
+                    ans = min(ans, i - lastSeen[word1])
+                lastSeen[word] = i
+        return ans
+        

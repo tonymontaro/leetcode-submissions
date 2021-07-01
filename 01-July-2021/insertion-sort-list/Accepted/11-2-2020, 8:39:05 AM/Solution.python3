@@ -1,0 +1,32 @@
+// https://leetcode.com/problems/insertion-sort-list
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def insertionSortList(self, head: ListNode) -> ListNode:
+        current = head
+        prev = None
+        
+        while current:
+            if prev is None or prev.val <= current.val:
+                prev = current
+                current = current.next
+                continue
+            prev.next = current.next
+            node = head
+            prev2 = None
+            while current.val > node.val:
+                prev2 = node
+                node = node.next
+            if prev2:
+                prev2.next = current
+            else:
+                head = current
+            current.next = node
+            current = prev.next
+        return head
+            
+            

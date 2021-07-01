@@ -1,0 +1,26 @@
+// https://leetcode.com/problems/minimum-limit-of-balls-in-a-bag
+
+class Solution:
+    def minimumSize(self, nums: List[int], maxOperations: int) -> int:
+        
+        def solve(mx):
+            ans = 0
+            for num in nums:
+                if num <= mx:
+                    continue
+                ans += num // mx
+                if num % mx == 0:
+                    ans -= 1
+            return ans <= maxOperations
+        
+        lo = 1
+        hi = max(nums)
+        ans = hi
+        while lo <= hi:
+            mid = (lo + hi)//2
+            if solve(mid):
+                ans = mid
+                hi = mid - 1
+            else:
+                lo = mid + 1
+        return ans

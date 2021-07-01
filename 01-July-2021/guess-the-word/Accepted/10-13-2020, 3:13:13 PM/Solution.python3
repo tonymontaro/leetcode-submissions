@@ -1,0 +1,27 @@
+// https://leetcode.com/problems/guess-the-word
+
+from collections import defaultdict
+import random
+# """
+# This is Master's API interface.
+# You should not implement it, or speculate about its implementation
+# """
+# class Master:
+#     def guess(self, word: str) -> int:
+
+class Solution:
+    def findSecretWord(self, wordlist: List[str], master: 'Master') -> None:
+        
+        for i in range(10):
+            word = random.choice(wordlist)
+            guess = max(0, master.guess(word))
+            # print(word, guess)
+            if (guess == 6):
+                return word
+            wordlist = [w for w in wordlist if self.match(word, w) == guess]
+            print(wordlist)
+            
+        
+    def match(self, w1, w2):
+        return sum(a == b for a, b in zip(w1, w2))
+        

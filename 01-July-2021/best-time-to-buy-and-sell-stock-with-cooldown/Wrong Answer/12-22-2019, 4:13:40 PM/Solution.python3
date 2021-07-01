@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown
+
+class Solution:
+    def maxProfit(self, prices) -> int:
+        self.cache = {}
+        return self.solve(0, prices)
+
+    def solve(self, idx, nums):
+        if idx >= len(nums):
+            return 0
+        if idx in self.cache:
+            return self.cache[idx]
+        result = 0
+        min_el = nums[idx]
+        for i in range(idx+1, len(nums)):
+            el = nums[i]
+            min_el = min(min_el, el)
+            if i == len(nums)-1:
+                result = el - min_el
+            elif el > nums[i-1] and el > nums[i+1]:
+                result = max((el - min_el + self.solve(i+2, nums)),
+                             (nums[i-1] - min_el + self.solve(i+1, nums)))
+                break
+        self.cache[idx] = result
+        return result

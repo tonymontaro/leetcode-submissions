@@ -1,0 +1,14 @@
+// https://leetcode.com/problems/heaters
+
+class Solution:
+    def findRadius(self, houses: List[int], heaters: List[int]) -> int:
+        houses.sort()
+        heaters.sort()
+        idx = 0
+        ans = 0
+        for house in houses:
+            while idx + 1 < len(heaters) and (abs(house - heaters[idx]) >= abs(house - heaters[idx + 1])):
+                idx += 1
+            diff = abs(house - heaters[idx])
+            ans = max(ans, diff)
+        return ans

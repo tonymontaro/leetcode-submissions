@@ -1,0 +1,22 @@
+// https://leetcode.com/problems/minimum-score-triangulation-of-polygon
+
+from functools import lru_cache
+from math import inf
+
+class Solution:
+    def minScoreTriangulation(self, values: List[int]) -> int:
+        @lru_cache(None)
+        def solve(lo, hi):
+            ln = hi - lo + 1
+            if ln < 3:
+                return 0
+            
+            ans = inf
+            lv = values[lo]
+            lh = values[hi]
+            for k in range(lo + 1, hi):
+                ans = min(ans, solve(lo, k) + lv * values[k] * lh + solve(k, hi))
+            return ans
+        
+        return solve(0, len(values)-1)
+            

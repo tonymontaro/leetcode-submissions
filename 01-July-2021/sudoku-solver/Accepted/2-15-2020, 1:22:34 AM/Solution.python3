@@ -1,0 +1,49 @@
+// https://leetcode.com/problems/sudoku-solver
+
+from collections import defaultdict
+
+class Solution:
+    def solveSudoku(self, grid) -> None:
+        rows = {i: defaultdict(int) for i in range(9)}
+        cols = {i: defaultdict(int) for i in range(9)}
+        threes = [[defaultdict(int) for _ in range(3)] for _ in range(3)]
+        def add(row, col, num):
+            rows[row][num] += 1
+            cols[col][num] += 1
+            threes[row//3][col//3][num] += 1
+        def remove(row, col, num):
+            rows[row][num] -= 1
+            cols[col][num] -= 1
+            threes[row//3][col//3][num] -= 1
+        for row in range(len(grid)):
+            for col in range(len(grid)):
+                if grid[row][col] != '.':
+                    num = grid[row][col]
+                    add(row, col, int(num))
+
+        def get_next_coord(row, col):
+            if col < len(grid[0])-1:
+                col += 1
+            else:
+                row += 1
+                col = 0
+            return row, col
+        def solve(row, col):
+            if row >= len(grid):
+                return True
+            next_row, next_col = get_next_coord(row, col)
+            if grid[row][col] != '.':
+                return solve(next_row, next_col)
+            for i in range(1, 10):
+                is_valid = rows[row][i] < 1 and cols[col][i] < 1 and threes[row//3][col//3][i] < 1
+                if is_valid:
+                    add(row, col, i)
+                    result = solve(next_row, next_col)
+                    if not result:
+                        remove(row, col, i)
+                    else:
+                        grid[row][col] = str(i)
+                        return True
+            return False
+        solve(0, 0)
+        return grid

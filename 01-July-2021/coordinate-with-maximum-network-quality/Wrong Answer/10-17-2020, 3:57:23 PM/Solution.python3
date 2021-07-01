@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/coordinate-with-maximum-network-quality
+
+import math
+
+class Solution:
+    def bestCoordinate(self, towers: List[List[int]], radius: int) -> List[int]:
+        ans = None
+        towers.sort()
+        n = len(towers)
+        for i, ar in enumerate(towers):
+            x1, y1, q1 = ar
+            calc = 0
+            for j, ar2 in enumerate(towers):
+                x2, y2, q2 = ar2
+                dist = abs(x1 - x2) + abs(y1 - y2)
+                dist = math.sqrt(dist)
+                if dist > radius: continue
+                calc += math.floor(q2 / (1 + dist))
+                # print(x1, y1, x2, y2, calc)
+            if ans is None or calc > ans[0]:
+                ans = [calc, [x1, y1]]
+        # print(ans)
+        return ans[1]

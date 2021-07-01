@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/path-sum-iii
+
+from collections import deque
+
+class Solution:
+    def pathSum(self, root: TreeNode, sm: int) -> int:
+        def helper(node, sm, arr, rs):
+            if node:
+                arr.append(node.val)
+                new_arr = deque(arr)
+                total = sum(new_arr)
+                while new_arr:
+                    if sm == total:
+                        rs['val'] += 1
+                    total -= new_arr.popleft()
+                helper(node.left, sm, deque(arr), rs)
+                helper(node.right, sm, deque(arr), rs)
+        rs = {'val': 0}
+        helper(root, sm, deque(), rs)
+        return rs['val']

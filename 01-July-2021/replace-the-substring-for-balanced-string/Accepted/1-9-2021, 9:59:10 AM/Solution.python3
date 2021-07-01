@@ -1,0 +1,29 @@
+// https://leetcode.com/problems/replace-the-substring-for-balanced-string
+
+from math import inf
+
+class Solution:
+    def balancedString(self, s: str) -> int:
+        each = len(s) // 4
+        ans = inf
+        counts = Counter(s)
+        letters = "QWER"
+        
+        def isBalanced(counts):
+            return all([counts[ch] <= each for ch in letters])
+        
+        if isBalanced(counts):
+            return 0
+        
+        left = 0
+        for i, cha in enumerate(s):
+            counts[cha] -= 1
+            isB = isBalanced(counts)
+            if isB:
+                while isBalanced(counts):
+                    counts[s[left]] += 1
+                    left += 1
+                left -= 1
+                counts[s[left]] -= 1
+                ans = min(ans, i - left + 1)
+        return ans

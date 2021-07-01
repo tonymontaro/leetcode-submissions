@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/is-graph-bipartite
+
+class Solution:
+    def isBipartite(self, graph: List[List[int]]) -> bool:
+        seen = {}
+        self.ans = True
+        def solve(node, color):
+            if not self.ans:
+                return
+            seen[node] = color
+            c = (color + 1) % 2
+            for child in graph[node]:
+                if child in seen:
+                    if seen[child] != c:
+                        self.ans = False
+                        return
+                else:
+                    solve(child, c)
+
+        for i in range(len(graph)):
+            if i not in seen:
+                solve(i, 0)
+        return self.ans

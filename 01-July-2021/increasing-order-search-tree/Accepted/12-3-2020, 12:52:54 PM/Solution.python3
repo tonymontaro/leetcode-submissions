@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/increasing-order-search-tree
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def increasingBST(self, root: TreeNode) -> TreeNode:
+        # O(n) time and space
+        arr = []
+        def dfs(node):
+            if node:
+                dfs(node.left)
+                arr.append(node)
+                dfs(node.right)
+        dfs(root)
+        n = len(arr)
+        for i in range(n):
+            arr[i].left = None
+            if i < n - 1:
+                arr[i].right = arr[i + 1]
+        return arr[0]
+            

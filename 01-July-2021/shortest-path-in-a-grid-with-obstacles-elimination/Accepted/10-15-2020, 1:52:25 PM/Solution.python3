@@ -1,0 +1,30 @@
+// https://leetcode.com/problems/shortest-path-in-a-grid-with-obstacles-elimination
+
+from collections import deque
+
+class Solution:
+    def shortestPath(self, grid: List[List[int]], originalK: int) -> int:
+        # bfs: O(n*m*k) time | O(n*m) space
+        directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        visited = {}
+        deq = deque()
+        rowlen = len(grid)
+        colen = len(grid[0])
+        deq.append((0, 0, 0, originalK))
+        while deq:
+            row, col, dist, k = deq.popleft()
+            if (row == rowlen - 1 and col == colen - 1): return dist
+            k = k if grid[row][col] == 0 else k - 1
+            if (k < 0): continue
+            for d in directions:
+                r, c = row + d[0], col + d[1]
+                isValid = r >= 0 and c >= 0 and r < rowlen and c < colen and ((r, c) not in visited or visited[(r,c)] < k)
+                if isValid:
+                    visited[(r, c)] = k
+                    deq.append((r, c, dist + 1, k))
+            
+        return -1
+        
+        
+        
+        

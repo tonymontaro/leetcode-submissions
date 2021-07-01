@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/validate-binary-search-tree
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+def in_order(root, items):
+    if root:
+        in_order(root.left, items)
+        items.append(root.val)
+        in_order(root.right, items)
+    return items
+    
+class Solution:
+    def isValidBST(self, root):
+        items = in_order(root, [])
+        return items == sorted(set(items))

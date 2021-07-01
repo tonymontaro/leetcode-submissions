@@ -1,0 +1,27 @@
+// https://leetcode.com/problems/maximum-profit-of-operating-a-centennial-wheel
+
+class Solution:
+    def minOperationsMaxProfit(self, customers: List[int], boardingCost: int, runningCost: int) -> int:
+        ans = 0
+        trip = -1
+        waiting = 0
+        rs = 0
+        for i, c in enumerate(customers):
+            waiting += c
+            diff = min(waiting, 4)
+            waiting -= diff
+            rs += diff * boardingCost - runningCost
+            if rs > ans:
+                trip = i + 1
+                ans = rs
+        trips = waiting // 4
+        rs += waiting * boardingCost - trips*runningCost
+        if rs > ans:
+            trip = len(customers) + trips
+            ans = rs
+        if waiting % 4 != 0:
+            rs += (waiting % 4) * boardingCost - runningCost
+            if rs > ans:
+                trip = len(customers) + trips + 1
+
+        return trip

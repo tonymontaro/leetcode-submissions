@@ -1,0 +1,9 @@
+// https://leetcode.com/problems/power-of-three
+
+import math
+class Solution:
+    def isPowerOfThree(self, n):
+        if n <= 0:
+            return False
+        log3 = math.log(n, 3)
+        return round(log3, 10) == round(log3, 1)

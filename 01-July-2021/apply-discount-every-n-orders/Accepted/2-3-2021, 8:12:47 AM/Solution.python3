@@ -1,0 +1,28 @@
+// https://leetcode.com/problems/apply-discount-every-n-orders
+
+class Cashier:
+
+    def __init__(self, n: int, discount: int, products: List[int], prices: List[int]):
+        self.n = n
+        self.x = 0
+        self.discount = discount
+        self.products = {p: prices[i] for i, p in enumerate(products)}
+        
+
+    def getBill(self, product: List[int], amount: List[int]) -> float:
+        self.x += 1
+        cost = 0
+        for i, p in enumerate(product):
+            cost += self.products[p] * amount[i]
+        
+        if self.x == self.n:
+            cost = cost - ((cost*self.discount)/100)
+            self.x = 0
+        return cost
+        
+        
+
+
+# Your Cashier object will be instantiated and called as such:
+# obj = Cashier(n, discount, products, prices)
+# param_1 = obj.getBill(product,amount)

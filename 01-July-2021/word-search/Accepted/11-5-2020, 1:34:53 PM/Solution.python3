@@ -1,0 +1,30 @@
+// https://leetcode.com/problems/word-search
+
+class Solution:
+    def exist(self, grid: List[List[str]], word: str) -> bool:
+        rowlen = len(grid)
+        colen = len(grid[0])
+        n = len(word)
+        options = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        
+        def search(idx, row, col, seen):
+            if idx + 1 == n:
+                return True
+            seen[(row, col)] = True
+            for nRow, nCol in options:
+                r, c = nRow + row, nCol + col
+                
+                isValid = 0 <= r < rowlen and 0 <= c < colen and (r, c) not in seen
+                if isValid and grid[r][c] == word[idx + 1]:
+                    if search(idx + 1, r, c, seen):
+                        return True
+            seen.pop((row, col))
+            return False
+        
+        for r in range(rowlen):
+            for c in range(colen):
+                if grid[r][c] == word[0] and search(0, r, c, {}):
+                    return True
+        return False
+                    
+            

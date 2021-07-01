@@ -1,0 +1,28 @@
+// https://leetcode.com/problems/merge-two-sorted-lists
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def mergeTwoLists(self, l1, l2):
+        """
+        :type l1: ListNode
+        :type l2: ListNode
+        :rtype: ListNode
+        """
+        top_root = l1 or l2
+        def merge(root, l1, l2):
+            if not l1 and not l2:
+                return
+            if (not l1 and l2) or (l1 and l2 and l1.val > l2.val):
+                l1, l2 = l2, l1
+            if root:
+                root.next = l1
+            else:
+                top_root = l1
+            return merge(l1, l2, l1.next)
+        merge(None, l1, l2)
+        return top_root

@@ -1,0 +1,31 @@
+// https://leetcode.com/problems/validate-ip-address
+
+class Solution:
+    def validIPAddress(self, IP: str) -> str:
+        if checkIPv4(IP):
+            return "IPv4"
+        if checkIPv6(IP):
+            return "IPv6"
+        return "Neither"
+        
+def checkIPv4(s):
+    arr = s.split(".")
+    if len(arr) != 4:
+        return False
+    for word in arr:
+        if not word or (len(word) > 1 and word[0] == '0') or (not word.isdigit()) or (not 0 <= int(word) <= 255):
+            return False
+    return True
+
+def checkIPv6(s):
+    arr = s.split(":")
+    if len(arr) != 8:
+        return False
+    for word in arr:
+        if not word or len(word) > 4:
+            return False
+        try:
+            int(word, 16)
+        except:
+            return False
+    return True

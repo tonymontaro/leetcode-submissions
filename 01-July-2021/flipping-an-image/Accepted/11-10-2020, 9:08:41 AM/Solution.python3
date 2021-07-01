@@ -1,0 +1,21 @@
+// https://leetcode.com/problems/flipping-an-image
+
+class Solution:
+    def flipAndInvertImage(self, grid: List[List[int]]) -> List[List[int]]:
+        # O(n*m) time | O(1) space
+        if not grid:
+            return grid
+        
+        rowlen, colen = len(grid), len(grid[0])
+        for row in grid:
+            i, j = 0, colen - 1
+            while i <= j:
+                row[i], row[j] = row[j], row[i]
+                row[i] = row[i] ^ 1
+                if i != j:
+                    row[j] = row[j] ^ 1
+                i += 1
+                j -= 1
+        return grid
+        
+        

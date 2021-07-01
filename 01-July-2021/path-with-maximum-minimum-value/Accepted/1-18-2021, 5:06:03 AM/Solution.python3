@@ -1,0 +1,27 @@
+// https://leetcode.com/problems/path-with-maximum-minimum-value
+
+# from collections import 
+from heapq import heappush, heappop
+
+class Solution:
+    def maximumMinimumPath(self, grid: List[List[int]]) -> int:
+        rlen, clen = len(grid), len(grid[0])
+        seen = {(0, 0): grid[0][0]}
+        heap = [(-grid[0][0], 0, 0)]
+        
+        dirs = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        while heap:
+            val, r, c = heappop(heap)
+            val = -val
+            if (r, c) == (rlen-1, clen-1):
+                return val
+            
+            for rAdd, cAdd in dirs:
+                row, col = r + rAdd, c + cAdd
+                if 0 <= row < rlen and 0 <= col < clen:
+                    mx = min(val, grid[row][col])
+                    if (row, col) not in seen or seen[(row, col)] < mx:
+                        heappush(heap, (-mx, row, col))
+                        seen[(row, col)] = mx
+        
+                

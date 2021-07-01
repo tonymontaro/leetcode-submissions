@@ -1,0 +1,24 @@
+// https://leetcode.com/problems/permutations
+
+from itertools import permutations
+
+class Solution:
+    def permute(self, nums):
+        result = []
+        def solve(idx, seen, arr):
+            if idx == len(nums):
+                result.append(list(arr))
+                return
+            
+            for num in nums:
+                if num in seen:
+                    continue
+                
+                arr.append(num)
+                seen[num] = True
+                solve(idx + 1, seen, arr)
+                seen.pop(num)
+                arr.pop()
+            
+        solve(0, {}, [])
+        return result

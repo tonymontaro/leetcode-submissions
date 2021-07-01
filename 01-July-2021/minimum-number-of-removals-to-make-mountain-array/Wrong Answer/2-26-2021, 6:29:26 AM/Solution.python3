@@ -1,0 +1,27 @@
+// https://leetcode.com/problems/minimum-number-of-removals-to-make-mountain-array
+
+from math import inf
+
+class Solution:
+    def minimumMountainRemovals(self, nums: List[int]) -> int:
+        n = len(nums)
+        leftDp = [0] * n
+        for i, num in enumerate(nums):
+            rs = i
+            for j in range(i):
+                if num > nums[j]:
+                    rs = min(rs, i - j - 1 + leftDp[j])
+            leftDp[i] = rs
+        rightDp = [0] * n
+        for i in range(n - 1, -1, -1):
+            num = nums[i]
+            rs = n - i - 1
+            for j in range(i + 1, n):
+                if num > nums[j]:
+                    rs = min(rs, j - i - 1 + rightDp[j])
+            rightDp[i] = rs
+        
+        ans = inf
+        for i in range(1, n - 1):
+            ans = min(ans, leftDp[i] + rightDp[i])
+        return ans

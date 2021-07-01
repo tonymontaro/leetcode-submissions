@@ -1,0 +1,31 @@
+// https://leetcode.com/problems/decoded-string-at-index
+
+class Solution:
+    def decodeAtIndex(self, s: str, k: int) -> str:
+        arr = []
+        start = 0
+        n = len(s)
+        i = 0
+        while i < n:
+            if s[i].isdigit():
+                word = s[start:i]
+                j = i
+                while j < n and s[j].isdigit():
+                    j += 1
+                arr.append([word, int(s[i:j])])
+                i = j
+                start = j
+            else:
+                i += 1
+        if not s[-1].isdigit():
+            arr.append([s[start:], 1])
+        
+        for word, num in arr:
+            ln = len(word)
+            size = ln * num
+            if size < k:
+                k -= size
+                continue
+            return word[(k - 1) % ln]
+        return None
+            

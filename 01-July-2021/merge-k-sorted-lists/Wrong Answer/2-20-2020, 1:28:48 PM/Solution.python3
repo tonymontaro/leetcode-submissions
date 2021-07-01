@@ -1,0 +1,32 @@
+// https://leetcode.com/problems/merge-k-sorted-lists
+
+from collections import defaultdict
+from heapq import heappop, heappush
+
+
+class Solution:
+    def mergeKLists(self, arr):
+        """O(nlogk) time | O(k) space | n total items, k => number of arrays"""
+        if not arr or not arr[0]: return None
+        num_locs = defaultdict(list)
+        [num_locs[arr[i].val].append(i) for i in range(len(arr))]
+        heap = []
+        [heappush(heap, arr[i].val) for i in range(len(arr))]
+
+        node = head = None
+        i = 0
+        while heap:
+            num = heappop(heap)
+            if not node:
+                node = ListNode(num)
+                head = node
+            else:
+                node.next = ListNode(num)
+                node = node.next
+            idx = num_locs[num].pop()
+            arr[idx] = arr[idx].next
+            if arr[idx]:
+                next_num = arr[idx].val
+                heappush(heap, next_num)
+                num_locs[next_num].append(idx)
+        return head

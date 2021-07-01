@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/maximum-score-from-performing-multiplication-operations
+
+from functools import lru_cache
+
+class Solution:
+    def maximumScore(self, nums: List[int], mult: List[int]) -> int:
+        n, m = len(nums), len(mult)
+        
+        @lru_cache(None)
+        def solve(l, r):
+            idx = n - (r - l + 1)
+            if idx >= m:
+                return 0
+            
+            left = mult[idx] * nums[l] + solve(l + 1, r)
+            right = mult[idx] * nums[r] + solve(l, r - 1)
+ 
+            return max(left, right)
+        
+        return solve(0, n-1)

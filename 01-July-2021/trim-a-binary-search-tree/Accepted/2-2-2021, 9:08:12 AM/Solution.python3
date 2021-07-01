@@ -1,0 +1,24 @@
+// https://leetcode.com/problems/trim-a-binary-search-tree
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def trimBST(self, root: TreeNode, low: int, high: int) -> TreeNode:
+        # O(n) time | O(h) space
+        
+        def solve(node):
+            if not node:
+                return node
+            if low <= node.val <= high:
+                node.left = solve(node.left)
+                node.right = solve(node.right)
+                return node
+            if node.val < low:
+                return solve(node.right)
+            return solve(node.left)
+    
+        return solve(root)

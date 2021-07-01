@@ -1,0 +1,54 @@
+// https://leetcode.com/problems/number-of-good-leaf-nodes-pairs
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+class Node:
+    def __init__(self, idx):
+        self.children = []
+        self.idx = idx
+        self.isLeave = False
+    def __repr__(self):
+        return f'({self.idx}, {self.isLeave})'
+
+class Solution:
+    def countPairs(self, root: TreeNode, distance: int) -> int:
+        self.i = 0
+        leaveNodes = []
+        def dfs(node, p):
+            if not node:
+                return
+            nn = Node(self.i)
+            self.i += 1
+            if p:
+                nn.children.append(p)
+                p.children.append(nn)
+            if not node.left and not node.right:
+                nn.isLeave = True
+                leaveNodes.append(nn)
+            else:
+                dfs(node.left, nn)
+                dfs(node.right, nn)
+            return nn
+        root = dfs(root, None)
+        # print(leaveNodes)
+        
+        self.pairs = 0
+        def find(node, dist, visited):
+            visited[node.idx] = True
+            if dist > distance:
+                return
+            if node.isLeave and dist <= distance and dist != 0:
+                self.pairs += 1
+            for child in node.children:
+                if child.idx not in visited:
+                    find(child, dist + 1, visited)
+        
+        for node in leaveNodes:
+            find(node, 0, {})
+        return self.pairs // 2
+        

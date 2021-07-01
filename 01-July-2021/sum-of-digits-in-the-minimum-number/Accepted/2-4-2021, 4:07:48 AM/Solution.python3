@@ -1,0 +1,11 @@
+// https://leetcode.com/problems/sum-of-digits-in-the-minimum-number
+
+class Solution:
+    def sumOfDigits(self, A: List[int]) -> int:
+        mn = min(A)
+        sm = 0
+        while mn > 0:
+            sm += mn % 10
+            mn //= 10
+        return (sm + 1) % 2
+        

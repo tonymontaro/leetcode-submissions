@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/find-the-longest-substring-containing-vowels-in-even-counts
+
+class Solution:
+    def findTheLongestSubstring(self, s: str) -> int:
+        # O(n) time | O(1) space
+        vowelChars = 'aeiou'
+        vowels = {cha: i for i, cha in enumerate(vowelChars)}
+        state = 0
+        seen = {0: -1}
+        
+        ans = 0
+        for i, cha in enumerate(s):
+            if cha not in vowelChars:
+                ans = max(ans, i - seen[state])
+                continue
+            idx = vowels[cha]
+            state = state ^ (1 << idx)
+            if state in seen:
+                ans = max(ans, i - seen[state])
+            else:
+                seen[state] = i
+        return ans
+        

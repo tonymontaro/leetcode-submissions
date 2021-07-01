@@ -1,0 +1,32 @@
+// https://leetcode.com/problems/queens-that-can-attack-the-king
+
+from collections import deque
+
+class Solution:
+    def queensAttacktheKing(self, queens: List[List[int]], king: List[int]) -> List[List[int]]:
+        seen = {}
+        for r,c in queens:
+            seen[(r, c)] = 1
+        r, c = king
+        ans = []
+        deq = deque()
+        deq.append((r, c, 0, 1))
+        deq.append((r, c, 0, -1))
+        deq.append((r, c, 1, 0))
+        deq.append((r, c, -1, 0))
+        deq.append((r, c, 1, 1))
+        deq.append((r, c, -1, -1))
+        deq.append((r, c, -1, 1))
+        deq.append((r, c, 1, -1))
+        
+        while deq:
+            r, c, rAdd, cAdd = deq.pop()
+            r, c = r + rAdd, c + cAdd
+            if (r, c) in seen:
+                ans.append([r, c])
+                continue
+            if not (0 <= r < 9 and 0 <= c < 9):
+                continue
+            deq.append((r, c, rAdd, cAdd))
+        
+        return ans

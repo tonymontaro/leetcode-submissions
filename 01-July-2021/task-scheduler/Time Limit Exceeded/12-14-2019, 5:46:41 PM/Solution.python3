@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/task-scheduler
+
+from collections import Counter
+
+class Solution:
+    def leastInterval(self, tasks, n: int) -> int:
+        """O(n + k) time and space"""
+        counts = Counter(tasks)
+        process = {k: 0 for k in counts.keys()}
+        result = 0
+        i = 0
+        while i < len(tasks):
+            valid = [k for k in process.keys() if process[k] == 0 and counts[k] > 0]
+            if valid:
+                item = max(valid, key=lambda x: counts[x])
+                process[item] = n + 1
+                counts[item] -= 1
+                i += 1
+            for k, val in process.items():
+                process[k] = max(0, val-1)
+            result += 1
+
+        return result

@@ -1,0 +1,29 @@
+// https://leetcode.com/problems/car-fleet-ii
+
+from math import inf
+
+class Solution:
+    def getCollisionTimes(self, cars: List[List[int]]) -> List[float]:
+        
+        def getCollisionTime(dist1, speed1, dist2, speed2):
+            if speed1 <= speed2:
+                return inf
+            relativeSpeed = speed1 - speed2
+            return (dist2 - dist1) / relativeSpeed
+        
+        stack = [] # dist, speed, collisionTime
+        ans = []
+        for d, s in cars[::-1]:
+            while stack and (
+                s <= stack[-1][1]
+                or getCollisionTime(d, s, stack[-1][0], stack[-1][1]) > stack[-1][2]
+            ):
+                stack.pop()
+            if stack:
+                collisionTime = getCollisionTime(d, s, stack[-1][0], stack[-1][1])
+                stack.append((d, s, collisionTime))
+                ans.append(collisionTime)
+            else:
+                stack.append((d, s, inf))
+                ans.append(-1)
+        return ans[::-1]

@@ -1,0 +1,21 @@
+// https://leetcode.com/problems/fruit-into-baskets
+
+from collections import defaultdict
+
+class Solution:
+    def totalFruit(self, tree: List[int]) -> int:
+        cnt = 0
+        seen = defaultdict(int)
+        left = 0
+        ans = 0
+        for i, num in enumerate(tree):
+            if seen[num] == 0:
+                cnt += 1
+            seen[num] += 1
+            while cnt > 2:
+                seen[tree[left]] -= 1
+                if seen[tree[left]] == 0:
+                    cnt -= 1
+                left += 1
+            ans = max(ans, i - left + 1)
+        return ans

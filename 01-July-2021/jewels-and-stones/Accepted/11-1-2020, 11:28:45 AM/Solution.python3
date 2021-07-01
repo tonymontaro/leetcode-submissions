@@ -1,0 +1,11 @@
+// https://leetcode.com/problems/jewels-and-stones
+
+class Solution:
+    def numJewelsInStones(self, J: str, S: str) -> int:
+        # O(n + m) time | O(n) space
+        jewels = set(J)
+        ans = 0
+        for cha in S:
+            if cha in jewels:
+                ans += 1
+        return ans

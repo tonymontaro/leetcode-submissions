@@ -1,0 +1,14 @@
+// https://leetcode.com/problems/subarray-sum-equals-k
+
+class Solution:
+    def subarraySum(self, nums, k: int) -> int:
+        """O(n) time and space"""
+        result = 0
+        sm = 0
+        seen = {}
+        seen[0] = 1
+        for i, num in enumerate(nums):
+            sm += num
+            result += seen.get(sm - k, 0)
+            seen[sm] = seen.get(sm, 0) + 1
+        return result

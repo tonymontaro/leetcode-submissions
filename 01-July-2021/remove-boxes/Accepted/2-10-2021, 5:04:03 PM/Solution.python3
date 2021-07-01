@@ -1,0 +1,37 @@
+// https://leetcode.com/problems/remove-boxes
+
+class Solution:
+    def removeBoxes(self, s: List[int]) -> int:
+        prev = 0
+        arr = []
+        for i, cha in enumerate(s):
+            if cha != s[prev]:
+                arr.append((prev, i - 1, s[prev]))
+                prev = i
+        arr.append((prev, len(s)-1, s[prev]))
+        cache = {}
+        
+        n = len(arr)
+        def solve(idx, mx, extra):
+            if idx > mx:
+                return 0
+            
+            if (idx, mx, extra) in cache:
+                return cache[(idx, mx, extra)]
+            
+            k = arr[idx][1] - arr[idx][0] + 1 + extra
+            ans = k*k + solve(idx + 1, mx, 0)
+            for j in range(idx + 1, mx + 1):
+                if arr[j][2] != arr[idx][2]:
+                    continue
+                res = solve(idx + 1, j - 1, 0) + solve(j, mx, k)
+                ans = max(ans, res)
+            
+            cache[(idx, mx, extra)] = ans
+            return ans
+        
+        aa = solve(0, n-1, 0)
+        return aa
+            
+
+        # return solve(boxes)

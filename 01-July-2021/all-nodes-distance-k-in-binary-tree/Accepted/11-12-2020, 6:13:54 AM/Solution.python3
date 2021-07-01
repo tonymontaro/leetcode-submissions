@@ -1,0 +1,49 @@
+// https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def distanceK(self, root: TreeNode, target: TreeNode, k: int) -> List[int]:
+        if k == 0:
+            return [target.val]
+        
+        result = []
+        def dfs(node):
+            if not node:
+                return
+            if node is target:
+                search(node.left, 1)
+                search(node.right, 1)
+                return 1
+            
+            left = dfs(node.left)
+            if left is not None:
+                if left == k:
+                    result.append(node.val)
+                search(node.right, left + 1)
+                return left + 1
+            right = dfs(node.right)
+            if right is not None:
+                if right == k:
+                    result.append(node.val)
+                search(node.left, right + 1)
+                return right + 1
+            return None
+        
+        def search(node, depth):
+            if not node:
+                return
+            if depth > k:
+                return
+            if depth == k:
+                result.append(node.val)
+            search(node.left, depth + 1)
+            search(node.right, depth + 1)
+        
+        dfs(root)
+        return result

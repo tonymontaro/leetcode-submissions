@@ -1,0 +1,15 @@
+// https://leetcode.com/problems/best-time-to-buy-and-sell-stock
+
+class Solution:
+    def maxProfit(self, prices):
+        """
+        :type prices: List[int]
+        :rtype: int
+        """
+        min_val = float('inf')
+        max_val = 0
+        for val in prices:
+            min_val = min(min_val, val)
+            max_val = max(max_val, (val - min_val))
+        return max_val
+        

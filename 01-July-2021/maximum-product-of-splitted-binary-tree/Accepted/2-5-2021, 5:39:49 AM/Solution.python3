@@ -1,0 +1,33 @@
+// https://leetcode.com/problems/maximum-product-of-splitted-binary-tree
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+from math import inf
+
+class Solution:
+    def maxProduct(self, root: TreeNode) -> int:
+        def totalSum(node):
+            if not node:
+                return 0
+            return node.val + totalSum(node.left) + totalSum(node.right)
+        total = totalSum(root)
+        
+        self.ans = (inf, 0, 0)
+        def solve(node):
+            if not node:
+                return 0
+            left = solve(node.left)
+            right = solve(node.right)
+            for a in [left, right]:
+                b = total - a
+                if abs(b - a) < self.ans[0]:
+                    self.ans = (abs(b - a), a, b)
+            return node.val + left + right
+
+        solve(root)
+        diff, a, b = self.ans
+        return (a * b) % (10**9 + 7)

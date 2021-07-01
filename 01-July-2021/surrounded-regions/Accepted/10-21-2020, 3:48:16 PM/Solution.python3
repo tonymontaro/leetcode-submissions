@@ -1,0 +1,40 @@
+// https://leetcode.com/problems/surrounded-regions
+
+class Solution:
+    def solve(self, grid: List[List[str]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+        O(n * m) time and space using mult-source bfs
+        """
+        if not grid: return
+        seen = {}
+        stack = []
+        rowlen = len(grid)
+        colen = len(grid[0])
+
+        def add(r, c):
+            if r < 0 or c < 0 or r >= rowlen or c >= colen or grid[r][c] == "X" or (r, c) in seen:
+                return
+            stack.append((r, c))
+            seen[(r, c)] = True
+
+        for r in range(rowlen):
+            if grid[r][0] == "O":
+                add(r, 0)
+            if grid[r][colen - 1] == "O":
+                add(r, colen - 1)
+        for c in range(colen):
+            if grid[0][c] == "O":
+                add(0, c)
+            if grid[rowlen-1][c] == "O":
+                add(rowlen-1, c)
+        directions = [(0, -1), (0, 1), (-1, 0), (1, 0)]
+        while stack:
+            row, col = stack.pop()
+            for d in directions:
+                add(row + d[0], col + d[1])
+        for r in range(rowlen):
+            for c in range(colen):
+                if grid[r][c] == "O" and (r, c) not in seen:
+                    grid[r][c] = "X"
+                

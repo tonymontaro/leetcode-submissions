@@ -1,0 +1,11 @@
+// https://leetcode.com/problems/maximum-binary-string-after-change
+
+from collections import Counter
+
+class Solution:
+    def maximumBinaryString(self, binary: str) -> str:
+        cnt = Counter(binary)
+        if cnt['0'] == 0:
+            return binary
+        first = binary.find('0')
+        return ('1' * (first + cnt['0'] - 1) ) + '0' + ('1' * (cnt['1'] - first))

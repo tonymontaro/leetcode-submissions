@@ -1,0 +1,19 @@
+// https://leetcode.com/problems/longest-mountain-in-array
+
+class Solution:
+    def longestMountain(self, arr: List[int]) -> int:
+        # O(n) time | O(1) space
+        n = len(arr)
+        
+        ans = 0
+        for i in range(1, n - 1):
+            if not (arr[i] > arr[i-1] and arr[i] > arr[i+1]):
+                continue
+            left = i - 1
+            right = i + 1
+            while left >= 0 and arr[left] < arr[left+1]:
+                left -= 1
+            while right < n and arr[right] < arr[right -1]:
+                right += 1
+            ans = max(ans, right - left - 1)
+        return ans

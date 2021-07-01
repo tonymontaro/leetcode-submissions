@@ -1,0 +1,68 @@
+// https://leetcode.com/problems/encode-n-ary-tree-to-binary-tree
+
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, val=None, children=None):
+        self.val = val
+        self.children = children
+"""
+
+"""
+# Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+"""
+from collections import deque
+
+class Codec:
+    # Encodes an n-ary tree to a binary tree.
+    def encode(self, root: 'Node') -> TreeNode:
+        if not root:
+            return root
+        head = TreeNode(root.val)
+        head.parent = None
+        addLeftRight = deque([(head, root)])
+        children = deque()
+        while addLeftRight:
+            node, original = addLeftRight.popleft()
+            for child in original.children:
+                childNode = TreeNode(child.val)
+                childNode.parent = node
+                children.append((childNode, child))
+            if children:
+                childNode, child = children.popleft()
+                node.left = childNode
+                addLeftRight.append((childNode, child))
+            if children:
+                childNode, child = children.popleft()
+                node.right = childNode
+                addLeftRight.append((childNode, child))
+        # print(head.left.parent)
+        return head
+	
+	# Decodes your binary tree to an n-ary tree.
+    def decode(self, data: TreeNode) -> 'Node':
+        if not data:
+            return data
+        nodes = {}
+        queue = deque([data])
+        while queue:
+            node = queue.popleft()
+            newNode = Node(node.val, [])
+            nodes[node] = newNode
+            if node.parent:
+                nodes[node.parent].children.append(newNode)
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+        return nodes[data]
+        
+
+# Your Codec object will be instantiated and called as such:
+# codec = Codec()
+# codec.decode(codec.encode(root))

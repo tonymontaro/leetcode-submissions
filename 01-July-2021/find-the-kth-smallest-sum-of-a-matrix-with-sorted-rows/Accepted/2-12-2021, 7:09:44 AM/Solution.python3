@@ -1,0 +1,36 @@
+// https://leetcode.com/problems/find-the-kth-smallest-sum-of-a-matrix-with-sorted-rows
+
+from heapq import heappush, heappop
+
+class Solution:
+    def kthSmallest(self, mat: List[List[int]], k: int) -> int:
+        rlen, clen = len(mat), len(mat[0])
+        sm = sum(x[0] for x in mat)
+        first = [sm] + [0] * rlen
+        first = tuple(first)
+        seen = {}
+        seen[first] = 1
+        heap = [first]
+        cnt = 0
+        while heap:
+            node = heappop(heap)
+            cnt += 1
+            if cnt == k:
+                return node[0]
+            for r in range(rlen):
+                c = node[r + 1]
+                if c >= clen-1:
+                    continue
+                ls = list(node)
+                ls[0] -= mat[r][c]
+                ls[0] += mat[r][c+1]
+                ls[r + 1] = c + 1
+                ls = tuple(ls)
+                # print(node, ls, r, c)
+                if ls in seen:
+                    continue
+                seen[ls] = 1
+                heappush(heap, ls)
+                
+            
+        

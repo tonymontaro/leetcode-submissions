@@ -1,0 +1,17 @@
+// https://leetcode.com/problems/maximum-average-subarray-i
+
+from math import inf
+
+class Solution:
+    def findMaxAverage(self, nums: List[int], k: int) -> float:
+        sm = 0
+        cnt = k
+        for i in range(k):
+            sm += nums[i]
+        ans = sm / cnt
+        for i in range(k, len(nums)):
+            sm -= nums[i - k]
+            sm += nums[i]
+            ans = max(ans, sm / cnt)
+        
+        return ans

@@ -1,0 +1,24 @@
+// https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal
+
+class Solution:
+    def buildTree(self, preorder, inorder) -> TreeNode:
+        if len(preorder) < 1: return
+        cord = (0, len(preorder)-1)
+        return self.helper(cord, cord, preorder, inorder)
+    
+    def helper(self, pcord, icord, preorder, inorder):
+        start, end = pcord
+        istart, iend = icord
+        if end - start < 0: return None
+        node = TreeNode(preorder[start])
+        if end - start == 0: return node
+        idx = self.find_node(preorder[start], istart, inorder)
+        pidx = idx + start - istart
+        node.left = self.helper((start+1, pidx), (istart, idx-1), preorder, inorder)
+        node.right = self.helper((pidx+1, end), (idx+1, iend), preorder, inorder)
+        return node
+    
+    def find_node(self, val, start, arr):
+        for i in range(start, len(arr)):
+            if arr[i] == val:
+                return i

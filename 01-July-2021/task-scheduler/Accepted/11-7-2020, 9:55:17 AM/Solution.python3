@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/task-scheduler
+
+from collections import Counter
+
+class Solution:
+    def leastInterval(self, tasks, n: int) -> int:
+        """O(n) time | O(1) space"""
+        counts = list(Counter(tasks).values())
+        maxVal = max(counts)
+        numOfMax = counts.count(maxVal)
+        
+        pairs = n + 1
+        if numOfMax >= pairs:
+            return len(tasks)
+        
+        result = numOfMax + (maxVal - 1) * pairs
+        return max(len(tasks), result)
+        

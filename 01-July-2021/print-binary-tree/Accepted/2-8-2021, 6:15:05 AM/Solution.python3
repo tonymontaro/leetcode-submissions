@@ -1,0 +1,33 @@
+// https://leetcode.com/problems/print-binary-tree
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def printTree(self, root: TreeNode) -> List[List[str]]:
+
+        def getH(node):
+            if not node:
+                return 0
+            return 1 + max(getH(node.left), getH(node.right))
+        h = getH(root)
+        w = 0
+        for i in range(h - 1):
+            w += pow(2, i)
+        w = w*2 + 1
+        grid = [[""] * w for _ in range(h)]
+        
+        def solve(node, l, r, d):
+            if not node:
+                return
+            mid = l + (r - l) // 2
+            # print(node.val, mid)
+            grid[d][mid] = str(node.val)
+            solve(node.left, l, mid-1, d+1)
+            solve(node.right, mid+1, r, d+1)
+        solve(root, 0, w-1, 0)
+        return grid
+        

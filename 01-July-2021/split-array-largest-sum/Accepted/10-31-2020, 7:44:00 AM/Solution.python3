@@ -1,0 +1,38 @@
+// https://leetcode.com/problems/split-array-largest-sum
+
+from math import inf
+
+class Solution:
+    def splitArray(self, nums: List[int], m: int) -> int:
+        # O(nlogn) time | O(1) space
+        totalSum = sum(nums)
+        if m == 1:
+            return totalSum
+        
+        def check(highest, total, cuts):
+            current = 0
+            for num in nums:
+                if current + num > highest:
+                    cuts -= 1
+                    if cuts == 1:
+                        return total <= highest
+                    current = 0
+                current += num
+                total -= num
+            return True
+        
+        lo = max(nums)
+        hi = 10**9
+        valid = hi
+        while lo <= hi:
+            mid = (lo + hi) // 2
+            rs = check(mid, totalSum, m)
+            # print(mid, rs)
+            if rs:
+                valid = mid
+                hi = mid - 1
+            else:
+                lo = mid + 1
+        return valid
+   
+        

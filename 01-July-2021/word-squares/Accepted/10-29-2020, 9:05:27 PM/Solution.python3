@@ -1,0 +1,32 @@
+// https://leetcode.com/problems/word-squares
+
+from collections import defaultdict
+
+class Solution:
+    def wordSquares(self, words: List[str]) -> List[List[str]]:
+        if not words:
+            return []
+        sq = len(words[0])
+        prefixs = defaultdict(list)
+        prefixs[""] = words
+        for word in words:
+            for i in range(1, len(word)):
+                prf = word[:i]
+                prefixs[prf].append(word)
+        result = []
+
+        def getPrefix(items, prefixIdx):
+            return "".join([w[prefixIdx] for w in items])
+
+        def search(items, prefixIdx):
+            if len(items) == sq:
+                result.append(list(items))
+                return
+            prefix = getPrefix(items, prefixIdx)
+            for w in prefixs[prefix]:
+                items.append(w)
+                search(items, prefixIdx + 1)
+                items.pop()
+
+        search([], 0)
+        return result

@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/maximum-points-you-can-obtain-from-cards
+
+class Solution:
+    def maxScore(self, cards: List[int], k: int) -> int:
+        # O(n) time | O(1) space
+        remove = len(cards) - k;
+        best = 0
+        removed = 0
+        total = sum(cards)
+        if (remove == 0):
+            return total
+        for i, num in enumerate(cards):
+            removed += num
+            if (i >= remove):
+                removed -= cards[i - remove]
+            if (i >= remove -1):
+                best = max(best, total - removed)
+        return best
+                
+        

@@ -1,0 +1,14 @@
+// https://leetcode.com/problems/group-anagrams
+
+from collections import Counter, defaultdict
+from string import ascii_lowercase
+
+class Solution:
+    def groupAnagrams(self, strs):
+        print(''.join([]))
+        result = defaultdict(list)
+        for item in strs:
+            counts = Counter(item)
+            key_str = ''.join([f'{c}{counts[c]}' for c in ascii_lowercase if c in counts])
+            result[key_str].append(item)
+        return result.values()

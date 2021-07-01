@@ -1,0 +1,24 @@
+// https://leetcode.com/problems/employee-importance
+
+"""
+# Definition for Employee.
+class Employee:
+    def __init__(self, id: int, importance: int, subordinates: List[int]):
+        self.id = id
+        self.importance = importance
+        self.subordinates = subordinates
+"""
+
+class Solution:
+    def getImportance(self, employees: List['Employee'], id_: int) -> int:
+        emps = {}
+        for e in employees:
+            emps[e.id] = e
+        def find(idx):
+            emp = emps[idx]
+            total = emp.importance
+            for child in emp.subordinates:
+                total += find(child)
+            return total
+        return find(id_)
+            

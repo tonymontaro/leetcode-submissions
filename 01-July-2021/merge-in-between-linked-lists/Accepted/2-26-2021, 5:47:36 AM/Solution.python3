@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/merge-in-between-linked-lists
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def mergeInBetween(self, list1: ListNode, a: int, b: int, list2: ListNode) -> ListNode:
+        
+        first = list1
+        for _ in range(a - 1):
+            first = first.next
+        second = list1
+        for _ in range(b):
+            second = second.next
+        last = list2
+        while last.next:
+            last = last.next
+        first.next = list2
+        last.next = second.next
+        second.next = None
+        return list1

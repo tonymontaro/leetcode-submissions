@@ -1,0 +1,51 @@
+// https://leetcode.com/problems/minimum-cost-to-merge-stones
+
+from math import inf
+
+class Solution:
+    def mergeStones(self, stones: List[int], k: int) -> int:
+
+        if k != 2 and len(stones) % (k - 1) != 1:
+            return -1
+        
+        prefix = [0]
+        for num in stones:
+            prefix.append(prefix[-1] + num)
+
+        cache = {}
+        def solve(lo, hi, rem):
+            if (lo, hi, rem) in cache:
+                return cache[(lo, hi, rem)]
+
+            if lo == hi:
+                return 0 if rem in [1, k] else inf
+            count = hi - lo + 1
+            sm = prefix[hi+1] - prefix[lo] # todo: use prefix array
+            if count == k and rem in [1, k]:
+                return sm
+            if rem > count:
+                return inf
+            if count < k:
+                return 0 if count == rem else inf
+
+            if rem == 1:
+                rem = k
+            ans = inf
+            idx = lo
+            while idx < hi:
+                mergeToOne = solve(lo, idx, 1)
+                other = solve(idx + 1, hi, rem - 1)
+                ans = min(ans, mergeToOne + other)
+                idx += k - 1
+           
+            if rem == k:
+                ans += sm
+                cache[(lo, hi, 1)] = ans
+                cache[(lo, hi, k)] = ans
+            else:
+                cache[(lo, hi, rem)] = ans
+            return ans
+
+        res = solve(0, len(stones)-1, k)
+        # print(cache)
+        return res if res != inf else -1

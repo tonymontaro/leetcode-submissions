@@ -1,0 +1,17 @@
+// https://leetcode.com/problems/minimum-cost-tree-from-leaf-values
+
+class Solution:
+    def mctFromLeafValues(self, arr: List[int]) -> int:
+        ans = 0
+        arr.sort()
+        while len(arr) > 1:
+            newArr = []
+            n = len(arr)
+            for i in range(0, n, 2):
+                if i + 1 < n:
+                    ans += arr[i] * arr[i + 1]
+                    newArr.append(max(arr[i], arr[i+1]))
+                else:
+                    newArr.append(arr[i])
+            arr = newArr
+        return ans

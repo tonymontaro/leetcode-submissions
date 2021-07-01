@@ -1,0 +1,16 @@
+// https://leetcode.com/problems/short-encoding-of-words
+
+class Solution:
+    def minimumLengthEncoding(self, words: List[str]) -> int:
+        ls = set()
+        for w in words:
+            toAdd = True
+            n = len(w)
+            for w2 in words:
+                if len(w2) > n and w == w2[-n:]:
+                    toAdd = False
+                    break
+            if toAdd:
+                ls.add(w)
+        ans = "#".join(list(ls))
+        return len(ans) + 1

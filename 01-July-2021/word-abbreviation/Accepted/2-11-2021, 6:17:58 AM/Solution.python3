@@ -1,0 +1,40 @@
+// https://leetcode.com/problems/word-abbreviation
+
+from collections import defaultdict
+
+class Solution:
+    def wordsAbbreviation(self, words: List[str]) -> List[str]:
+        groups = defaultdict(list)
+        for word in words:
+            abbr = word[0] + str(len(word)-2) + word[-1]
+            groups[abbr].append(word)
+        ans = {}
+        def abbreviate(prefix, word):
+            return prefix + str(len(word) - len(prefix) - 1) + word[-1]
+        for k, group in groups.items():
+            if len(group) == 1:
+                w = group[0]
+                ans[w] = k if len(k) < len(w) else w
+                continue
+                
+            trie = {}
+            for word in group:
+                node = trie
+                for c in word:
+                    if c not in node:
+                        node[c] = {'cnt': 0}
+                    node[c]['cnt'] += 1
+                    node = node[c]
+            for word in group:
+                abbr = word
+                node = trie
+                for i, c in enumerate(word):
+                    if node[c]['cnt'] == 1:
+                        abbr = abbreviate(word[:i+1], word)
+                        break
+                    node = node[c]
+                ans[word] = abbr if len(abbr) < len(word) else word
+        
+        return [ans[w] for w in words]
+
+        

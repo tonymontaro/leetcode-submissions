@@ -1,0 +1,13 @@
+// https://leetcode.com/problems/strobogrammatic-number
+
+class Solution:
+    def isStrobogrammatic(self, num: str) -> bool:
+        pairs = {a: b for a, b in ["00", "11", "69", "88", "96"]}
+        lo = 0
+        hi = len(num) - 1
+        while lo <= hi:
+            if num[hi] != pairs.get(num[lo], "#"):
+                return False
+            lo += 1
+            hi -= 1
+        return True

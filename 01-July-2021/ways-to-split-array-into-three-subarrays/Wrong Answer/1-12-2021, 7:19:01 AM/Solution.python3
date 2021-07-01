@@ -1,0 +1,24 @@
+// https://leetcode.com/problems/ways-to-split-array-into-three-subarrays
+
+import bisect
+
+class Solution:
+    def waysToSplit(self, nums: List[int]) -> int:
+        MOD = 10**9 + 7
+        n = len(nums)
+        presum = [0] * (n + 1)
+        for i, num in enumerate(nums):
+            presum[i + 1] = presum[i] + num
+        
+        total = presum[n]
+        ans = 0
+        for i in range(n):
+            leftSum = presum[i + 1]
+            if leftSum * 3 > total:
+                break
+            
+            l = bisect.bisect_left(presum, leftSum + leftSum, i + 2, n)
+            r = bisect.bisect_right(presum, leftSum + (total - leftSum) // 2, i + 2, n)
+            ans += r - l
+        
+        return ans

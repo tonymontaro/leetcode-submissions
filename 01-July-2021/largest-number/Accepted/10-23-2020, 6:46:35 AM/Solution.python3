@@ -1,0 +1,21 @@
+// https://leetcode.com/problems/largest-number
+
+from functools import cmp_to_key
+
+class Solution:
+    def largestNumber(self, nums: List[int]) -> str:
+        def compare(a, b):
+            aFirst = a + b
+            bFirst = b + a
+            if aFirst > bFirst:
+                return -1
+            elif bFirst > aFirst:
+                return 1
+            return 0
+        
+        nums = [str(num) for num in nums]
+        nums.sort(key=cmp_to_key(compare))
+        ans = ''.join(nums)
+        if ans.count("0") == len(ans):
+            return "0"
+        return ans

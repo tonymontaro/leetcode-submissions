@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome
+
+class Solution:
+    def minInsertions(self, s: str) -> int:
+        n = len(s)
+        def countDiff(l, r):
+            cnt = 0
+            while l >= 0 and r < n:
+                if s[l] != s[r]:
+                    cnt += 2
+                l -= 1
+                r += 1
+            return cnt + (l + 1) + (n - r)
+        
+        minDiff = n
+        for i, cha in enumerate(s):
+            minDiff = min(minDiff, countDiff(i, i))
+            if i > 0:
+                minDiff = min(minDiff, countDiff(i - 1, i))
+        return minDiff

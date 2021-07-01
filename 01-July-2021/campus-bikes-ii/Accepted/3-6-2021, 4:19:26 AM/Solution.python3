@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/campus-bikes-ii
+
+from math import inf
+from functools import lru_cache
+
+class Solution:
+    def assignBikes(self, workers: List[List[int]], bikes: List[List[int]]) -> int:
+        n, m = len(workers), len(bikes)
+        self.ans = inf
+        
+        @lru_cache(None)
+        def solve(idx, seen):
+            if idx >= n:
+                return 0
+            best = inf
+            for i in range(m):
+                if ((1 << i) & seen) != 0:
+                    continue
+                nseen = seen | (1 << i)
+                x1, y1 = workers[idx]
+                x2, y2 = bikes[i]
+                dist = abs(x1 - x2) + abs(y1 - y2)
+                best = min(best, dist + solve(idx + 1, nseen))
+            return best
+        return solve(0, 0)

@@ -1,0 +1,27 @@
+// https://leetcode.com/problems/check-if-it-is-a-straight-line
+
+import math
+
+class Solution:
+    def checkStraightLine(self, coordinates: List[List[int]]) -> bool: 
+        x, y = coordinates[0]
+        isX = all([val[0] == x for val in coordinates])
+        isY = all([val[1] == y for val in coordinates])
+        if isX or isY:
+            return True
+        
+        def getSlope(x, y, x2, y2):
+            slope = (y2 - y, x2 - x)
+            gcd = math.gcd(slope[0], slope[1])
+            slope = (slope[0]//gcd, slope[1]//gcd)
+            if slope[0] < 0:
+                slope = (slope[0] * -1, slope[1] * -1)
+            return slope
+        
+        
+        prevSlope = getSlope(*coordinates[0], *coordinates[1])
+        for i in range(2, len(coordinates)):
+            slope = getSlope(*coordinates[i-1], *coordinates[i])
+            if slope != prevSlope:
+                return False
+        return True

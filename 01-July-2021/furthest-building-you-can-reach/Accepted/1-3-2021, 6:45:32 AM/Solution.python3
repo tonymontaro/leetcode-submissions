@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/furthest-building-you-can-reach
+
+import heapq
+
+class Solution:
+    def furthestBuilding(self, heights: List[int], bricks: int, ladders: int) -> int:
+        heap = []
+        idx = 0
+        while idx < len(heights) - 1:
+            diff = heights[idx + 1] - heights[idx]
+            if diff <= 0:
+                idx += 1
+                continue
+            
+            if len(heap) < ladders:
+                heapq.heappush(heap, diff)
+            else:
+                useBricks = heapq.heappushpop(heap, diff)
+                if useBricks > bricks:
+                    return idx
+                bricks -= useBricks
+            idx += 1
+        return idx

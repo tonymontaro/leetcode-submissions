@@ -1,0 +1,12 @@
+// https://leetcode.com/problems/reverse-integer
+
+class Solution(object):
+    def reverse(self, x):
+        """
+        :type x: int
+        :rtype: int
+        """
+        x = str(x)
+        if x[0] == '-':
+            return -int(x[1:][::-1])
+        return int(x[::-1])

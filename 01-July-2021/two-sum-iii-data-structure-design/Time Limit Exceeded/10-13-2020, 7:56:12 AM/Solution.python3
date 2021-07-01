@@ -1,0 +1,37 @@
+// https://leetcode.com/problems/two-sum-iii-data-structure-design
+
+class TwoSum:
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.seen = set()
+        self.sums = set()
+        
+
+    def add(self, number: int) -> None:
+        """
+        O(n) time | where n -> size of seen numbers
+        """
+        if number in self.seen:
+            self.sums.add(number + number)
+            return
+        for num in self.seen:
+            self.sums.add(num + number)
+        self.seen.add(number)
+            
+        
+
+    def find(self, value: int) -> bool:
+        """
+        O(1) time
+        """
+        return value in self.sums
+        
+
+
+# Your TwoSum object will be instantiated and called as such:
+# obj = TwoSum()
+# obj.add(number)
+# param_2 = obj.find(value)

@@ -1,0 +1,10 @@
+// https://leetcode.com/problems/merge-two-binary-trees
+
+class Solution:
+    def mergeTrees(self, t1: TreeNode, t2: TreeNode) -> TreeNode:
+        """O(N + M) time | O(max(Dn, Dm)) | D -> depth"""
+        if not (t1 or t2): return None
+        node = TreeNode((t1.val if t1 else 0) + (t2.val if t2 else 0))
+        node.left = self.mergeTrees((t1 and t1.left), (t2 and t2.left))
+        node.right = self.mergeTrees((t1 and t1.right), (t2 and t2.right))
+        return node

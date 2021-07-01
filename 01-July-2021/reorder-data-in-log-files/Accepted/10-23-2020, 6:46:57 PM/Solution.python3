@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/reorder-data-in-log-files
+
+class Solution:
+    def reorderLogFiles(self, logs: List[str]) -> List[str]:
+        alphas = []
+        nums = []
+        
+        for log in logs:
+            identifier, word = log.split(" ", 1)
+            if word[0].isnumeric():
+                nums.append(log)
+            else:
+                alphas.append((word, identifier))
+                
+        alphas.sort()
+        alphas = [b + " " + a for a, b in alphas]
+        alphas.extend(nums)
+        return alphas

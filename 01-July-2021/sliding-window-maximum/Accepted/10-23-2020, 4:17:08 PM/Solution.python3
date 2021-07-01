@@ -1,0 +1,22 @@
+// https://leetcode.com/problems/sliding-window-maximum
+
+from collections import deque
+
+class Solution:
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        # O(n) time | O(k) space
+        window = deque()
+        ans = []
+        
+        for i, num in enumerate(nums):
+            while window and num >= window[-1][1]:
+                window.pop()
+            window.append((i, num))
+            
+            while i >= k and window[0][0] <= i - k:
+                window.popleft()
+            
+            if i >= k - 1:
+                ans.append(window[0][1])
+
+        return ans

@@ -1,0 +1,13 @@
+// https://leetcode.com/problems/intersection-of-two-arrays-ii
+
+from collections import Counter
+class Solution:
+    def intersect(self, nums1, nums2):
+        nums1 = Counter(nums1)
+        result = []
+        for num in nums2:
+            if num in nums1 and nums1[num] > 0:
+                nums1[num] -= 1
+                result.append(num)
+        return result
+        

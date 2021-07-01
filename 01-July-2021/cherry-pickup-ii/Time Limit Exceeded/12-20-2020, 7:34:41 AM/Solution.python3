@@ -1,0 +1,27 @@
+// https://leetcode.com/problems/cherry-pickup-ii
+
+from itertools import product
+from functools import lru_cache
+
+class Solution:
+    def cherryPickup(self, grid: List[List[int]]) -> int:
+        rlen = len(grid)
+        clen = len(grid[0])
+        dirs = list(product([1,0,-1], [1,0,-1]))
+
+        
+        @lru_cache
+        def solve(a, b, row):
+            if not (row < rlen and 0 <= a < clen and 0 <= b < clen):
+                return 0
+            
+            aVal = grid[row][a]
+            bVal = grid[row][b] if a != b else 0
+            best = 0
+            for aMove, bMove in dirs:
+                res = aVal + bVal + solve(a + aMove, b + bMove, row + 1)
+                best = max(best, res)
+            return best
+        
+        return solve(0, clen - 1, 0)
+                   

@@ -1,0 +1,35 @@
+// https://leetcode.com/problems/sort-list
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def sortList(self, head: ListNode) -> ListNode:
+        # O(n^2) time | O(1) space
+        if (not head or not head.next):
+            return head
+        isSorted = False
+        while (not isSorted):
+            tmp = head
+            if (head.val > head.next.val):
+                head = head.next
+            isSorted = self.sort(tmp)
+        return head
+        
+    def sort(self, node):
+        isSorted = True
+        prev = None
+        while (node and node.next):
+            if (node.val > node.next.val):
+                isSorted = False
+                tmp = node.next
+                if (prev):
+                    prev.next = tmp
+                node.next = tmp.next
+                tmp.next = node
+            prev = node
+            node = node.next
+        return isSorted
+        

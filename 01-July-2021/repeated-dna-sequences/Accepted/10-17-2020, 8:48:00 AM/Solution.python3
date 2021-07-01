@@ -1,0 +1,31 @@
+// https://leetcode.com/problems/repeated-dna-sequences
+
+class Solution:
+    def findRepeatedDnaSequences(self, s: str) -> List[str]:
+        # O(n) time and space
+        if (len(s) <= 10): return []
+        MAX = 10**9
+        mp = {"A": 1, "C": 2, "G": 3, "T": 4}
+        mpInv = {a: b for b, a in mp.items()}
+
+        num = 0
+        for i in range(10):
+            num = num * 10 + mp[s[i]]
+
+        seen = set()
+        seen.add(num)
+        ans = set()
+        for i in range(10, len(s)):
+            num = (num % MAX) * 10 + mp[s[i]]
+            if num in seen:
+                ans.add(num)
+            seen.add(num)
+
+        return [toWord(num, mpInv) for num in ans]
+
+def toWord(num, mpInv):
+    arr = []
+    while num:
+        arr.append(mpInv[num % 10])
+        num //= 10
+    return "".join(arr[::-1])

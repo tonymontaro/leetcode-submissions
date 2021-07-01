@@ -1,0 +1,19 @@
+// https://leetcode.com/problems/check-if-array-pairs-are-divisible-by-k
+
+from collections import defaultdict
+
+class Solution:
+    def canArrange(self, arr: List[int], k: int) -> bool:
+        count = defaultdict(int)
+        for num in arr:
+            count[num % k] += 1
+
+        for rem, v in count.items():
+            if rem == 0:
+                continue
+            if k % 2 == 0 and rem == k // 2:
+                if v % 2 == 1:
+                    return False
+            elif v != count[k - rem]:
+                return False
+        return True

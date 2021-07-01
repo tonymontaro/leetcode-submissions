@@ -1,0 +1,21 @@
+// https://leetcode.com/problems/sort-colors
+
+class Solution:
+    def sortColors(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        lo = 0
+        hi = len(nums) - 1
+        idx = 0
+        while idx <= hi:
+            num = nums[idx]
+            if idx >= lo  and num == 0:
+                nums[idx], nums[lo] = nums[lo], nums[idx]
+                lo += 1
+            elif num == 2:
+                nums[idx], nums[hi] = nums[hi], nums[idx]
+                hi -= 1
+            else:
+                idx += 1
+        

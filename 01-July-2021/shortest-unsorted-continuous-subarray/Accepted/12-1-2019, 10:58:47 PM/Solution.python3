@@ -1,0 +1,14 @@
+// https://leetcode.com/problems/shortest-unsorted-continuous-subarray
+
+class Solution:
+    def findUnsortedSubarray(self, arr) -> int:
+        """O(nlogn) time | O(1) space"""
+        INF = float('inf')
+        sorted_arr = sorted(arr)
+        min_ = INF
+        max_ = 0
+        for i in range(len(arr)):
+            if sorted_arr[i] != arr[i]:
+                min_ = min(min_, i)
+                max_ = max(max_, i)
+        return max_ - min_ + 1 if min_ != INF else 0

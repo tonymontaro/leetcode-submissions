@@ -1,0 +1,16 @@
+// https://leetcode.com/problems/longest-increasing-subsequence
+
+import bisect
+
+class Solution:
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        # O(nlogn) time | O(L) space where L -> lengthOfLis
+        lis = []
+        for num in nums:
+            idx = bisect.bisect_left(lis, num)
+            if idx >= len(lis):
+                lis.append(num)
+            else:
+                lis[idx] = num
+        return len(lis)
+        

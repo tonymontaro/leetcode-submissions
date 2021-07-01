@@ -1,0 +1,56 @@
+// https://leetcode.com/problems/car-fleet-ii
+
+from math import inf
+
+class Solution:
+    def getCollisionTimes(self, cars: List[List[int]]) -> List[float]:
+        diff = 10**(-6)
+        
+        def solve(d1, s1, d2, s2):
+            if s2 >= s1:
+                return -1
+            lo = 0
+            hi = 10**9
+            valid = hi
+            while (hi - lo) > diff:
+                midTime = (hi + lo) / 2
+                a = d1 + (s1 * midTime)
+                b = d2 + (s2 * midTime)
+                if a >= b:
+                    hi = midTime
+                    valid = midTime
+                else:
+                    lo = midTime
+            return valid
+        
+        n = len(cars)
+        ans = [-1] * n
+        stack = []
+        mn = inf
+        for i in range(n - 1, -1, -1):
+            d1, s1 = cars[i]
+            
+            if stack and mn < s1:
+                while s1 <= stack[-1][1]:
+                    stack.pop()
+
+                aa = solve(d1, s1, stack[-1][0], stack[-1][1])
+
+                bb = aa
+                
+                while len(stack) > 1:
+                    bb = solve(d1, s1, stack[-2][0], stack[-2][1])
+
+                    if bb == -1:
+                        break
+                    if bb < aa:
+                        stack.pop()
+                        aa = bb
+                    else:
+                        break
+
+                ans[i] = aa
+            stack.append((d1, s1))
+            mn = min(mn, s1)
+        return ans
+            

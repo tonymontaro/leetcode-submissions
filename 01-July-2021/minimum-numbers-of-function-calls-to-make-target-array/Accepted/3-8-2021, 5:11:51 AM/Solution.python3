@@ -1,0 +1,17 @@
+// https://leetcode.com/problems/minimum-numbers-of-function-calls-to-make-target-array
+
+class Solution:
+    def minOperations(self, nums: List[int]) -> int:
+        double = 0
+        ans = 0
+        for num in nums:
+            d = 0
+            while num > 0:
+                if num % 2 == 0:
+                    num //= 2
+                    d += 1
+                else:
+                    num -= 1
+                    ans += 1
+            double = max(double, d)
+        return ans + double

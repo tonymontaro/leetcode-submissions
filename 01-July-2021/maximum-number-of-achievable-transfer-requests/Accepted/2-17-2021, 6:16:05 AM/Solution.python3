@@ -1,0 +1,24 @@
+// https://leetcode.com/problems/maximum-number-of-achievable-transfer-requests
+
+from collections import defaultdict
+
+class Solution:
+    def maximumRequests(self, n: int, requests: List[List[int]]) -> int:
+        n = len(requests)
+        mx = 1 << n
+        ans = 0
+        for i in range(mx):
+            mp = defaultdict(int)
+            reqs = 0
+            for j in range(n):
+                if ((1 << j) & i) != 0:
+                    a, b = requests[j]
+                    mp[a] -= 1
+                    mp[b] += 1
+                    reqs += 1
+            for v in mp.values():
+                if v != 0:
+                    reqs = 0
+                    break
+            ans = max(ans, reqs)
+        return ans

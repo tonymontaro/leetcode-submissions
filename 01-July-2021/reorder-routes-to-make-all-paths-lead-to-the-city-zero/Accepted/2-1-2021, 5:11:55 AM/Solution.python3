@@ -1,0 +1,21 @@
+// https://leetcode.com/problems/reorder-routes-to-make-all-paths-lead-to-the-city-zero
+
+class Solution:
+    def minReorder(self, n: int, connections: List[List[int]]) -> int:
+        adj = [[] for _ in range(n)]
+        for a, b in connections:
+            adj[a].append((b, 0))
+            adj[b].append((a, 1))
+        
+        self.ans = 0
+        def dfs(node, seen):
+            seen[node] = 1
+            for child, direction in adj[node]:
+                if child in seen:
+                    continue
+                if direction == 0:
+                    self.ans += 1
+                dfs(child, seen)
+        
+        dfs(0, {})
+        return self.ans

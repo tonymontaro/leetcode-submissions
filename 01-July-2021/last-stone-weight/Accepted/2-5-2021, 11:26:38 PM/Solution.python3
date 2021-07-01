@@ -1,0 +1,15 @@
+// https://leetcode.com/problems/last-stone-weight
+
+from heapq import heappop, heappush, heapify
+
+class Solution:
+    def lastStoneWeight(self, stones: List[int]) -> int:
+        heap = [-num for num in stones]
+        heapify(heap)
+        while len(heap) > 1:
+            a = heappop(heap)
+            b = heappop(heap)
+            c = abs(a - b)
+            if c > 0:
+                heappush(heap, -c)
+        return 0 if not heap else -heap[0]

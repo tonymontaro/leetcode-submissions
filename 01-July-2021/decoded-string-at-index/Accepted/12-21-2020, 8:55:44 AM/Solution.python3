@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/decoded-string-at-index
+
+class Solution:
+    def decodeAtIndex(self, S: str, k: int) -> str:
+        size = 0
+        # Find size = length of decoded string
+        for c in S:
+            if c.isdigit():
+                size *= int(c)
+            else:
+                size += 1
+        
+        word = S[::-1]
+        for cha in word:
+            k = k % size
+            if k == 0 and not cha.isdigit():
+                return cha
+            
+            if cha.isdigit():
+                size //= int(cha)
+            else:
+                size -= 1
+            

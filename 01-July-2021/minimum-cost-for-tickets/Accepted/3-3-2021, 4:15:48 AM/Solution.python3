@@ -1,0 +1,21 @@
+// https://leetcode.com/problems/minimum-cost-for-tickets
+
+class Solution:
+    def mincostTickets(self, days: List[int], costs: List[int]) -> int:
+        n = len(days)
+        mx = max(days)
+        days = set(days)
+        dp = [0] * (mx + 1)
+        for day in range(1, mx + 1):
+            if day not in days:
+                dp[day] = dp[day-1]
+                continue
+            cost = dp[day-1] + costs[0]
+            for diff, c in [(7, 1), (30, 2)]:
+                if day - diff < 0:
+                    cost = min(cost, costs[c])
+                else:
+                    cost = min(cost, dp[day - diff] + costs[c])
+            dp[day] = cost
+
+        return dp[-1]

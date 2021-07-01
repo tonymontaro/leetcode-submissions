@@ -1,0 +1,22 @@
+// https://leetcode.com/problems/bag-of-tokens
+
+class Solution:
+    def bagOfTokensScore(self, tokens: List[int], power: int) -> int:
+        tokens.sort()
+        left = 0
+        right = len(tokens) - 1
+        ans = 0
+        points = 0
+        while left <= right:
+            if power >= tokens[left]:
+                points += 1
+                ans = max(ans, points)
+                power -= tokens[left]
+                left += 1
+            elif points > 0:
+                power += tokens[right]
+                right -= 1
+                points -= 1
+            else:
+                break
+        return ans

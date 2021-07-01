@@ -1,0 +1,19 @@
+// https://leetcode.com/problems/check-if-word-is-valid-after-substitutions
+
+class Solution:
+    def isValid(self, s: str) -> bool:
+        stack = []
+        for c in s:
+            n = len(stack)
+            if c == 'a':
+                stack.append(c)
+            if c == 'b':
+                if not (n > 0 and stack[-1] == 'a'):
+                    return False
+                stack.append(c)
+            if c == 'c':
+                if not (n > 1 and stack[-1] == 'b' and stack[-2] == 'a'):
+                    return False
+                stack.pop()
+                stack.pop()
+        return len(stack) == 0
